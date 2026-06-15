@@ -3,12 +3,13 @@ import Link from 'next/link'
 import { supabase } from '../lib/supabase'
 import { Check, Zap, Sparkles, CreditCard, Video } from 'lucide-react'
 
+// WICHTIG: Ersetze diese Platzhalter durch deine echten Stripe Price IDs aus deinem Dashboard (Test-Modus)
 const PLANS = [
   {
     name: 'Starter',
-    price: '3.99', // Erhöht um 1 € (von 2.99)
+    price: '3.99',
     credits: 100,
-    priceId: 'price_starter_placeholder',
+    priceId: 'price_1StarterPlaceholder', // Ersetzen mit z.B. price_1Qx...
     description: 'Der perfekte Einstieg zum Testen.',
     features: [
       '100 Credits (~20 Videos oder 100 Bilder)',
@@ -21,9 +22,9 @@ const PLANS = [
   },
   {
     name: 'Pro (Empfohlen)',
-    price: '8.99', // Erhöht um 1 € (von 7.99)
+    price: '8.99',
     credits: 350,
-    priceId: 'price_pro_placeholder',
+    priceId: 'price_1ProPlaceholder', // Ersetzen mit z.B. price_1Qx...
     description: 'Für Content-Creator und professionelle Ansprüche.',
     features: [
       '350 Credits (~70 Videos oder 350 Bilder)',
@@ -37,9 +38,9 @@ const PLANS = [
   },
   {
     name: 'Elite',
-    price: '20.99', // Erhöht um 1 € (von 19.99)
+    price: '20.99',
     credits: 1000,
-    priceId: 'price_elite_placeholder',
+    priceId: 'price_1ElitePlaceholder', // Ersetzen mit z.B. price_1Qx...
     description: 'Das ultimative Paket für Power-User.',
     features: [
       '1000 Credits (~200 Videos oder 1000 Bilder)',
