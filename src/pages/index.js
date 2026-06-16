@@ -894,10 +894,13 @@ export default function Home() {
                       </div>
                       
                       <div style={{ position: 'relative', width: '100%', borderRadius: '12px', overflow: 'hidden' }}>
-                        <img 
-                          src="/beispiel.png" 
-                          alt="Beispiel-Generierung"
-                          style={{ width: '100%', maxWidth: '100%', borderRadius: '12px', display: 'block', maxHeight: '500px', objectFit: 'cover' }}
+                        <video 
+                          src="/beispiel.mp4" 
+                          autoPlay 
+                          loop 
+                          muted 
+                          playsInline
+                          style={{ width: '100%', maxWidth: '100%', borderRadius: '12px', display: 'block' }}
                         />
                         <div style={{
                           position: 'absolute',
@@ -915,7 +918,7 @@ export default function Home() {
                           whiteSpace: 'nowrap',
                           boxShadow: 'var(--shadow-neon)'
                         }}>
-                          Melde dich an und erschaffe deine eigenen Werke! ✨
+                          Melde dich an und erschaffe dein eigenes Video! ✨
                         </div>
                       </div>
                     </div>
