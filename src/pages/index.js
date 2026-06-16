@@ -149,6 +149,7 @@ export default function Home() {
 
   // Translation State
   const [isTranslating, setIsTranslating] = useState(false)
+  const [imageErrors, setImageErrors] = useState({})
 
   const handleTranslate = async () => {
     if (!prompt.trim()) {
@@ -904,13 +905,13 @@ export default function Home() {
                         />
                         <div style={{
                           position: 'absolute',
-                          bottom: '15px',
+                          bottom: '10px',
                           left: '50%',
                           transform: 'translateX(-50%)',
-                          background: 'rgba(10, 15, 29, 0.85)',
-                          padding: '10px 20px',
-                          borderRadius: '30px',
-                          fontSize: '0.85rem',
+                          background: 'rgba(10, 15, 29, 0.9)',
+                          padding: '6px 12px',
+                          borderRadius: '20px',
+                          fontSize: '0.72rem',
                           fontWeight: 700,
                           color: '#fff',
                           backdropFilter: 'blur(8px)',
@@ -961,11 +962,27 @@ export default function Home() {
                           }}
                         >
                           {gen.status === 'succeeded' ? (
-                            (gen.type === 'image' || (gen.output_url && /\.(webp|png|jpe?g)(?:\?.*)?$/i.test(gen.output_url))) ? (
-                              <img src={gen.output_url} alt="Vorschau" style={{ width: '100%', height: '90px', objectFit: 'cover' }} />
+                            imageErrors[gen.id] ? (
+                              <div style={{ height: '90px', background: 'rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>
+                                {gen.type === 'image' ? <ImageIcon size={20} /> : <Video size={20} />}
+                                <span style={{ fontSize: '0.65rem', marginTop: '4px' }}>
+                                  {gen.type === 'image' ? 'Bild abgelaufen' : 'Video abgelaufen'}
+                                </span>
+                              </div>
+                            ) : (gen.type === 'image' || (gen.output_url && /\.(webp|png|jpe?g)(?:\?.*)?$/i.test(gen.output_url))) ? (
+                              <img 
+                                src={gen.output_url} 
+                                alt="Vorschau" 
+                                style={{ width: '100%', height: '90px', objectFit: 'cover' }} 
+                                onError={() => setImageErrors(prev => ({ ...prev, [gen.id]: true }))}
+                              />
                             ) : (
                               <div style={{ position: 'relative', height: '90px' }}>
-                                <video src={gen.output_url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                <video 
+                                  src={gen.output_url} 
+                                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                                  onError={() => setImageErrors(prev => ({ ...prev, [gen.id]: true }))}
+                                />
                                 <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'rgba(0,0,0,0.5)', borderRadius: '50%', padding: '4px' }}>
                                   <Play size={12} style={{ color: '#fff' }} />
                                 </div>
