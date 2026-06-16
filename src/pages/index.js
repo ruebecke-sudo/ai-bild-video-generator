@@ -620,8 +620,8 @@ export default function Home() {
           <>
             <div className="grid-layout">
               {/* Linke Spalte */}
-              <div className="glass-panel" style={{ padding: '1.5rem', height: 'fit-content' }}>
-                <div className="tab-headers">
+              <div className="glass-panel" style={{ padding: '1.8rem', height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <div className="tab-headers" style={{ marginBottom: '1.8rem' }}>
                   <button 
                     className={`tab-btn ${activeTab === 'image-to-video' ? 'active' : ''}`}
                     onClick={() => setActiveTab('image-to-video')}
@@ -645,7 +645,7 @@ export default function Home() {
                   </button>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.6rem', flex: 1, justifyContent: 'space-between' }}>
                   
                   {activeTab === 'image-to-video' && (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
