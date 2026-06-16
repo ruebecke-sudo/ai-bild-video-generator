@@ -895,7 +895,7 @@ export default function Home() {
                       
                       <div style={{ position: 'relative', width: '100%', borderRadius: '12px', overflow: 'hidden' }}>
                         <video 
-                          src="https://assets.mixkit.co/videos/preview/mixkit-flying-over-a-dense-green-forest-41682-large.mp4" 
+                          src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" 
                           autoPlay 
                           loop 
                           muted 
