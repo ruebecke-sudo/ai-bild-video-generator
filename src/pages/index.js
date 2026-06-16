@@ -139,6 +139,42 @@ export default function Home() {
   const [activePromptType, setActivePromptType] = useState('image') // 'image', 'video'
   const [copiedPromptText, setCopiedPromptText] = useState('')
 
+  // Translation State
+  const [isTranslating, setIsTranslating] = useState(false)
+
+  const handleTranslate = async () => {
+    if (!prompt.trim()) {
+      alert('Bitte gib zuerst einen Text auf Deutsch ein!')
+      return
+    }
+
+    setIsTranslating(true)
+    try {
+      // Nutze die kostenlose MyMemory API (öffentlich zugänglich, ohne API-Key)
+      const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(prompt)}&langpair=de|en`)
+      const data = await res.json()
+      
+      if (data.responseData && data.responseData.translatedText) {
+        let translated = data.responseData.translatedText
+        // Entferne eventuelle API-Rückgabeartefakte oder Anführungszeichen
+        translated = translated.replace(/^"|"$/g, '')
+
+        // Optionale Verbesserung/Optimierung anhängen
+        const enhanceSuffix = ", photorealistic, highly detailed, cinematic lighting, 8k resolution, sharp focus"
+        
+        // Trage das Ergebnis ein
+        setPrompt(translated + enhanceSuffix)
+      } else {
+        alert('Die Übersetzung konnte nicht geladen werden. Bitte versuche es noch einmal.')
+      }
+    } catch (err) {
+      console.error(err)
+      alert('Verbindungsfehler bei der Übersetzung.')
+    } finally {
+      setIsTranslating(false)
+    }
+  }
+
   const handleCopyPrompt = (text) => {
     navigator.clipboard.writeText(text)
     setCopiedPromptText(text)
@@ -571,18 +607,42 @@ export default function Home() {
                   )}
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-muted)' }}>Beschreibung (Prompt)</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-muted)' }}>Beschreibung (Prompt)</span>
+                      
+                      <button 
+                        onClick={handleTranslate}
+                        disabled={isTranslating}
+                        className="btn-outline"
+                        style={{ 
+                          padding: '4px 10px', 
+                          fontSize: '0.75rem', 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: '6px', 
+                          borderColor: 'var(--primary)', 
+                          color: 'var(--primary)' 
+                        }}
+                      >
+                        <Sparkles size={12} />
+                        {isTranslating ? 'Übersetze...' : 'Übersetzen & Optimieren 🇩🇪 ➔ 🇺🇸'}
+                      </button>
+                    </div>
+
                     <textarea 
                       className="glass-input" 
                       rows={4}
                       placeholder={
                         activeTab === 'image-gen' 
-                        ? "z.B. Ein wunderschöner Sonnenuntergang über Bergen..."
+                        ? "Schreibe deine Idee auf Deutsch und klicke oben rechts auf 'Übersetzen'..."
                         : "Beschreibe die gewünschte Bewegung des Videos..."
                       }
                       value={prompt}
                       onChange={(e) => setPrompt(e.target.value)}
                     />
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
+                      Tipp: Gib deinen Prompt auf Deutsch ein und klicke auf den Button, um ihn in ein perfekt optimiertes Englisch übersetzen zu lassen.
+                    </span>
                   </div>
 
                   {/* Stil-Auswahl */}
