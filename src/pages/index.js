@@ -418,13 +418,13 @@ export default function Home() {
     }, 4000)
   }
 
-  const activeMediaUrl = selectedArchiveItem 
-    ? selectedArchiveItem.output_url 
-    : (prediction?.status === 'succeeded' ? prediction.output_url : null)
+  const activeMediaUrl = prediction?.status === 'succeeded' 
+    ? prediction.output_url 
+    : (selectedArchiveItem ? selectedArchiveItem.output_url : null)
 
-  const isCurrentImage = selectedArchiveItem 
-    ? selectedArchiveItem.type === 'image' 
-    : (prediction?.type === 'image')
+  const isCurrentImage = prediction?.status === 'succeeded' 
+    ? prediction.type === 'image' 
+    : (selectedArchiveItem ? selectedArchiveItem.type === 'image' : false)
 
   return (
     <div className="app-container" style={{ background: 'var(--bg-main)' }}>
