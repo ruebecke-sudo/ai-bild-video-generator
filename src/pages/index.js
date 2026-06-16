@@ -360,6 +360,8 @@ export default function Home() {
     }, 4000)
   }
 
+  return (
+    <div className="app-container" style={{ background: 'var(--bg-main)' }}>
       {/* Header */}
       <header className="header">
         <Link href="/" className="brand">
