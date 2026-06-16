@@ -949,9 +949,9 @@ export default function Home() {
                         >
                           {gen.status === 'succeeded' ? (
                             imageErrors[gen.id] ? (
-                              <div className="archive-card-media" style={{ background: 'rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>
-                                {gen.type === 'image' ? <ImageIcon size={24} /> : <Video size={24} />}
-                                <span style={{ fontSize: '0.75rem', marginTop: '4px' }}>
+                              <div style={{ height: '90px', background: 'rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>
+                                {gen.type === 'image' ? <ImageIcon size={20} /> : <Video size={20} />}
+                                <span style={{ fontSize: '0.7rem', marginTop: '4px' }}>
                                   {gen.type === 'image' ? 'Bild abgelaufen' : 'Video abgelaufen'}
                                 </span>
                               </div>
@@ -975,14 +975,14 @@ export default function Home() {
                               </div>
                             )
                           ) : gen.status === 'failed' ? (
-                            <div className="archive-card-media" style={{ background: 'rgba(239, 68, 68, 0.1)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
-                              <X size={24} />
-                              <span style={{ fontSize: '0.75rem', marginTop: '4px', fontWeight: 600 }}>Fehlgeschlagen</span>
+                            <div style={{ height: '90px', background: 'rgba(239, 68, 68, 0.1)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+                              <X size={20} />
+                              <span style={{ fontSize: '0.7rem', marginTop: '4px', fontWeight: 600 }}>Fehlgeschlagen</span>
                             </div>
                           ) : (
-                            <div className="shimmer-bg archive-card-media" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>
-                              <Clock className="animate-spin" size={20} />
-                              <span style={{ fontSize: '0.7rem', marginTop: '4px' }}>Generiere...</span>
+                            <div className="shimmer-bg" style={{ height: '90px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>
+                              <Clock className="animate-spin" size={18} />
+                              <span style={{ fontSize: '0.65rem', marginTop: '4px' }}>Generiere...</span>
                             </div>
                           )}
                           <div style={{ padding: '6px' }}>
