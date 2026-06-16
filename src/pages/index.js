@@ -895,7 +895,7 @@ export default function Home() {
                       
                       <div style={{ position: 'relative', width: '100%', borderRadius: '12px', overflow: 'hidden' }}>
                         <video 
-                          src="https://replicate.delivery/yhqm/3gg83ypy2srmw0cysgzr7r7zOwTbeQZzS9Z7QoD6m3Fwxe1C/out-0.mp4" 
+                          src="https://assets.mixkit.co/videos/preview/mixkit-flying-over-a-dense-green-forest-41682-large.mp4" 
                           autoPlay 
                           loop 
                           muted 
