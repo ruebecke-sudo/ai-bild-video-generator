@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { supabase, getUserCredits } from '../lib/supabase'
+import { PROMPT_CATEGORIES } from '../lib/promptsData'
 import { 
   Video, 
   Image as ImageIcon, 
@@ -29,7 +30,10 @@ import {
   Layers,
   Cpu,
   MessageSquare,
-  Star
+  Star,
+  Book,
+  Copy,
+  Check
 } from 'lucide-react'
 
 const STYLES = [
@@ -129,6 +133,29 @@ export default function Home() {
   const [selectedArchiveItem, setSelectedArchiveItem] = useState(null)
   const [isFullsizeOpen, setIsFullsizeOpen] = useState(false)
   const [openFaqIndex, setOpenFaqIndex] = useState(null)
+
+  // Prompt Library State
+  const [selectedPromptCategory, setSelectedPromptCategory] = useState(PROMPT_CATEGORIES[0]?.id || '')
+  const [activePromptType, setActivePromptType] = useState('image') // 'image', 'video'
+  const [copiedPromptText, setCopiedPromptText] = useState('')
+
+  const handleCopyPrompt = (text) => {
+    navigator.clipboard.writeText(text)
+    setCopiedPromptText(text)
+    setTimeout(() => setCopiedPromptText(''), 2500)
+  }
+
+  const handleUsePrompt = (text, type) => {
+    setPrompt(text)
+    if (type === 'image') {
+      setActiveTab('image-gen')
+    } else {
+      setActiveTab('text-to-video')
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const activeCategory = PROMPT_CATEGORIES.find(c => c.id === selectedPromptCategory) || PROMPT_CATEGORIES[0] || { name: '', icon: '', description: '', images: [], videos: [] }
 
   useEffect(() => {
     const rememberedEmail = localStorage.getItem('remembered_email')
@@ -333,40 +360,6 @@ export default function Home() {
     }, 4000)
   }
 
-  const pollPrediction = async (id) => {
-    const interval = setInterval(async () => {
-      try {
-        const response = await fetch(`/api/check-status?id=${id}`)
-        const data = await response.json()
-
-        if (data.status === 'succeeded') {
-          clearInterval(interval)
-          setPrediction(data)
-          setIsGenerating(false)
-          loadUserStats(user.id)
-        } else if (data.status === 'failed') {
-          clearInterval(interval)
-          alert('Generierung fehlgeschlagen.')
-          setIsGenerating(false)
-        }
-      } catch (err) {
-        console.error('Polling Fehler:', err)
-      }
-    }, 4000)
-  }
-
-  const activeMediaUrl = selectedArchiveItem 
-    ? selectedArchiveItem.output_url 
-    : (prediction?.output 
-        ? (Array.isArray(prediction.output) ? prediction.output[0] : prediction.output) 
-        : null)
-
-  const isCurrentImage = selectedArchiveItem 
-    ? selectedArchiveItem.type === 'image' 
-    : (prediction && activeTab === 'image-gen')
-
-  return (
-    <div className="app-container">
       {/* Header */}
       <header className="header">
         <Link href="/" className="brand">
@@ -606,19 +599,19 @@ export default function Home() {
                     <div style={{ display: 'flex', gap: '10px' }}>
                       {['16:9', '9:16', '1:1'].map((ratio) => (
                         <button 
-                          key={ratio} 
-                          onClick={() => setAspectRatio(ratio)}
-                          style={{
-                            flex: 1,
-                            padding: '10px',
-                            borderRadius: '8px',
-                            background: aspectRatio === ratio ? 'var(--primary)' : 'var(--bg-input)',
-                            color: '#fff',
-                            border: 'none',
-                            cursor: 'pointer',
-                            fontWeight: 600,
-                            transition: 'all 0.2s'
-                          }}
+                           key={ratio} 
+                           onClick={() => setAspectRatio(ratio)}
+                           style={{
+                             flex: 1,
+                             padding: '10px',
+                             borderRadius: '8px',
+                             background: aspectRatio === ratio ? 'var(--primary)' : 'var(--bg-input)',
+                             color: '#fff',
+                             border: 'none',
+                             cursor: 'pointer',
+                             fontWeight: 600,
+                             transition: 'all 0.2s'
+                           }}
                         >
                           {ratio}
                         </button>
@@ -891,6 +884,123 @@ export default function Home() {
                           <h4 style={{ fontWeight: 700, fontSize: '0.95rem' }}>{review.name}</h4>
                           <span style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>{review.role}</span>
                         </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* NEU: Premium Prompt-Bibliothek */}
+              <section className="glass-panel" style={{ padding: '3rem' }}>
+                <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                  <h2 style={{ fontSize: '2.2rem', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', background: 'linear-gradient(135deg, #fff 0%, var(--primary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                    <Book size={28} style={{ color: 'var(--primary)' }} />
+                    Premium Nischen-Prompts
+                  </h2>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '700px', margin: '10px auto 0 auto', lineHeight: '1.6' }}>
+                    Kopiere exklusive Prompts für Winzer, Immobilienmakler, Hochzeiten und mehr direkt in deine Zwischenablage oder lade sie mit einem Klick in den Generator.
+                  </p>
+                </div>
+
+                {/* Kategorien-Auswahl */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px', marginBottom: '2rem' }}>
+                  {PROMPT_CATEGORIES.map((cat) => (
+                    <button
+                      key={cat.id}
+                      onClick={() => setSelectedPromptCategory(cat.id)}
+                      className={`glass-panel`}
+                      style={{
+                        padding: '12px 8px',
+                        textAlign: 'center',
+                        cursor: 'pointer',
+                        border: selectedPromptCategory === cat.id ? '2px solid var(--primary)' : '1px solid var(--border-color)',
+                        background: selectedPromptCategory === cat.id ? 'rgba(168, 85, 247, 0.15)' : 'rgba(30, 41, 66, 0.2)',
+                        transition: 'all 0.2s',
+                        borderRadius: '10px'
+                      }}
+                    >
+                      <span style={{ fontSize: '1.8rem', display: 'block', marginBottom: '6px' }}>{cat.icon}</span>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#fff' }}>{cat.name}</span>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Beschreibung der aktiven Kategorie & Typ-Filter (Bild vs. Video) */}
+                <div className="glass-panel" style={{ padding: '1.5rem', marginBottom: '2rem', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '15px' }}>
+                  <div>
+                    <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--primary)' }}>
+                      {activeCategory.name} {activeCategory.icon}
+                    </h3>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '4px' }}>
+                      {activeCategory.description}
+                    </p>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      onClick={() => setActivePromptType('image')}
+                      className={`tab-btn ${activePromptType === 'image' ? 'active' : ''}`}
+                      style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+                    >
+                      <ImageIcon size={14} />
+                      Bild-Prompts
+                    </button>
+                    <button
+                      onClick={() => setActivePromptType('video')}
+                      className={`tab-btn ${activePromptType === 'video' ? 'active' : ''}`}
+                      style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+                    >
+                      <Video size={14} />
+                      Video-Prompts
+                    </button>
+                  </div>
+                </div>
+
+                {/* Prompt Liste */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '450px', overflowY: 'auto', paddingRight: '6px' }}>
+                  {(activePromptType === 'image' ? activeCategory.images : activeCategory.videos).map((promptText, idx) => (
+                    <div 
+                      key={idx} 
+                      className="glass-panel" 
+                      style={{ 
+                        padding: '1.2rem', 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center', 
+                        gap: '20px',
+                        border: '1px solid rgba(255, 255, 255, 0.05)'
+                      }}
+                    >
+                      <div style={{ flex: 1 }}>
+                        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                          Prompt #{idx + 1}
+                        </span>
+                        <p style={{ color: '#fff', fontSize: '0.92rem', lineHeight: '1.5', marginTop: '4px', fontStyle: 'italic' }}>
+                          {promptText}
+                        </p>
+                      </div>
+
+                      <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                        <button
+                          onClick={() => handleCopyPrompt(promptText)}
+                          className="btn-outline"
+                          title="In Zwischenablage kopieren"
+                          style={{ padding: '8px 10px' }}
+                        >
+                          {copiedPromptText === promptText ? (
+                            <Check size={16} style={{ color: '#22c55e' }} />
+                          ) : (
+                            <Copy size={16} />
+                          )}
+                        </button>
+                        <button
+                          onClick={() => handleUsePrompt(promptText, activePromptType)}
+                          className="btn-gold"
+                          style={{ padding: '8px 12px', fontSize: '0.8rem', display: 'flex', gap: '6px', alignItems: 'center' }}
+                        >
+                          <Sparkles size={12} />
+                          In Generator laden
+                        </button>
                       </div>
                     </div>
                   ))}
