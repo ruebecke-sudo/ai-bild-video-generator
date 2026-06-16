@@ -421,7 +421,7 @@ export default function Home() {
 
   const activeMediaUrl = selectedArchiveItem 
     ? selectedArchiveItem.output_url 
-    : (prediction?.status === 'succeeded' ? prediction.output_url : null)
+    : (prediction?.output_url ? prediction.output_url : null)
 
   const isCurrentImage = selectedArchiveItem 
     ? selectedArchiveItem.type === 'image' 
