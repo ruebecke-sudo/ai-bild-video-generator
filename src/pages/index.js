@@ -953,14 +953,16 @@ export default function Home() {
                             overflow: 'hidden', 
                             borderRadius: '10px', 
                             cursor: 'pointer',
-                            flex: '0 0 140px',
+                            width: '140px',
+                            minWidth: '140px',
+                            flexShrink: 0,
                             border: selectedArchiveItem?.id === gen.id ? '2px solid var(--primary)' : '1px solid var(--border-color)',
                             transition: 'all 0.2s',
                           }}
                         >
                           {gen.status === 'succeeded' ? (
                             (gen.type === 'image' || (gen.output_url && /\.(webp|png|jpe?g)(?:\?.*)?$/i.test(gen.output_url))) ? (
-                              <img src={gen.output_url} alt={gen.prompt} style={{ width: '100%', height: '90px', objectFit: 'cover' }} />
+                              <img src={gen.output_url} alt="Vorschau" style={{ width: '100%', height: '90px', objectFit: 'cover' }} />
                             ) : (
                               <div style={{ position: 'relative', height: '90px' }}>
                                 <video src={gen.output_url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />

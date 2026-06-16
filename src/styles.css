@@ -144,17 +144,20 @@ select.glass-input option {
 }
 
 .header {
-  height: 70px;
+  min-height: 70px;
+  height: auto;
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
-  background: rgba(10, 15, 29, 0.85);
+  padding: 10px 2rem;
+  background: rgba(10, 15, 29, 0.95);
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 100;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .brand {
@@ -168,6 +171,7 @@ select.glass-input option {
   background: linear-gradient(90deg, #fff 0%, var(--primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  white-space: nowrap;
 }
 
 .main-content {
@@ -190,6 +194,23 @@ select.glass-input option {
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 768px) {
+  .header {
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+  }
+  .header > div {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px !important;
+  }
+  .main-content {
+    padding: 1rem;
+  }
+}
+
 
 /* Tabs styles */
 .tab-headers {
