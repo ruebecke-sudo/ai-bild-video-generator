@@ -404,9 +404,10 @@ export default function Home() {
 
         if (data.status === 'succeeded') {
           clearInterval(interval)
-          setPrediction(data)
+          setSelectedArchiveItem(null) // Archiv-Auswahl zurücksetzen!
+          setPrediction(data) // Setzt das neue Bild als aktive prediction
           setIsGenerating(false)
-          loadUserStats(user.id)
+          loadUserStats(user.id) // Lädt die Historie neu
         } else if (data.status === 'failed') {
           clearInterval(interval)
           alert('Generierung fehlgeschlagen.')
