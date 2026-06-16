@@ -448,7 +448,7 @@ export default function Home() {
 
   const isCurrentImage = selectedArchiveItem 
     ? selectedArchiveItem.type === 'image' 
-    : (prediction?.type === 'image')
+    : (prediction?.type === 'image' || (activeMediaUrl && /\.(webp|png|jpe?g)(?:\?.*)?$/i.test(activeMediaUrl)))
 
   return (
     <div className="app-container" style={{ background: 'var(--bg-main)' }}>
@@ -801,8 +801,8 @@ export default function Home() {
                       <p style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginTop: '6px' }}>Bitte verlasse diese Seite nicht.</p>
                     </div>
                   ) : activeMediaUrl ? (
-                    <div style={{ width: '100%', maxWidth: '700px', position: 'relative' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                    <div style={{ width: '100%', maxWidth: '700px', position: 'relative', boxSizing: 'border-box' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '10px' }}>
                         <h3>
                           {selectedArchiveItem ? 'Archiv-Element:' : 'Generiertes Ergebnis:'}
                         </h3>
@@ -823,7 +823,7 @@ export default function Home() {
                         <img 
                           src={activeMediaUrl} 
                           alt="Result" 
-                          style={{ width: '100%', borderRadius: '12px', maxHeight: '500px', objectFit: 'contain' }} 
+                          style={{ width: '100%', maxWidth: '100%', borderRadius: '12px', maxHeight: '500px', objectFit: 'contain', display: 'block' }} 
                         />
                       ) : (
                         <video 
@@ -831,7 +831,7 @@ export default function Home() {
                           controls 
                           autoPlay 
                           loop 
-                          style={{ width: '100%', borderRadius: '12px' }}
+                          style={{ width: '100%', maxWidth: '100%', borderRadius: '12px', display: 'block' }}
                         />
                       )}
 

@@ -418,5 +418,89 @@ export const PROMPT_CATEGORIES = [
       'Time-lapse of car lights creating neon trails on a busy highway at night, urban dynamic energy.',
       'A close-up of a driver pushing the start/stop button of a luxury car, engine roaring to life (visual vibration).'
     ]
+  },
+  {
+    id: 'socialmedia',
+    name: 'Social Media',
+    icon: '📱',
+    description: 'Auffällige Content-Creator-Szenen, Unboxings und ästhetische Vlogs.',
+    previewImage: '/previews/socialmedia.png',
+    images: [
+      'A cozy desk setup of a content creator, neon purple ring light reflection in the window, high-end microphone, modern camera on a tripod, aesthetic workspace.',
+      'Close-up of a hand holding a smartphone displaying an colorful lifestyle feed, beautiful warm coffee shop background, soft bokeh.',
+      'A young woman smiling in front of a ring light, filming a video for social media, bright and clean aesthetic, professional lighting.',
+      'Flat lay of aesthetic tech accessories: wireless keyboard, pastel headphones, a journal, and a cup of matcha latte on a marble desk.',
+      'A vibrant outdoor street style portrait of a content creator holding a vintage camera, sunny day, colorful background.'
+    ],
+    videos: [
+      'Slow motion cinematic panning over an aesthetic gaming and streaming setup with pulsing RGB neon lights.',
+      'Time-lapse of a creator setting up a studio lights, softbox, and a tripod in a cozy room.',
+      'A close-up of hands typing dynamically on a mechanical keyboard with glowing keycaps in slow motion.',
+      'Camera flying gently over an aesthetic desk with a smartphone, coffee cup, and notepad, warm morning sunlight.',
+      'A slow motion shot of a creator unboxing a high-tech gadget, crisp details, wrapping paper tearing off.'
+    ]
+  },
+  {
+    id: 'nature',
+    name: 'Natur & Landschaften',
+    icon: '🏔️',
+    description: 'Atemberaubende Landschaften, tosende Wasserfälle und Nebelwälder.',
+    previewImage: '/previews/nature.png',
+    images: [
+      'A breathtaking mountain valley at sunrise, mist rising from a crystal-clear lake, golden sunbeams cutting through pine trees, photorealistic 8k.',
+      'Close-up of a dew-covered green fern leaf in a dense redwood forest, soft morning light, deep rich green tones, macro photography.',
+      'A dramatic rocky coastline with heavy ocean waves crashing against cliffs under a stormy purple sunset, long exposure.',
+      'A majestic waterfall cascading down a steep mossy cliff into a turquoise pool, lush tropical jungle environment, bright daylight.',
+      'A peaceful path winding through a beautiful pink cherry blossom forest in Japan, soft warm sun rays, dreamy atmosphere.'
+    ],
+    videos: [
+      'Slow drone flight over a dense pine forest covered in mist at sunrise, epic cinematic atmosphere.',
+      'Time-lapse of the Northern Lights dancing across a starry night sky above a snow-capped wooden cabin.',
+      'Slow motion close-up of crystal clear water flowing over smooth river stones in a mountain stream.',
+      'A drone rising slowly from a rocky ocean cliff to reveal a vast sunset horizon with waves breaking below.',
+      'Time-lapse of fog rolling over green rolling hills in a valley, sun breaking through clouds.'
+    ]
+  },
+  {
+    id: 'cyberpunk',
+    name: 'Cyberpunk & Sci-Fi',
+    icon: '👾',
+    description: 'Futuristische Megacitys, neonbeleuchtete Gassen und High-Tech-Elemente.',
+    previewImage: '/previews/cyberpunk.png',
+    images: [
+      'A dark rainy street in a futuristic cyberpunk city, glowing pink and cyan neon signs reflecting in puddles, flying cars in the sky, 8k resolution.',
+      'Close-up portrait of a futuristic cyborg woman with glowing blue light patterns on her face, neon background, cyberpunk aesthetic.',
+      'A high-tech control room with multiple glowing holographic screens, clean white and blue lighting, sci-fi spaceship interior.',
+      'An abandoned futuristic laboratory overgrown with bioluminescent plants, glowing moss on high-tech devices, mysterious vibe.',
+      'A futuristic motorbike parked in a dark neon-lit alleyway, smoke rising from the ground, high-contrast dramatic lighting.'
+    ],
+    videos: [
+      'Cinematic fly-through of a massive futuristic metropolis at night, glowing neon towers and flying vehicles.',
+      'Slow motion pan across a high-tech sci-fi server room with pulsing blue and green led status lights.',
+      'A glowing hologram displaying a rotating planet earth in a dark command center, futuristic interface in motion.',
+      'Camera moving through a rainy neon-lit alleyway in a futuristic city, steam escaping from pipes.',
+      'A spaceship slowly descending onto a futuristic landing pad on a foreign planet at dusk.'
+    ]
+  },
+  {
+    id: 'artistic',
+    name: 'Kunst & Abstrakt',
+    icon: '🎨',
+    description: 'Farbexplosionen, flüssige Strukturen und surreale Traumlandschaften.',
+    previewImage: '/previews/artistic.png',
+    images: [
+      'An abstract macro shot of swirling colorful acrylic paints in water, vibrant pink, gold, and deep blue patterns, artistic fluid art.',
+      'A surreal dream landscape with floating geometric shapes, a glowing portal in the center, pastel clouds, fantasy concept art.',
+      'An artistic double exposure portrait of a woman merged with a lush green forest, sun rays filtering through leaves, emotional.',
+      'Vibrant splashing paint frozen in mid-air, dynamic colorful liquid droplets on a dark reflective background, commercial studio lighting.',
+      'A minimalist modern sculpture standing in a bright gallery room, shadows cast on a clean concrete wall, artistic gallery style.'
+    ],
+    videos: [
+      'Slow motion close-up of colorful ink droplets expanding and mixing in water, creating beautiful fluid clouds.',
+      'A surreal camera flight through an abstract landscape of geometric gold shapes and floating marble spheres.',
+      'Time-lapse of an artist creating a vibrant abstract painting on a large canvas, energetic brush strokes.',
+      'A beautiful slow-motion splash of liquid gold against a black background, high contrast lighting.',
+      'Slow pan across an abstract digital wave structure glowing with warm orange and violet colors.'
+    ]
   }
 ];

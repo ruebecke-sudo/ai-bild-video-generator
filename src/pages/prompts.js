@@ -136,6 +136,10 @@ export default function PromptsPage() {
                   {activeCategory.id === 'food' && '🍔 Köche, Restaurants, Food-Blogger & Lieferdienste'}
                   {activeCategory.id === 'fitness' && '🏋️ Personal Trainer, Fitnessstudios & Sportmarken'}
                   {activeCategory.id === 'auto' && '🏎️ Autohändler, Kfz-Betriebe, Vlogger & Tuning-Fans'}
+                  {activeCategory.id === 'socialmedia' && '📱 Influencer, Streamer, Vlogger & Content-Creator'}
+                  {activeCategory.id === 'nature' && '🏔️ Landschaftsfotografen, Wanderer & Natur-Blogger'}
+                  {activeCategory.id === 'cyberpunk' && '👾 Game-Designer, Sci-Fi-Autoren & Cyberpunk-Künstler'}
+                  {activeCategory.id === 'artistic' && '🎨 Designer, Galeristen, abstrakte Künstler & Illustratoren'}
                 </p>
               </div>
             </div>
@@ -196,7 +200,7 @@ export default function PromptsPage() {
         </div>
 
         {/* Prompt Liste */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '4rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '2.5rem' }}>
           {(activePromptType === 'image' ? activeCategory.images : activeCategory.videos).map((promptText, idx) => {
             const isLocked = idx >= 3; // Zeige nur die ersten 3 Prompts lesbar an
             return (
@@ -214,16 +218,16 @@ export default function PromptsPage() {
                   overflow: 'hidden'
                 }}
               >
-                <div style={{ flex: 1, filter: isLocked ? 'blur(5px)' : 'none', opacity: isLocked ? 0.3 : 1, transition: 'all 0.3s' }}>
+                <div style={{ flex: 1, filter: isLocked ? 'blur(5px)' : 'none', opacity: isLocked ? 0.35 : 1, transition: 'all 0.3s', userSelect: isLocked ? 'none' : 'auto' }}>
                   <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                    Prompt #{idx + 1}
+                    Prompt #{idx + 1} {isLocked && '🔒'}
                   </span>
                   <p style={{ color: '#fff', fontSize: '1rem', lineHeight: '1.6', marginTop: '4px', fontStyle: 'italic' }}>
                     {promptText}
                   </p>
                 </div>
 
-                {!isLocked ? (
+                {!isLocked && (
                   <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
                     <button
                       onClick={() => handleCopyPrompt(promptText)}
@@ -246,43 +250,35 @@ export default function PromptsPage() {
                       In Generator laden
                     </button>
                   </div>
-                ) : (
-                  <div style={{ 
-                    position: 'absolute', 
-                    top: 0, 
-                    left: 0, 
-                    right: 0, 
-                    bottom: 0, 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center', 
-                    background: 'rgba(10, 15, 30, 0.65)',
-                    padding: '10px'
-                  }}>
-                    <Link href="/pricing#nischen-pricing" style={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      gap: '8px', 
-                      background: 'var(--primary)', 
-                      color: '#fff', 
-                      padding: '10px 20px', 
-                      borderRadius: '30px', 
-                      textDecoration: 'none', 
-                      fontSize: '0.9rem', 
-                      fontWeight: 700,
-                      boxShadow: '0 4px 12px rgba(168, 85, 247, 0.4)',
-                      transition: 'transform 0.2s'
-                    }}
-                    className="hover-scale"
-                    >
-                      <Lock size={14} />
-                      <span>Prompt-Paket freischalten 🔓</span>
-                    </Link>
-                  </div>
                 )}
               </div>
             )
           })}
+        </div>
+
+        {/* Globaler Button zur Freigabe des Prompt-Pakets */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '5rem' }}>
+          <Link href="/pricing#nischen-pricing" style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '10px', 
+            background: 'var(--gradient-gold)', 
+            color: '#fff', 
+            padding: '16px 32px', 
+            borderRadius: '30px', 
+            textDecoration: 'none', 
+            fontSize: '1.1rem', 
+            fontWeight: 800,
+            boxShadow: '0 4px 20px rgba(246, 190, 26, 0.4)',
+            transition: 'transform 0.2s',
+            border: 'none',
+            cursor: 'pointer'
+          }}
+          className="hover-scale"
+          >
+            <Lock size={18} />
+            <span>Komplettes Prompt-Paket freischalten 🔓</span>
+          </Link>
         </div>
       </main>
     </div>
