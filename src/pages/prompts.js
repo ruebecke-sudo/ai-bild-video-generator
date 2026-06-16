@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { supabase } from '../lib/supabase'
 import { PROMPT_CATEGORIES } from '../lib/promptsData'
+import { PROMPT_TRANSLATIONS } from '../lib/translations'
 import { 
   Book, 
   BookOpen,
@@ -232,7 +233,31 @@ export default function PromptsPage() {
                   <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     Prompt #{idx + 1}
                   </span>
-                  <p style={{ color: '#fff', fontSize: '1rem', lineHeight: '1.6', marginTop: '4px', fontStyle: 'italic' }}>
+                  
+                  {/* Deutsche Übersetzung (nicht kopierbar) */}
+                  {PROMPT_TRANSLATIONS[promptText] && (
+                    <div style={{ 
+                      userSelect: 'none', 
+                      WebkitUserSelect: 'none', 
+                      msUserSelect: 'none',
+                      color: 'var(--text-muted)', 
+                      fontSize: '0.95rem', 
+                      lineHeight: '1.5',
+                      marginBottom: '8px', 
+                      marginTop: '4px',
+                      background: 'rgba(255,255,255,0.02)',
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      borderLeft: '3px solid var(--primary)'
+                    }}>
+                      <p style={{ margin: 0, fontWeight: 500 }}>{PROMPT_TRANSLATIONS[promptText]}</p>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--secondary)', display: 'block', marginTop: '4px', fontWeight: 600 }}>
+                        ⚠️ Benutze den englischen Prompt unten für die besten Ergebnisse
+                      </span>
+                    </div>
+                  )}
+
+                  <p style={{ color: '#fff', fontSize: '1rem', lineHeight: '1.6', marginTop: '6px', fontStyle: 'italic' }}>
                     {promptText}
                   </p>
                 </div>
