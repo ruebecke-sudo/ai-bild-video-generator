@@ -253,7 +253,7 @@ export default function Pricing() {
                 </li>
               </ul>
 
-              <button className="btn-gold" style={{ width: '100%', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => alert('Vielen Dank für dein Interesse! Diese Kaufoption wird in Kürze freigeschaltet.')}>
+              <button className="btn-gold" style={{ width: '100%', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: 'Starter Nische', priceId: 'price_1StarterPlaceholder', credits: 200 })}>
                 Paket wählen
               </button>
             </div>
@@ -311,7 +311,7 @@ export default function Pricing() {
                 </li>
               </ul>
 
-              <button className="btn-gold" style={{ width: '100%', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => alert('Vielen Dank für dein Interesse! Diese Kaufoption wird in Kürze freigeschaltet.')}>
+              <button className="btn-gold" style={{ width: '100%', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: 'Business Bundle', priceId: 'price_1ProPlaceholder', credits: 600 })}>
                 Bundle sichern
               </button>
             </div>
@@ -352,7 +352,7 @@ export default function Pricing() {
                 </li>
               </ul>
 
-              <button className="btn-gold" style={{ width: '100%', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => alert('Vielen Dank für dein Interesse! Diese Kaufoption wird in Kürze freigeschaltet.')}>
+              <button className="btn-gold" style={{ width: '100%', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: 'All-Access Pass', priceId: 'price_1ElitePlaceholder', credits: 1500 })}>
                 All-Access Pass kaufen
               </button>
             </div>

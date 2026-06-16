@@ -936,84 +936,181 @@ export default function Home() {
                 </div>
 
                 {/* Beschreibung der aktiven Kategorie & Typ-Filter (Bild vs. Video) */}
-                <div className="glass-panel" style={{ padding: '1.5rem', marginBottom: '2rem', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '15px' }}>
-                  <div>
-                    <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--primary)' }}>
-                      {activeCategory.name} {activeCategory.icon}
-                    </h3>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '4px' }}>
-                      {activeCategory.description}
-                    </p>
+                <div className="glass-panel" style={{ padding: '2rem', marginBottom: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                    <div>
+                      <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        {activeCategory.name} {activeCategory.icon}
+                      </h3>
+                      <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginTop: '6px', lineHeight: '1.5' }}>
+                        {activeCategory.description}
+                      </p>
+                    </div>
+
+                    <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Für wen ist das?</span>
+                      <p style={{ color: '#fff', fontSize: '0.88rem', fontWeight: 600, marginTop: '4px' }}>
+                        {activeCategory.id === 'winzer' && '🍇 Winzer, Weingüter, Weinhändler & Genuss-Blogger'}
+                        {activeCategory.id === 'immo' && '🏠 Immobilienmakler, Bauträger & Interior-Designer'}
+                        {activeCategory.id === 'hochzeit' && '💍 Hochzeitsfotografen, Wedding-Planner & Brautpaare'}
+                        {activeCategory.id === 'strand' && '🏖️ Content-Creator, Reisebüros & Surflabels'}
+                        {activeCategory.id === 'urlaub' && '✈️ Reise-Influencer, Vlogger & Tourismus-Dienstleister'}
+                        {activeCategory.id === 'lostplaces' && '🏚️ Urbexer, Fotografen, Storyteller & Mystik-Fans'}
+                        {activeCategory.id === 'schloesser' && '🏰 Historiker, Event-Veranstalter & Fantasy-Künstler'}
+                      </p>
+                      <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem', marginTop: '2px' }}>
+                        Optimiere deinen Workflow und erstelle virale Social Media Beiträge oder professionelles Marketingmaterial.
+                      </p>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '8px', marginTop: '5px' }}>
+                      <button
+                        onClick={() => setActivePromptType('image')}
+                        className={`tab-btn ${activePromptType === 'image' ? 'active' : ''}`}
+                        style={{ padding: '8px 16px', fontSize: '0.85rem', flex: 1 }}
+                      >
+                        <ImageIcon size={14} />
+                        Bild-Prompts
+                      </button>
+                      <button
+                        onClick={() => setActivePromptType('video')}
+                        className={`tab-btn ${activePromptType === 'video' ? 'active' : ''}`}
+                        style={{ padding: '8px 16px', fontSize: '0.85rem', flex: 1 }}
+                      >
+                        <Video size={14} />
+                        Video-Prompts
+                      </button>
+                    </div>
                   </div>
 
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <button
-                      onClick={() => setActivePromptType('image')}
-                      className={`tab-btn ${activePromptType === 'image' ? 'active' : ''}`}
-                      style={{ padding: '8px 16px', fontSize: '0.85rem' }}
-                    >
-                      <ImageIcon size={14} />
-                      Bild-Prompts
-                    </button>
-                    <button
-                      onClick={() => setActivePromptType('video')}
-                      className={`tab-btn ${activePromptType === 'video' ? 'active' : ''}`}
-                      style={{ padding: '8px 16px', fontSize: '0.85rem' }}
-                    >
-                      <Video size={14} />
-                      Video-Prompts
-                    </button>
-                  </div>
+                  {/* Kategorie Vorschau-Bild */}
+                  {activeCategory.previewImage && (
+                    <div style={{ 
+                      width: '100%', 
+                      height: '200px', 
+                      borderRadius: '12px', 
+                      overflow: 'hidden', 
+                      position: 'relative',
+                      border: '1px solid var(--border-color)',
+                      boxShadow: 'var(--shadow-premium)'
+                    }}>
+                      <img 
+                        src={activeCategory.previewImage} 
+                        alt={`Vorschau für ${activeCategory.name}`}
+                        style={{ 
+                          width: '100%', 
+                          height: '100%', 
+                          objectFit: 'cover',
+                          transition: 'transform 0.5s'
+                        }}
+                        className="hover-zoom"
+                      />
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '8px',
+                        right: '8px',
+                        background: 'rgba(0,0,0,0.6)',
+                        padding: '4px 10px',
+                        borderRadius: '20px',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        color: '#fff',
+                        backdropFilter: 'blur(4px)'
+                      }}>
+                        Beispiel-Generierung 📷
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Prompt Liste */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '450px', overflowY: 'auto', paddingRight: '6px' }}>
-                  {(activePromptType === 'image' ? activeCategory.images : activeCategory.videos).map((promptText, idx) => (
-                    <div 
-                      key={idx} 
-                      className="glass-panel" 
-                      style={{ 
-                        padding: '1.2rem', 
-                        display: 'flex', 
-                        justifyContent: 'space-between', 
-                        alignItems: 'center', 
-                        gap: '20px',
-                        border: '1px solid rgba(255, 255, 255, 0.05)'
-                      }}
-                    >
-                      <div style={{ flex: 1 }}>
-                        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                          Prompt #{idx + 1}
-                        </span>
-                        <p style={{ color: '#fff', fontSize: '0.92rem', lineHeight: '1.5', marginTop: '4px', fontStyle: 'italic' }}>
-                          {promptText}
-                        </p>
-                      </div>
+                  {(activePromptType === 'image' ? activeCategory.images : activeCategory.videos).map((promptText, idx) => {
+                    const isLocked = idx >= 3; // Zeige nur die ersten 3 Prompts lesbar an
+                    return (
+                      <div 
+                        key={idx} 
+                        className="glass-panel" 
+                        style={{ 
+                          padding: '1.2rem', 
+                          display: 'flex', 
+                          justifyContent: 'space-between', 
+                          alignItems: 'center', 
+                          gap: '20px',
+                          border: '1px solid rgba(255, 255, 255, 0.05)',
+                          position: 'relative',
+                          overflow: 'hidden'
+                        }}
+                      >
+                        <div style={{ flex: 1, filter: isLocked ? 'blur(4px)' : 'none', opacity: isLocked ? 0.35 : 1, transition: 'all 0.3s' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                            Prompt #{idx + 1}
+                          </span>
+                          <p style={{ color: '#fff', fontSize: '0.92rem', lineHeight: '1.5', marginTop: '4px', fontStyle: 'italic' }}>
+                            {promptText}
+                          </p>
+                        </div>
 
-                      <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-                        <button
-                          onClick={() => handleCopyPrompt(promptText)}
-                          className="btn-outline"
-                          title="In Zwischenablage kopieren"
-                          style={{ padding: '8px 10px' }}
-                        >
-                          {copiedPromptText === promptText ? (
-                            <Check size={16} style={{ color: '#22c55e' }} />
-                          ) : (
-                            <Copy size={16} />
-                          )}
-                        </button>
-                        <button
-                          onClick={() => handleUsePrompt(promptText, activePromptType)}
-                          className="btn-gold"
-                          style={{ padding: '8px 12px', fontSize: '0.8rem', display: 'flex', gap: '6px', alignItems: 'center' }}
-                        >
-                          <Sparkles size={12} />
-                          In Generator laden
-                        </button>
+                        {!isLocked ? (
+                          <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                            <button
+                              onClick={() => handleCopyPrompt(promptText)}
+                              className="btn-outline"
+                              title="In Zwischenablage kopieren"
+                              style={{ padding: '8px 10px' }}
+                            >
+                              {copiedPromptText === promptText ? (
+                                <Check size={16} style={{ color: '#22c55e' }} />
+                              ) : (
+                                <Copy size={16} />
+                              )}
+                            </button>
+                            <button
+                              onClick={() => handleUsePrompt(promptText, activePromptType)}
+                              className="btn-gold"
+                              style={{ padding: '8px 12px', fontSize: '0.8rem', display: 'flex', gap: '6px', alignItems: 'center' }}
+                            >
+                              <Sparkles size={12} />
+                              In Generator laden
+                            </button>
+                          </div>
+                        ) : (
+                          <div style={{ 
+                            position: 'absolute', 
+                            top: 0, 
+                            left: 0, 
+                            right: 0, 
+                            bottom: 0, 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            background: 'rgba(10, 15, 30, 0.5)',
+                            padding: '10px'
+                          }}>
+                            <Link href="/pricing" style={{ 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              gap: '8px', 
+                              background: 'var(--primary)', 
+                              color: '#fff', 
+                              padding: '8px 16px', 
+                              borderRadius: '30px', 
+                              textDecoration: 'none', 
+                              fontSize: '0.82rem', 
+                              fontWeight: 700,
+                              boxShadow: '0 4px 12px rgba(168, 85, 247, 0.4)',
+                              transition: 'transform 0.2s'
+                            }}
+                            className="hover-scale"
+                            >
+                              <Lock size={12} />
+                              <span>Prompt-Paket freischalten 🔓</span>
+                            </Link>
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </section>
 

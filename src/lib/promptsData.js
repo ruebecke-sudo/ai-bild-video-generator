@@ -4,6 +4,7 @@ export const PROMPT_CATEGORIES = [
     name: 'Winzer & Weinberge',
     icon: '🍇',
     description: 'Edle Tropfen, Weinkeller, sonnige Weinreben und traditionelle Ernte.',
+    previewImage: '/previews/winzer.png',
     images: [
       'A sun-drenched vineyard in Tuscany during autumn harvest, golden hour light glowing through ripe purple grapes, morning dew on leaves, cinematic lighting, photorealistic, 8k resolution.',
       'An elderly winemaker with weathered hands holding a glass of deep red wine against a rustic wooden barrel background, warm ambient light, high detail portrait.',
@@ -54,6 +55,7 @@ export const PROMPT_CATEGORIES = [
     name: 'Immobilienmakler',
     icon: '🏠',
     description: 'Moderne Luxusvillen, gemütliche Innenräume und verkaufsstarke Details.',
+    previewImage: '/previews/makler.png',
     images: [
       'Luxury modern villa with glass walls, glowing pool in the foreground, twilight sky, architectural photography, ultra-premium lifestyle.',
       'Bright and airy Scandinavian-style living room, large windows, minimalist furniture, plants, sunny afternoon light, interior design magazine style.',
@@ -104,6 +106,7 @@ export const PROMPT_CATEGORIES = [
     name: 'Hochzeit',
     icon: '💍',
     description: 'Romantische Paare, Hochzeitsdeko und emotionale Freudentränen.',
+    previewImage: '/previews/wedding.png',
     images: [
       'A romantic bride and groom embracing under a floral arch at sunset, soft golden backlighting, wind blowing veil, emotional fine art photography.',
       'Close-up of wedding rings resting on a delicate white rose petal with tiny dew drops, macro shot, soft pastel bokeh background.',
@@ -154,6 +157,7 @@ export const PROMPT_CATEGORIES = [
     name: 'Strandmotive',
     icon: '🏖️',
     description: 'Feiner Sand, türkisfarbenes Wasser, Wellenrauschen und Palmen.',
+    previewImage: '/previews/strand.png',
     images: [
       'A pristine tropical beach with crystal clear turquoise water, white sand, coconut palm trees leaning over the sea, sunny paradise vibe, 8k.',
       'A dramatic sunset over a stormy ocean, dark purple clouds, glowing orange horizon, waves crashing on black volcanic sand.',
@@ -204,6 +208,7 @@ export const PROMPT_CATEGORIES = [
     name: 'Urlaubsmotive',
     icon: '✈️',
     description: 'Roadtrips, fremde Kulturen und weltberühmte Aussichtspunkte.',
+    previewImage: '/previews/urlaub.png',
     images: [
       'A traveler standing on the edge of a cliff in Norway, looking at a massive fjord below, epic scale, sunny day, adventure travel.',
       'A cozy wooden cabin in the Swiss Alps covered in snow, warm lights glowing inside, smoking chimney, starry winter night.',
@@ -254,6 +259,7 @@ export const PROMPT_CATEGORIES = [
     name: 'Lost Places',
     icon: '🏚️',
     description: 'Verfallene Säle, überwucherte Ruinen und mystischer Verfall.',
+    previewImage: '/previews/lost.png',
     images: [
       'An abandoned grand ballroom with a decaying crystal chandelier hanging from a cracked ceiling, dust motes dancing in sunbeams, eerie beauty.',
       'A rusted steam locomotive overgrown with green ivy and wildflowers inside a collapsed train depot, nature reclaiming technology.',
@@ -304,6 +310,7 @@ export const PROMPT_CATEGORIES = [
     name: 'Schlösser & Burgen',
     icon: '🏰',
     description: 'Thronsäle, historische Innenhöfe und sagenhafte Festungen.',
+    previewImage: '/previews/burg.png',
     images: [
       'A majestic medieval castle standing on a high cliff surrounded by autumn forests, morning mist, dramatic sunbeams, epic fantasy style.',
       'A luxury fairytale palace reflecting in a perfectly calm lake at sunset, pink and gold sky, elegant spires and towers.',
