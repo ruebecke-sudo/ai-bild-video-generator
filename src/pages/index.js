@@ -314,6 +314,46 @@ export default function Home() {
     }
   }
 
+  const handleGuestLogin = async () => {
+    setAuthLoading(true)
+    setAuthMessage('')
+    try {
+      // 1. Versuche einzuloggen
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: 'gast@my-digital-world.de',
+        password: 'gastzugang123',
+      })
+      
+      if (error) {
+        // 2. Falls der Account noch nicht existiert, registriere ihn automatisch
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+          email: 'gast@my-digital-world.de',
+          password: 'gastzugang123',
+        })
+        
+        if (signUpError) throw signUpError
+        
+        // Nach Registrierung einloggen
+        const { data: logInData, error: logInError } = await supabase.auth.signInWithPassword({
+          email: 'gast@my-digital-world.de',
+          password: 'gastzugang123',
+        })
+        
+        if (logInError) throw logInError
+        
+        setUser(logInData.user)
+        loadUserStats(logInData.user.id)
+      } else {
+        setUser(data.user)
+        loadUserStats(data.user.id)
+      }
+    } catch (err) {
+      setAuthMessage(`Gast-Login Fehler: ${err.message}`)
+    } finally {
+      setAuthLoading(false)
+    }
+  }
+
   const handleLogout = async () => {
     await supabase.auth.signOut()
     setUser(null)
@@ -622,6 +662,18 @@ export default function Home() {
                     </>
                   )}
                 </button>
+
+                {authMode === 'login' && (
+                  <button 
+                    type="button" 
+                    onClick={handleGuestLogin} 
+                    disabled={authLoading} 
+                    className="btn-outline" 
+                    style={{ width: '100%', marginTop: '0.8rem', borderColor: 'var(--primary)', color: 'var(--primary)', fontWeight: 'bold' }}
+                  >
+                    Als Gast ausprobieren (Ohne Registrierung) 🚀
+                  </button>
+                )}
               </form>
 
               <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.85rem' }}>

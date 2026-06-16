@@ -22,7 +22,18 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1. Credits prüfen
+    // 1. Gast-Status prüfen
+    let isGuest = false
+    try {
+      const { data: userData, error: userError } = await supabaseAdmin.auth.admin.getUserById(userId)
+      if (!userError && userData?.user?.email === 'gast@my-digital-world.de') {
+        isGuest = true
+      }
+    } catch (authErr) {
+      console.error('Gast-Check Fehler:', authErr)
+    }
+
+    // 2. Credits prüfen
     const { data: profile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('credits')
@@ -34,7 +45,7 @@ export default async function handler(req, res) {
     }
 
     const requiredCredits = type === 'image' ? 1 : 5
-    if (profile.credits < requiredCredits) {
+    if (!isGuest && profile.credits < requiredCredits) {
       return res.status(402).json({ error: 'Nicht genügend Credits.' })
     }
 
@@ -87,11 +98,13 @@ export default async function handler(req, res) {
       throw new Error('Keine Prediction-ID von Replicate erhalten.')
     }
 
-    // 3. Credits abziehen
-    await supabaseAdmin
-      .from('profiles')
-      .update({ credits: profile.credits - requiredCredits })
-      .eq('id', userId)
+    // 3. Credits abziehen (nicht für Gäste)
+    if (!isGuest) {
+      await supabaseAdmin
+        .from('profiles')
+        .update({ credits: profile.credits - requiredCredits })
+        .eq('id', userId)
+    }
 
     // 4. In Generierungs-Datenbank eintragen
     await supabaseAdmin
@@ -108,7 +121,7 @@ export default async function handler(req, res) {
         }
       ])
 
-    return res.status(200).json({ predictionId: prediction.id, creditsLeft: profile.credits - requiredCredits })
+    return res.status(200).json({ predictionId: prediction.id, creditsLeft: isGuest ? profile.credits : profile.credits - requiredCredits })
   } catch (err) {
     console.error('Generierungsfehler:', err)
     return res.status(500).json({ error: err.message || 'Fehler beim Starten der Generierung.' })
