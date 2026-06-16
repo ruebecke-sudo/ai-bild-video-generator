@@ -296,3 +296,23 @@ select.glass-input option {
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite linear;
 }
+
+.prompt-card {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .prompt-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+}
+

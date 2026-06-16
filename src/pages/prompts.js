@@ -217,17 +217,7 @@ export default function PromptsPage() {
             return (
               <div 
                 key={idx} 
-                className="glass-panel" 
-                style={{ 
-                  padding: '1.5rem', 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  alignItems: 'center', 
-                  gap: '20px',
-                  border: '1px solid rgba(255, 255, 255, 0.05)',
-                  position: 'relative',
-                  overflow: 'hidden'
-                }}
+                className="prompt-card glass-panel"
               >
                 <div style={{ flex: 1 }}>
                   <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
