@@ -92,7 +92,7 @@ export default function Manual() {
           </section>
 
           {/* Section 4: Upscaling / Enhance */}
-          <section style={{ marginBottom: '3rem' }}>
+          <section style={{ marginBottom: '2.5rem' }}>
             <h2 style={{ fontSize: '1.4rem', color: '#fff', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <TrendingUp size={20} style={{ color: 'var(--secondary)' }} />
               4. Bilder verbessern (Enhance)
@@ -100,6 +100,23 @@ export default function Manual() {
             <p style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '0.95rem' }}>
               Nachdem du ein Bild generiert hast, kannst du die **"Enhance"**-Schaltfläche nutzen. Ein spezieller KI-Upscaler verdoppelt die Auflösung deines Bildes, korrigiert Verzerrungen in Gesichtern und liefert eine glasklare Qualität für den Druck oder professionellen Einsatz.
             </p>
+          </section>
+
+          {/* Section 5: Nischenprompts */}
+          <section style={{ marginBottom: '3rem' }}>
+            <h2 style={{ fontSize: '1.4rem', color: '#fff', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Sparkles size={20} style={{ color: 'var(--primary)' }} />
+              5. Verwendung von Nischenprompts
+            </h2>
+            <div style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '0.95rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <p>Unser System bietet exklusive, erprobte Prompts für verschiedene Branchen (Nischen):</p>
+              <ul style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <li><strong>Branche auswählen:</strong> Navigiere über das obere Menü auf „Nischenprompts“ und wähle eine Kategorie wie <i>Winzer</i>, <i>Immobilien</i>, <i>Hochzeit</i>, <i>Social Media</i>, <i>Cyberpunk</i> u.v.m.</li>
+                <li><strong>Deutsche Übersetzung lesen:</strong> Jeder Prompt hat eine deutsche Kurzbeschreibung zur Vorschau (diese ist kopiergeschützt und dient nur zur Orientierung).</li>
+                <li><strong>Englischen Prompt nutzen:</strong> Klicke auf <i>In Generator laden</i>, um den optimierten englischen Prompt direkt in das Dashboard zu übertragen, oder kopiere ihn mit dem <i>Kopieren</i>-Button. Für beste KI-Ergebnisse arbeiten die Modelle ausschließlich mit englischen Begriffen.</li>
+                <li><strong>Pakete freischalten:</strong> Die ersten 3 Prompts sind frei nutzbar. Die restlichen Prompts können über den Button am Ende der Liste als Paket auf der Preise-Seite freigeschaltet werden.</li>
+              </ul>
+            </div>
           </section>
 
           {/* Footer Copyright */}
