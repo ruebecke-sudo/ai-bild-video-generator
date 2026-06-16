@@ -396,6 +396,28 @@ export default function Home() {
     }, 4000)
   }
 
+  const pollPrediction = async (id) => {
+    const interval = setInterval(async () => {
+      try {
+        const response = await fetch(`/api/check-status?id=${id}`)
+        const data = await response.json()
+
+        if (data.status === 'succeeded') {
+          clearInterval(interval)
+          setPrediction(data)
+          setIsGenerating(false)
+          loadUserStats(user.id)
+        } else if (data.status === 'failed') {
+          clearInterval(interval)
+          alert('Generierung fehlgeschlagen.')
+          setIsGenerating(false)
+        }
+      } catch (err) {
+        console.error('Polling Fehler:', err)
+      }
+    }, 4000)
+  }
+
   const activeMediaUrl = selectedArchiveItem 
     ? selectedArchiveItem.output_url 
     : (prediction?.status === 'succeeded' ? prediction.output_url : null)
