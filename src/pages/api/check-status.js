@@ -22,7 +22,40 @@ export default async function handler(req, res) {
 
     // Falls fertiggestellt, aktualisiere den Status in unserer Datenbank
     if (prediction.status === 'succeeded') {
-      const outputUrl = Array.isArray(prediction.output) ? prediction.output[0] : prediction.output
+      let outputUrl = Array.isArray(prediction.output) ? prediction.output[0] : prediction.output
+
+      // Versuche, das Medium dauerhaft in Supabase Storage zu sichern
+      try {
+        const fileResponse = await fetch(outputUrl)
+        if (fileResponse.ok) {
+          const arrayBuffer = await fileResponse.arrayBuffer()
+          const buffer = Buffer.from(arrayBuffer)
+          const contentType = fileResponse.headers.get('content-type') || ''
+          
+          // Bestimme Dateiendung basierend auf Content-Type
+          const ext = contentType.includes('video') ? 'mp4' : 'webp'
+          const fileName = `${id}.${ext}`
+
+          const { error: uploadError } = await supabaseAdmin.storage
+            .from('generations')
+            .upload(fileName, buffer, {
+              contentType: contentType || (contentType.includes('video') ? 'video/mp4' : 'image/webp'),
+              upsert: true
+            })
+
+          if (!uploadError) {
+            const { data: { publicUrl } } = supabaseAdmin.storage
+              .from('generations')
+              .getPublicUrl(fileName)
+            outputUrl = publicUrl
+            console.log('Erfolgreich in Supabase Storage gesichert:', publicUrl)
+          } else {
+            console.error('Supabase Storage Upload Fehler:', uploadError)
+          }
+        }
+      } catch (uploadErr) {
+        console.error('Fehler beim Herunterladen/Speichern des Mediums:', uploadErr)
+      }
 
       await supabaseAdmin
         .from('generations')
