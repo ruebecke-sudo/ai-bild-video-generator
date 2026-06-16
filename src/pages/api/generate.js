@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { type, prompt, imageUrl, aspect_ratio, resolution, userId } = req.body
+  const { type, prompt, imageUrl, refImageUrl, promptStrength, aspect_ratio, resolution, userId } = req.body
 
   if (!userId) {
     return res.status(401).json({ error: 'Bitte melde dich an.' })
@@ -38,20 +38,34 @@ export default async function handler(req, res) {
       return res.status(402).json({ error: 'Nicht genügend Credits.' })
     }
 
-    // 2. Replicate Prediction erstellen mit dem korrekten Schema (Modellpfad als eigener Parameter)
+    // 2. Replicate Prediction erstellen
     let prediction;
     
     if (type === 'image') {
-      // FLUX Schnell (schnell und kostengünstig für 1080p Auflösungen)
-      prediction = await replicate.predictions.create({
-        model: "black-forest-labs/flux-schnell",
-        input: {
-          prompt: prompt,
-          aspect_ratio: aspect_ratio || "16:9",
-          output_format: "webp",
-          disable_safety_checker: true
-        }
-      })
+      if (refImageUrl) {
+        // FLUX Dev (Image-to-Image / Img2Img)
+        prediction = await replicate.predictions.create({
+          model: "black-forest-labs/flux-dev",
+          input: {
+            prompt: prompt,
+            image: refImageUrl,
+            prompt_strength: promptStrength !== undefined ? promptStrength : 0.65,
+            output_format: "webp",
+            disable_safety_checker: true
+          }
+        })
+      } else {
+        // FLUX Schnell (Standard Text-to-Image)
+        prediction = await replicate.predictions.create({
+          model: "black-forest-labs/flux-schnell",
+          input: {
+            prompt: prompt,
+            aspect_ratio: aspect_ratio || "16:9",
+            output_format: "webp",
+            disable_safety_checker: true
+          }
+        })
+      }
     } else {
       // Luma Dream Machine für HD Video-Generierung
       const inputOptions = {
@@ -87,7 +101,7 @@ export default async function handler(req, res) {
           user_id: userId,
           type: type,
           prompt: prompt,
-          input_image: imageUrl || null,
+          input_image: imageUrl || refImageUrl || null,
           prediction_id: prediction.id,
           status: 'starting',
           created_at: new Date()

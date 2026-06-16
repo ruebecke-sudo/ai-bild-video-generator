@@ -150,6 +150,11 @@ export default function Home() {
   // Translation State
   const [isTranslating, setIsTranslating] = useState(false)
   const [imageErrors, setImageErrors] = useState({})
+  
+  // States für Bildgenerator Referenzbild (Img2Img)
+  const [refImageFile, setRefImageFile] = useState(null)
+  const [refImageUrl, setRefImageUrl] = useState('')
+  const [imageGenStrength, setImageGenStrength] = useState(0.65)
 
   const handleTranslate = async () => {
     if (!prompt.trim()) {
@@ -328,6 +333,23 @@ export default function Home() {
     }
   }
 
+  const handleRefImageUpload = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setRefImageFile(file)
+      setRefImageUrl(URL.createObjectURL(file))
+    }
+  }
+
+  const fileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result)
+      reader.onerror = (error) => reject(error)
+    })
+  }
+
   const startGeneration = async () => {
     if (!user) {
       alert('Bitte logge dich zuerst ein!')
@@ -347,13 +369,25 @@ export default function Home() {
     const finalPrompt = prompt + (styleObj ? styleObj.promptAdd : '')
 
     try {
+      let finalImageUrl = null
+      if (activeTab === 'image-to-video' && imageFile) {
+        finalImageUrl = await fileToBase64(imageFile)
+      }
+
+      let finalRefImageUrl = null
+      if (activeTab === 'image-gen' && refImageFile) {
+        finalRefImageUrl = await fileToBase64(refImageFile)
+      }
+
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: activeTab === 'image-gen' ? 'image' : (activeTab === 'image-to-video' ? 'image-to-video' : 'video'),
           prompt: finalPrompt,
-          imageUrl: activeTab === 'image-to-video' ? imageUrl : null,
+          imageUrl: finalImageUrl,
+          refImageUrl: finalRefImageUrl,
+          promptStrength: imageGenStrength,
           aspect_ratio: aspectRatio,
           resolution: resolution,
           userId: user.id
@@ -674,6 +708,77 @@ export default function Home() {
                           </div>
                         )}
                       </div>
+                    </div>
+                  )}
+
+                  {activeTab === 'image-gen' && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-muted)' }}>Referenzbild hochladen (Optional)</span>
+                      <div style={{ 
+                        border: '2px dashed var(--border-color)', 
+                        borderRadius: '10px', 
+                        padding: '1.5rem', 
+                        textAlign: 'center',
+                        cursor: 'pointer',
+                        background: refImageUrl ? 'none' : 'rgba(30, 41, 66, 0.2)',
+                        position: 'relative'
+                      }}>
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          onChange={handleRefImageUpload} 
+                          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0, cursor: 'pointer' }}
+                        />
+                        {refImageUrl ? (
+                          <div style={{ position: 'relative', display: 'inline-block' }}>
+                            <img src={refImageUrl} alt="Reference source" style={{ maxHeight: '120px', borderRadius: '8px', margin: '0 auto' }} />
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setRefImageFile(null);
+                                setRefImageUrl('');
+                              }}
+                              className="btn-outline"
+                              style={{ position: 'absolute', top: '-10px', right: '-10px', padding: '4px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.9)', border: 'none', color: '#fff', height: '24px', width: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            >
+                              <X size={14} />
+                            </button>
+                          </div>
+                        ) : (
+                          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', color: 'var(--text-dim)' }}>
+                            <Upload size={20} />
+                            <span style={{ fontSize: '0.8rem' }}>Bild als Stil- oder Layout-Vorlage (Dev-Modell)</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {refImageUrl && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '6px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)' }}>
+                            <span>Veränderungs-Stärke:</span>
+                            <span style={{ color: 'var(--primary)' }}>{Math.round(imageGenStrength * 100)}%</span>
+                          </div>
+                          <input 
+                            type="range" 
+                            min="0.1" 
+                            max="0.9" 
+                            step="0.05"
+                            value={imageGenStrength}
+                            onChange={(e) => setImageGenStrength(parseFloat(e.target.value))}
+                            style={{ 
+                              width: '100%', 
+                              accentColor: 'var(--primary)', 
+                              background: 'var(--bg-input)', 
+                              height: '6px', 
+                              borderRadius: '3px',
+                              cursor: 'pointer'
+                            }}
+                          />
+                          <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', lineHeight: '1.3' }}>
+                            Niedrig = Sehr nah am Originalbild. Hoch = Stark verändert gemäß Prompt.
+                          </span>
+                        </div>
+                      )}
                     </div>
                   )}
 
