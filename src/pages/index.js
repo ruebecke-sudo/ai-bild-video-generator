@@ -240,7 +240,19 @@ export default function Home() {
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
     
-    if (gens) setHistory(gens)
+    if (gens) {
+      // Filtere Einträge heraus, die dauerhaft im Status 'starting'/'processing' hängen (älter als 5 Minuten)
+      const now = new Date()
+      const filteredGens = gens.filter(gen => {
+        if (gen.status === 'starting' || gen.status === 'processing') {
+          const createdAt = new Date(gen.created_at)
+          const diffMinutes = (now - createdAt) / 1000 / 60
+          return diffMinutes < 5 // Behalte sie nur, wenn sie jünger als 5 Minuten sind
+        }
+        return true // Erfolgreiche oder definitiv fehlgeschlagene immer anzeigen
+      })
+      setHistory(filteredGens)
+    }
   }
 
   const handleSignUp = async (e) => {
