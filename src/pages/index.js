@@ -1026,7 +1026,7 @@ export default function Home() {
               </section>
 
               {/* Sektion 2: Unendliche Videoerstellungsfälle */}
-              <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', alignItems: 'center' }}>
+              <section className="features-grid">
                 <div>
                   <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '1.2rem' }}>
                     Ein Tool für unendliche KI-Videoerstellungsfälle

@@ -211,6 +211,20 @@ select.glass-input option {
   }
 }
 
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
 
 /* Tabs styles */
 .tab-headers {
