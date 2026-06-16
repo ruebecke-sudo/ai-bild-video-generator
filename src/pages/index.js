@@ -885,9 +885,42 @@ export default function Home() {
                       </div>
                     </div>
                   ) : (
-                    <div style={{ color: 'var(--text-dim)', textAlign: 'center' }}>
-                      <Tv size={48} style={{ marginBottom: '1rem', opacity: 0.5 }} />
-                      <p>Melde dich an und starte eine Generierung, um das Ergebnis zu sehen.</p>
+                    <div style={{ width: '100%', maxWidth: '700px', position: 'relative', boxSizing: 'border-box', textAlign: 'center' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                        <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <Sparkles size={18} style={{ color: 'var(--primary)' }} />
+                          Beispiel-Generierung:
+                        </h3>
+                      </div>
+                      
+                      <div style={{ position: 'relative', width: '100%', borderRadius: '12px', overflow: 'hidden' }}>
+                        <video 
+                          src="https://replicate.delivery/yhqm/3gg83ypy2srmw0cysgzr7r7zOwTbeQZzS9Z7QoD6m3Fwxe1C/out-0.mp4" 
+                          autoPlay 
+                          loop 
+                          muted 
+                          playsInline
+                          style={{ width: '100%', maxWidth: '100%', borderRadius: '12px', display: 'block' }}
+                        />
+                        <div style={{
+                          position: 'absolute',
+                          bottom: '15px',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          background: 'rgba(10, 15, 29, 0.85)',
+                          padding: '10px 20px',
+                          borderRadius: '30px',
+                          fontSize: '0.85rem',
+                          fontWeight: 700,
+                          color: '#fff',
+                          backdropFilter: 'blur(8px)',
+                          border: '1px solid var(--border-color)',
+                          whiteSpace: 'nowrap',
+                          boxShadow: 'var(--shadow-neon)'
+                        }}>
+                          Melde dich an und erschaffe dein eigenes Video! ✨
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
