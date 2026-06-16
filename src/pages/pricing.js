@@ -216,144 +216,168 @@ export default function Pricing() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
-            {/* Paket 1: Starter Nische */}
-            <div className="glass-panel" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
+            {/* Paket 1: 1 Nische - 20 Prompts */}
+            <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1rem' }}>
                 <div style={{ background: 'rgba(59, 130, 246, 0.15)', padding: '10px', borderRadius: '10px' }}>
-                  <Sparkles size={24} style={{ color: '#3b82f6' }} />
+                  <Sparkles size={20} style={{ color: '#3b82f6' }} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.4rem', fontWeight: 700 }}>Starter Nische</h3>
-                  <p style={{ color: 'var(--text-dim)', fontSize: '0.85rem' }}>Perfekt für den Einstieg in eine Branche</p>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>1 Nische - 20</h3>
+                  <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>Einstieg für eine Kategorie</p>
                 </div>
               </div>
 
-              <div style={{ margin: '1.5rem 0', display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                <span style={{ fontSize: '2.5rem', fontWeight: 800 }}>€9.99</span>
+              <div style={{ margin: '1rem 0', display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                <span style={{ fontSize: '2.2rem', fontWeight: 800 }}>€7.99</span>
                 <span style={{ color: 'var(--text-muted)' }}>einmalig</span>
               </div>
 
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '2.5rem', flex: 1 }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                  <Check size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '2rem', flex: 1 }}>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
                   <span>1 Nischen-Kategorie nach Wahl</span>
                 </li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                  <Check size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
-                  <span>20 Premium Bild- & Video-Prompts</span>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
+                  <span>20 exklusive Prompts</span>
                 </li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                  <Check size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
-                  <span>PDF-Leitfaden zur optimalen Nutzung</span>
-                </li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                  <Check size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
-                  <span>Lebenslanger Zugriff auf Updates</span>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
+                  <span>Bild- & Video-Prompts</span>
                 </li>
               </ul>
 
-              <button className="btn-gold" style={{ width: '100%', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: 'Starter Nische', priceId: 'price_1StarterPlaceholder', credits: 200 })}>
-                Paket wählen
+              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '1 Nische - 20 Prompts', priceId: 'price_1Nische20Placeholder', credits: 200 })}>
+                Wählen
               </button>
             </div>
 
-            {/* Paket 2: Business Bundle */}
-            <div className="glass-panel" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', border: '2px solid #3b82f6', boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)', position: 'relative' }}>
+            {/* Paket 2: 1 Nische - 40 Prompts */}
+            <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1rem' }}>
+                <div style={{ background: 'rgba(59, 130, 246, 0.15)', padding: '10px', borderRadius: '10px' }}>
+                  <Zap size={20} style={{ color: '#3b82f6' }} />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>1 Nische - 40</h3>
+                  <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>Mehr Auswahl für deine Nische</p>
+                </div>
+              </div>
+
+              <div style={{ margin: '1rem 0', display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                <span style={{ fontSize: '2.2rem', fontWeight: 800 }}>€13.99</span>
+                <span style={{ color: 'var(--text-muted)' }}>einmalig</span>
+              </div>
+
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '2rem', flex: 1 }}>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
+                  <span>1 Nischen-Kategorie nach Wahl</span>
+                </li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
+                  <span>40 exklusive Prompts</span>
+                </li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
+                  <span>Lebenslange Updates für diese Nische</span>
+                </li>
+              </ul>
+
+              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '1 Nische - 40 Prompts', priceId: 'price_1Nische40Placeholder', credits: 400 })}>
+                Wählen
+              </button>
+            </div>
+
+            {/* Paket 3: 3 Nischen - 60 Prompts */}
+            <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '2px solid #3b82f6', boxShadow: '0 0 15px rgba(59, 130, 246, 0.25)', position: 'relative' }}>
               <span style={{ 
                 position: 'absolute', 
-                top: '-15px', 
+                top: '-12px', 
                 left: '50%', 
                 transform: 'translateX(-50%)', 
                 background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)', 
                 color: '#fff', 
-                padding: '4px 16px', 
+                padding: '2px 12px', 
                 borderRadius: '50px', 
-                fontSize: '0.8rem', 
+                fontSize: '0.75rem', 
                 fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '1px'
+                textTransform: 'uppercase'
               }}>
-                Bestseller - Nische
+                Top Deal
               </span>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1rem' }}>
                 <div style={{ background: 'rgba(59, 130, 246, 0.25)', padding: '10px', borderRadius: '10px' }}>
-                  <Zap size={24} style={{ color: '#3b82f6' }} />
+                  <Video size={20} style={{ color: '#3b82f6' }} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.4rem', fontWeight: 700 }}>Business Bundle</h3>
-                  <p style={{ color: 'var(--text-dim)', fontSize: '0.85rem' }}>Die Top-Kategorien für Dienstleister</p>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>3 Nischen - 60</h3>
+                  <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>Für vielseitige Dienstleister</p>
                 </div>
               </div>
 
-              <div style={{ margin: '1.5rem 0', display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                <span style={{ fontSize: '2.5rem', fontWeight: 800 }}>€24.99</span>
+              <div style={{ margin: '1rem 0', display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                <span style={{ fontSize: '2.2rem', fontWeight: 800 }}>€19.99</span>
                 <span style={{ color: 'var(--text-muted)' }}>einmalig</span>
               </div>
 
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '2.5rem', flex: 1 }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                  <Check size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
-                  <span>3 Nischen-Kategorien nach Wahl</span>
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '2rem', flex: 1 }}>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
+                  <span>3 Nischen-Kategorien frei wählbar</span>
                 </li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                  <Check size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
-                  <span>60 Premium Bild- & Video-Prompts</span>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
+                  <span>60 exklusive Prompts</span>
                 </li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                  <Check size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
-                  <span>Kommerzielle Nutzungslizenz inklusive</span>
-                </li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                  <Check size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
-                  <span>Bonus: Video-Editing Tricks PDF</span>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
+                  <span>Kommerzielle Nutzung inklusive</span>
                 </li>
               </ul>
 
-              <button className="btn-gold" style={{ width: '100%', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: 'Business Bundle', priceId: 'price_1ProPlaceholder', credits: 600 })}>
+              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '3 Nischen - 60 Prompts', priceId: 'price_3Nischen60Placeholder', credits: 600 })}>
                 Bundle sichern
               </button>
             </div>
 
-            {/* Paket 3: All-Access Pass */}
-            <div className="glass-panel" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
+            {/* Paket 4: All Access - 140 Prompts */}
+            <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1rem' }}>
                 <div style={{ background: 'rgba(59, 130, 246, 0.15)', padding: '10px', borderRadius: '10px' }}>
-                  <Video size={24} style={{ color: '#3b82f6' }} />
+                  <Sparkles size={20} style={{ color: '#3b82f6' }} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.4rem', fontWeight: 700 }}>All-Access Pass</h3>
-                  <p style={{ color: 'var(--text-dim)', fontSize: '0.85rem' }}>Das Rundum-Sorglos-Paket für Agenturen</p>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>All Access</h3>
+                  <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>Voller Zugriff auf alle Ideen</p>
                 </div>
               </div>
 
-              <div style={{ margin: '1.5rem 0', display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                <span style={{ fontSize: '2.5rem', fontWeight: 800 }}>€49.99</span>
+              <div style={{ margin: '1rem 0', display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                <span style={{ fontSize: '2.2rem', fontWeight: 800 }}>€39.99</span>
                 <span style={{ color: 'var(--text-muted)' }}>einmalig</span>
               </div>
 
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '2.5rem', flex: 1 }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                  <Check size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
-                  <span>Alle aktuellen & zukünftigen Kategorien</span>
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '2rem', flex: 1 }}>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
+                  <span>6 Kategorien vollständig freigeschaltet</span>
                 </li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                  <Check size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
-                  <span>140+ Premium Bild- & Video-Prompts</span>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
+                  <span>140 exklusive Prompts</span>
                 </li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                  <Check size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
-                  <span>Lebenslanger VIP-Support & Copy-on-Click</span>
-                </li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                  <Check size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
-                  <span>Kommerzielle Agenturlizenz</span>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
+                  <span>Alle aktuellen & zukünftigen Nischen</span>
                 </li>
               </ul>
 
-              <button className="btn-gold" style={{ width: '100%', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: 'All-Access Pass', priceId: 'price_1ElitePlaceholder', credits: 1500 })}>
-                All-Access Pass kaufen
+              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: 'All Access - 140 Prompts', priceId: 'price_AllAccess140Placeholder', credits: 1400 })}>
+                All-Access sichern
               </button>
             </div>
           </div>
