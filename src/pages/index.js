@@ -934,14 +934,7 @@ export default function Home() {
                   </h2>
                   
                   {history.length > 0 ? (
-                    <div style={{ 
-                      display: 'flex', 
-                      gap: '12px', 
-                      overflowX: 'auto', 
-                      paddingBottom: '10px',
-                      scrollbarWidth: 'thin',
-                      msOverflowStyle: 'none'
-                    }}>
+                    <div className="archive-grid">
                       {history.map((gen) => (
                         <div 
                           key={gen.id} 
@@ -949,23 +942,16 @@ export default function Home() {
                             setPrediction(null) // Vorherige Generierungs-Vorschau zurücksetzen!
                             setSelectedArchiveItem(gen)
                           }}
-                          className="glass-panel animate-hover" 
+                          className="archive-card glass-panel animate-hover" 
                           style={{ 
-                            overflow: 'hidden', 
-                            borderRadius: '10px', 
-                            cursor: 'pointer',
-                            width: '140px',
-                            minWidth: '140px',
-                            flexShrink: 0,
-                            border: selectedArchiveItem?.id === gen.id ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                            transition: 'all 0.2s',
+                            border: selectedArchiveItem?.id === gen.id ? '2px solid var(--primary)' : '1px solid var(--border-color)'
                           }}
                         >
                           {gen.status === 'succeeded' ? (
                             imageErrors[gen.id] ? (
-                              <div style={{ height: '90px', background: 'rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>
-                                {gen.type === 'image' ? <ImageIcon size={20} /> : <Video size={20} />}
-                                <span style={{ fontSize: '0.65rem', marginTop: '4px' }}>
+                              <div className="archive-card-media" style={{ background: 'rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>
+                                {gen.type === 'image' ? <ImageIcon size={24} /> : <Video size={24} />}
+                                <span style={{ fontSize: '0.75rem', marginTop: '4px' }}>
                                   {gen.type === 'image' ? 'Bild abgelaufen' : 'Video abgelaufen'}
                                 </span>
                               </div>
@@ -973,23 +959,23 @@ export default function Home() {
                               <img 
                                 src={gen.output_url} 
                                 alt="Vorschau" 
-                                style={{ width: '100%', height: '90px', objectFit: 'cover' }} 
+                                className="archive-card-media" 
                                 onError={() => setImageErrors(prev => ({ ...prev, [gen.id]: true }))}
                               />
                             ) : (
-                              <div style={{ position: 'relative', height: '90px' }}>
+                              <div style={{ position: 'relative', height: '100%' }}>
                                 <video 
                                   src={gen.output_url} 
-                                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                                  className="archive-card-media" 
                                   onError={() => setImageErrors(prev => ({ ...prev, [gen.id]: true }))}
                                 />
-                                <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'rgba(0,0,0,0.5)', borderRadius: '50%', padding: '4px' }}>
-                                  <Play size={12} style={{ color: '#fff' }} />
+                                <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'rgba(0,0,0,0.5)', borderRadius: '50%', padding: '6px' }}>
+                                  <Play size={16} style={{ color: '#fff' }} />
                                 </div>
                               </div>
                             )
                           ) : (
-                            <div className="shimmer-bg" style={{ height: '90px' }}></div>
+                            <div className="shimmer-bg archive-card-media"></div>
                           )}
                           <div style={{ padding: '6px' }}>
                             <p style={{ fontSize: '0.75rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: 'var(--text-muted)' }}>

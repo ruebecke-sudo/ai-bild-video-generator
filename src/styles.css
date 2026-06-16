@@ -316,3 +316,36 @@ select.glass-input option {
   }
 }
 
+.archive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  padding-bottom: 10px;
+}
+
+.archive-card {
+  overflow: hidden;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.archive-card-media {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .archive-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .archive-card-media {
+    height: 200px;
+  }
+}
+
+
