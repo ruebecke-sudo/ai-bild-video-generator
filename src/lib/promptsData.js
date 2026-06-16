@@ -355,5 +355,68 @@ export const PROMPT_CATEGORIES = [
       'Camera tracking a person in a historical royal gown walking through a palace hallway, dress sweeping the floor.',
       'A slow dolly shot entering the armory hall, rows of knight armors standing in silent formation.'
     ]
+  },
+  {
+    id: 'food',
+    name: 'Food & Gastronomie',
+    icon: '🍔',
+    description: 'Köstliche Nahaufnahmen, dampfende Gerichte, edle Restaurant-Atmosphäre.',
+    previewImage: '/previews/food.png',
+    images: [
+      'A modern restaurant dining table with a beautifully plated gourmet dish, fresh herbs, microgreens, drizzled sauce, warm atmospheric lighting, professional food photography.',
+      'Close-up of a juicy hamburger with melting cheddar cheese, fresh lettuce, and tomatoes, steam rising, macro shot, commercial product look.',
+      'Artistic slow drippings of golden maple syrup onto a stack of fluffy pancakes with fresh blueberries on top, bright morning light.',
+      'A dark moody shot of a chocolate soufflé being cut open with a spoon, warm liquid chocolate oozing out, powdered sugar dusting.',
+      'Sushi rolls neatly arranged on a black slate platter, chopsticks holding one roll, green wasabi and ginger in the background, elegant Japanese restaurant vibe.'
+    ],
+    videos: [
+      'Slow motion of a chef slicing fresh vegetables on a wooden cutting board, steam rising in the background, sharp knife motion.',
+      'Panning shot of a premium wood-fired pizza being pulled out of a brick oven, bubbling cheese and smoking crust.',
+      'Extreme close-up of coffee dripping into a glass cup in slow motion, rich crema forming, warm café atmosphere.',
+      'Sparkling white wine being poured into a tall glass next to a fresh seafood plate on an outdoor table.',
+      'A pastry chef dusting powdered sugar onto a freshly baked chocolate cake in slow motion, sugar particles floating in the light.'
+    ]
+  },
+  {
+    id: 'fitness',
+    name: 'Fitness & Sport',
+    icon: '🏋️',
+    description: 'Dynamisches Training, Athleten im Fokus, energiegeladene Gym-Szenen.',
+    previewImage: '/previews/fitness.png',
+    images: [
+      'An athletic person tying shoelaces in a modern gym, soft dramatic volumetric lighting, focus on sports shoes, energetic mood, photorealistic.',
+      'A fitness athlete in mid-air performing a box jump, dynamic motion freeze, sweat drops in the air, high contrast gym lighting.',
+      'Close-up of chalked hands gripping a heavy barbell, preparing for a lift, raw power and focus, gritty industrial gym style.',
+      'A runner sprinting along a misty river path at dawn, silhouette against the rising sun, orange lens flare, active life concept.',
+      'A peaceful yoga session in a bright sunlit studio, plants in the background, soft warm colors, calm serene atmosphere.'
+    ],
+    videos: [
+      'Slow motion shot of an athlete lifting a heavy barbell, determination on face, sweat dripping, cinematic gym lighting.',
+      'Drone tracking shot running next to a female sprinter on an outdoor track, fast dynamic movement.',
+      'Time-lapse of people working out in a modern CrossFit gym, high energy, fast-paced action.',
+      'A boxer hitting a heavy bag in slow motion, dust and sweat particles flying from the impact, dark moody ring setting.',
+      'Close-up of a person taking a refreshing drink of water from a shaker bottle after a workout, water droplets on skin.'
+    ]
+  },
+  {
+    id: 'auto',
+    name: 'Automotive & Autos',
+    icon: '🏎️',
+    description: 'Elegante Sportwagen, dynamische Roadtrips, glänzende Details.',
+    previewImage: '/previews/auto.png',
+    images: [
+      'A sleek modern electric sports car driving on a scenic mountain highway at sunset, motion blur, gorgeous reflections, automotive photography.',
+      'Close-up of a luxurious car headlight glowing at night in the rain, water droplets on the polished paint, glowing cyan neon lighting.',
+      'A vintage red convertible parked on a coastal cliff path overlooking the ocean at sunset, nostalgic road trip aesthetic.',
+      'Sleek modern car interior view at dusk, glowing digital dashboard, leather steering wheel, ambient LED lighting lines.',
+      'A powerful off-road SUV kicking up dust while driving through a desert valley, high speed action freeze frame.'
+    ],
+    videos: [
+      'Cinematic tracking video following a luxury sports car accelerating through a city tunnel at night, neon lights reflecting on the body.',
+      'Drone shot sweeping over a car driving along a winding coastal road during sunrise, ocean waves below.',
+      'Close-up slow motion pan of water droplets sliding off a freshly waxed sports car during a wash.',
+      'Time-lapse of car lights creating neon trails on a busy highway at night, urban dynamic energy.',
+      'A close-up of a driver pushing the start/stop button of a luxury car, engine roaring to life (visual vibration).'
+    ]
   }
 ];

@@ -199,6 +199,20 @@ export default function Home() {
       setEmail(rememberedEmail)
     }
 
+    // Nischenprompt aus Session laden (falls von prompts.js weitergeleitet)
+    const sessionPrompt = sessionStorage.getItem('selected_prompt_text')
+    const sessionPromptType = sessionStorage.getItem('selected_prompt_type')
+    if (sessionPrompt) {
+      setPrompt(sessionPrompt)
+      if (sessionPromptType === 'image') {
+        setActiveTab('image-gen')
+      } else {
+        setActiveTab('text-to-video')
+      }
+      sessionStorage.removeItem('selected_prompt_text')
+      sessionStorage.removeItem('selected_prompt_type')
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null)
       if (session?.user) {
@@ -405,7 +419,16 @@ export default function Home() {
         if (data.status === 'succeeded') {
           clearInterval(interval)
           setSelectedArchiveItem(null) // Archiv-Auswahl zurücksetzen!
-          setPrediction(data) // Setzt das neue Bild als aktive prediction
+          
+          // Wichtig: Replicate liefert 'output' zurück (als Array oder String). 
+          // Wir weisen es activeMediaUrl-kompatibel als 'output_url' zu.
+          const outputUrl = Array.isArray(data.output) ? data.output[0] : data.output
+          const formattedData = {
+            ...data,
+            output_url: outputUrl
+          }
+          
+          setPrediction(formattedData) // Setzt das neue Bild als aktive prediction
           setIsGenerating(false)
           loadUserStats(user.id) // Lädt die Historie neu
         } else if (data.status === 'failed') {
@@ -633,23 +656,43 @@ export default function Home() {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-muted)' }}>Beschreibung (Prompt)</span>
                       
-                      <button 
-                        onClick={handleTranslate}
-                        disabled={isTranslating}
-                        className="btn-outline"
-                        style={{ 
-                          padding: '4px 10px', 
-                          fontSize: '0.75rem', 
-                          display: 'flex', 
-                          alignItems: 'center', 
-                          gap: '6px', 
-                          borderColor: 'var(--primary)', 
-                          color: 'var(--primary)' 
-                        }}
-                      >
-                        <Sparkles size={12} />
-                        {isTranslating ? 'Übersetze...' : 'Übersetzen & Optimieren 🇩🇪 ➔ 🇺🇸'}
-                      </button>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <Link 
+                          href="/prompts"
+                          className="btn-outline"
+                          style={{ 
+                            padding: '4px 10px', 
+                            fontSize: '0.75rem', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            gap: '4px',
+                            borderColor: 'var(--text-muted)',
+                            color: 'var(--text-muted)',
+                            textDecoration: 'none'
+                          }}
+                        >
+                          <Book size={12} />
+                          Nischenprompts
+                        </Link>
+
+                        <button 
+                          onClick={handleTranslate}
+                          disabled={isTranslating}
+                          className="btn-outline"
+                          style={{ 
+                            padding: '4px 10px', 
+                            fontSize: '0.75rem', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            gap: '6px', 
+                            borderColor: 'var(--primary)', 
+                            color: 'var(--primary)' 
+                          }}
+                        >
+                          <Sparkles size={12} />
+                          {isTranslating ? 'Übersetze...' : 'Übersetzen 🇩🇪 ➔ 🇺🇸'}
+                        </button>
+                      </div>
                     </div>
 
                     <textarea 
@@ -833,7 +876,14 @@ export default function Home() {
                   </h2>
                   
                   {history.length > 0 ? (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '12px' }}>
+                    <div style={{ 
+                      display: 'flex', 
+                      gap: '12px', 
+                      overflowX: 'auto', 
+                      paddingBottom: '10px',
+                      scrollbarWidth: 'thin',
+                      msOverflowStyle: 'none'
+                    }}>
                       {history.map((gen) => (
                         <div 
                           key={gen.id} 
@@ -841,13 +891,14 @@ export default function Home() {
                             setPrediction(null) // Vorherige Generierungs-Vorschau zurücksetzen!
                             setSelectedArchiveItem(gen)
                           }}
-                          className="glass-panel" 
+                          className="glass-panel animate-hover" 
                           style={{ 
                             overflow: 'hidden', 
                             borderRadius: '10px', 
                             cursor: 'pointer',
+                            flex: '0 0 140px',
                             border: selectedArchiveItem?.id === gen.id ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                            transition: 'transform 0.2s',
+                            transition: 'all 0.2s',
                           }}
                         >
                           {gen.status === 'succeeded' ? (
@@ -983,220 +1034,6 @@ export default function Home() {
                       </div>
                     </div>
                   ))}
-                </div>
-              </section>
-
-              {/* NEU: Premium Prompt-Bibliothek */}
-              <section className="glass-panel" style={{ padding: '3rem' }}>
-                <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                  <h2 style={{ fontSize: '2.2rem', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', background: 'linear-gradient(135deg, #fff 0%, var(--primary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                    <Book size={28} style={{ color: 'var(--primary)' }} />
-                    Premium Nischen-Prompts
-                  </h2>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '700px', margin: '10px auto 0 auto', lineHeight: '1.6' }}>
-                    Kopiere exklusive Prompts für Winzer, Immobilienmakler, Hochzeiten und mehr direkt in deine Zwischenablage oder lade sie mit einem Klick in den Generator.
-                  </p>
-                </div>
-
-                {/* Kategorien-Auswahl */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px', marginBottom: '2rem' }}>
-                  {PROMPT_CATEGORIES.map((cat) => (
-                    <button
-                      key={cat.id}
-                      onClick={() => setSelectedPromptCategory(cat.id)}
-                      className={`glass-panel`}
-                      style={{
-                        padding: '12px 8px',
-                        textAlign: 'center',
-                        cursor: 'pointer',
-                        border: selectedPromptCategory === cat.id ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: selectedPromptCategory === cat.id ? 'rgba(168, 85, 247, 0.15)' : 'rgba(30, 41, 66, 0.2)',
-                        transition: 'all 0.2s',
-                        borderRadius: '10px'
-                      }}
-                    >
-                      <span style={{ fontSize: '1.8rem', display: 'block', marginBottom: '6px' }}>{cat.icon}</span>
-                      <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#fff' }}>{cat.name}</span>
-                    </button>
-                  ))}
-                </div>
-
-                {/* Beschreibung der aktiven Kategorie & Typ-Filter (Bild vs. Video) */}
-                <div className="glass-panel" style={{ padding: '2rem', marginBottom: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', alignItems: 'center' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                    <div>
-                      <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        {activeCategory.name} {activeCategory.icon}
-                      </h3>
-                      <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginTop: '6px', lineHeight: '1.5' }}>
-                        {activeCategory.description}
-                      </p>
-                    </div>
-
-                    <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
-                      <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Für wen ist das?</span>
-                      <p style={{ color: '#fff', fontSize: '0.88rem', fontWeight: 600, marginTop: '4px' }}>
-                        {activeCategory.id === 'winzer' && '🍇 Winzer, Weingüter, Weinhändler & Genuss-Blogger'}
-                        {activeCategory.id === 'immo' && '🏠 Immobilienmakler, Bauträger & Interior-Designer'}
-                        {activeCategory.id === 'hochzeit' && '💍 Hochzeitsfotografen, Wedding-Planner & Brautpaare'}
-                        {activeCategory.id === 'strand' && '🏖️ Content-Creator, Reisebüros & Surflabels'}
-                        {activeCategory.id === 'urlaub' && '✈️ Reise-Influencer, Vlogger & Tourismus-Dienstleister'}
-                        {activeCategory.id === 'lostplaces' && '🏚️ Urbexer, Fotografen, Storyteller & Mystik-Fans'}
-                        {activeCategory.id === 'schloesser' && '🏰 Historiker, Event-Veranstalter & Fantasy-Künstler'}
-                      </p>
-                      <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem', marginTop: '2px' }}>
-                        Optimiere deinen Workflow und erstelle virale Social Media Beiträge oder professionelles Marketingmaterial.
-                      </p>
-                    </div>
-
-                    <div style={{ display: 'flex', gap: '8px', marginTop: '5px' }}>
-                      <button
-                        onClick={() => setActivePromptType('image')}
-                        className={`tab-btn ${activePromptType === 'image' ? 'active' : ''}`}
-                        style={{ padding: '8px 16px', fontSize: '0.85rem', flex: 1 }}
-                      >
-                        <ImageIcon size={14} />
-                        Bild-Prompts
-                      </button>
-                      <button
-                        onClick={() => setActivePromptType('video')}
-                        className={`tab-btn ${activePromptType === 'video' ? 'active' : ''}`}
-                        style={{ padding: '8px 16px', fontSize: '0.85rem', flex: 1 }}
-                      >
-                        <Video size={14} />
-                        Video-Prompts
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Kategorie Vorschau-Bild */}
-                  {activeCategory.previewImage && (
-                    <div style={{ 
-                      width: '100%', 
-                      height: '200px', 
-                      borderRadius: '12px', 
-                      overflow: 'hidden', 
-                      position: 'relative',
-                      border: '1px solid var(--border-color)',
-                      boxShadow: 'var(--shadow-premium)'
-                    }}>
-                      <img 
-                        src={activeCategory.previewImage} 
-                        alt={`Vorschau für ${activeCategory.name}`}
-                        style={{ 
-                          width: '100%', 
-                          height: '100%', 
-                          objectFit: 'cover',
-                          transition: 'transform 0.5s'
-                        }}
-                        className="hover-zoom"
-                      />
-                      <div style={{
-                        position: 'absolute',
-                        bottom: '8px',
-                        right: '8px',
-                        background: 'rgba(0,0,0,0.6)',
-                        padding: '4px 10px',
-                        borderRadius: '20px',
-                        fontSize: '0.75rem',
-                        fontWeight: 600,
-                        color: '#fff',
-                        backdropFilter: 'blur(4px)'
-                      }}>
-                        Beispiel-Generierung 📷
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Prompt Liste */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '450px', overflowY: 'auto', paddingRight: '6px' }}>
-                  {(activePromptType === 'image' ? activeCategory.images : activeCategory.videos).map((promptText, idx) => {
-                    const isLocked = idx >= 3; // Zeige nur die ersten 3 Prompts lesbar an
-                    return (
-                      <div 
-                        key={idx} 
-                        className="glass-panel" 
-                        style={{ 
-                          padding: '1.2rem', 
-                          display: 'flex', 
-                          justifyContent: 'space-between', 
-                          alignItems: 'center', 
-                          gap: '20px',
-                          border: '1px solid rgba(255, 255, 255, 0.05)',
-                          position: 'relative',
-                          overflow: 'hidden'
-                        }}
-                      >
-                        <div style={{ flex: 1, filter: isLocked ? 'blur(4px)' : 'none', opacity: isLocked ? 0.35 : 1, transition: 'all 0.3s' }}>
-                          <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                            Prompt #{idx + 1}
-                          </span>
-                          <p style={{ color: '#fff', fontSize: '0.92rem', lineHeight: '1.5', marginTop: '4px', fontStyle: 'italic' }}>
-                            {promptText}
-                          </p>
-                        </div>
-
-                        {!isLocked ? (
-                          <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-                            <button
-                              onClick={() => handleCopyPrompt(promptText)}
-                              className="btn-outline"
-                              title="In Zwischenablage kopieren"
-                              style={{ padding: '8px 10px' }}
-                            >
-                              {copiedPromptText === promptText ? (
-                                <Check size={16} style={{ color: '#22c55e' }} />
-                              ) : (
-                                <Copy size={16} />
-                              )}
-                            </button>
-                            <button
-                              onClick={() => handleUsePrompt(promptText, activePromptType)}
-                              className="btn-gold"
-                              style={{ padding: '8px 12px', fontSize: '0.8rem', display: 'flex', gap: '6px', alignItems: 'center' }}
-                            >
-                              <Sparkles size={12} />
-                              In Generator laden
-                            </button>
-                          </div>
-                        ) : (
-                          <div style={{ 
-                            position: 'absolute', 
-                            top: 0, 
-                            left: 0, 
-                            right: 0, 
-                            bottom: 0, 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            justifyContent: 'center', 
-                            background: 'rgba(10, 15, 30, 0.5)',
-                            padding: '10px'
-                          }}>
-                            <Link href="/pricing" style={{ 
-                              display: 'flex', 
-                              alignItems: 'center', 
-                              gap: '8px', 
-                              background: 'var(--primary)', 
-                              color: '#fff', 
-                              padding: '8px 16px', 
-                              borderRadius: '30px', 
-                              textDecoration: 'none', 
-                              fontSize: '0.82rem', 
-                              fontWeight: 700,
-                              boxShadow: '0 4px 12px rgba(168, 85, 247, 0.4)',
-                              transition: 'transform 0.2s'
-                            }}
-                            className="hover-scale"
-                            >
-                              <Lock size={12} />
-                              <span>Prompt-Paket freischalten 🔓</span>
-                            </Link>
-                          </div>
-                        )}
-                      </div>
-                    )
-                  })}
                 </div>
               </section>
 

@@ -206,7 +206,7 @@ export default function Pricing() {
         </div>
 
         {/* NEU: Sektion für Nischen-Prompt-Pakete */}
-        <div style={{ marginTop: '6rem', marginBottom: '3rem' }}>
+        <div id="nischen-pricing" style={{ marginTop: '6rem', marginBottom: '3rem' }}>
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
             <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem', background: 'linear-gradient(135deg, #fff 0%, #3b82f6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               Exklusive Nischen-Prompt-Pakete
