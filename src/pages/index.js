@@ -78,6 +78,14 @@ const FAQS = [
   {
     question: "Wie lade ich die generierten Videos und Bilder herunter?",
     answer: "Unter jedem fertigen Ergebnis und im Medienarchiv befindet sich eine 'Download'-Schaltfläche. Zudem können Bilder über den 'Vollbildmodus' vergrößert und direkt per Rechtsklick gesichert werden."
+  },
+  {
+    question: "Was sind die Nischenprompts und wie verwende ich sie?",
+    answer: "Unsere Nischenprompts sind vorformulierte, professionell erprobte Texteingaben für spezielle Branchen (z. B. Immobilien, Gastronomie, Hochzeiten). Du kannst sie über das Menü auswählen, anpassen und mit einem Klick auf 'In Generator laden' direkt in das Erstellungs-Dashboard einfügen."
+  },
+  {
+    question: "Warum sind die Prompts auf Englisch, obwohl deutsche Übersetzungen dabei stehen?",
+    answer: "Die modernsten KI-Bild- und Videomodelle verstehen Englisch weitaus präziser als andere Sprachen. Um dir die Auswahl zu erleichtern, haben wir deutsche Kurzübersetzungen hinzugefügt (diese sind kopiergeschützt). Kopiere oder lade jedoch stets den englischen Prompt in den Generator für bestmögliche, fotorealistische Resultate."
   }
 ]
 
