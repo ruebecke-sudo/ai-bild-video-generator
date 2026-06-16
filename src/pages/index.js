@@ -459,6 +459,10 @@ export default function Home() {
         </Link>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <Link href="/prompts" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Book size={16} /> Nischenprompts
+          </Link>
+          
           <Link href="/manual" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
             <BookOpen size={16} /> Anleitung
           </Link>
@@ -792,8 +796,8 @@ export default function Home() {
               </div>
 
               {/* Rechte Spalte */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', position: 'relative' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
+                <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', position: 'relative', width: '100%', maxWidth: '100%', overflow: 'hidden', boxSizing: 'border-box' }}>
                   {isGenerating || isEnhancing ? (
                     <div style={{ textAlign: 'center' }}>
                       <div className="shimmer-bg" style={{ width: '320px', height: '180px', borderRadius: '12px', marginBottom: '1.5rem' }}></div>
@@ -902,7 +906,7 @@ export default function Home() {
                           }}
                         >
                           {gen.status === 'succeeded' ? (
-                            gen.type === 'image' ? (
+                            (gen.type === 'image' || (gen.output_url && /\.(webp|png|jpe?g)(?:\?.*)?$/i.test(gen.output_url))) ? (
                               <img src={gen.output_url} alt={gen.prompt} style={{ width: '100%', height: '90px', objectFit: 'cover' }} />
                             ) : (
                               <div style={{ position: 'relative', height: '90px' }}>

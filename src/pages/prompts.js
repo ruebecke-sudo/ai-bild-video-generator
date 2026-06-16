@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase'
 import { PROMPT_CATEGORIES } from '../lib/promptsData'
 import { 
   Book, 
+  BookOpen,
   Image as ImageIcon, 
   Video, 
   Copy, 
@@ -66,7 +67,17 @@ export default function PromptsPage() {
         <Link href="/" className="brand">
           <span>AI Bild & Videogenerator</span>
         </Link>
-        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          <Link href="/prompts" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Book size={16} /> Nischenprompts
+          </Link>
+          <Link href="/manual" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <BookOpen size={16} /> Anleitung
+          </Link>
+          <Link href="/pricing" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
+            Preise
+          </Link>
+          
           {user && (
             <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px' }}>
               <Coins size={16} style={{ color: 'var(--primary)' }} />
@@ -201,8 +212,7 @@ export default function PromptsPage() {
 
         {/* Prompt Liste */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '2.5rem' }}>
-          {(activePromptType === 'image' ? activeCategory.images : activeCategory.videos).map((promptText, idx) => {
-            const isLocked = idx >= 3; // Zeige nur die ersten 3 Prompts lesbar an
+          {(activePromptType === 'image' ? activeCategory.images : activeCategory.videos).slice(0, 3).map((promptText, idx) => {
             return (
               <div 
                 key={idx} 
@@ -218,39 +228,37 @@ export default function PromptsPage() {
                   overflow: 'hidden'
                 }}
               >
-                <div style={{ flex: 1, filter: isLocked ? 'blur(5px)' : 'none', opacity: isLocked ? 0.35 : 1, transition: 'all 0.3s', userSelect: isLocked ? 'none' : 'auto' }}>
+                <div style={{ flex: 1 }}>
                   <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                    Prompt #{idx + 1} {isLocked && '🔒'}
+                    Prompt #{idx + 1}
                   </span>
                   <p style={{ color: '#fff', fontSize: '1rem', lineHeight: '1.6', marginTop: '4px', fontStyle: 'italic' }}>
                     {promptText}
                   </p>
                 </div>
 
-                {!isLocked && (
-                  <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-                    <button
-                      onClick={() => handleCopyPrompt(promptText)}
-                      className="btn-outline"
-                      title="In Zwischenablage kopieren"
-                      style={{ padding: '10px 12px' }}
-                    >
-                      {copiedPromptText === promptText ? (
-                        <Check size={18} style={{ color: '#22c55e' }} />
-                      ) : (
-                        <Copy size={18} />
-                      )}
-                    </button>
-                    <button
-                      onClick={() => handleUsePrompt(promptText, activePromptType)}
-                      className="btn-gold"
-                      style={{ padding: '10px 16px', fontSize: '0.85rem', display: 'flex', gap: '6px', alignItems: 'center' }}
-                    >
-                      <Sparkles size={14} />
-                      In Generator laden
-                    </button>
-                  </div>
-                )}
+                <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                  <button
+                    onClick={() => handleCopyPrompt(promptText)}
+                    className="btn-outline"
+                    title="In Zwischenablage kopieren"
+                    style={{ padding: '10px 12px' }}
+                  >
+                    {copiedPromptText === promptText ? (
+                      <Check size={18} style={{ color: '#22c55e' }} />
+                    ) : (
+                      <Copy size={18} />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => handleUsePrompt(promptText, activePromptType)}
+                    className="btn-gold"
+                    style={{ padding: '10px 16px', fontSize: '0.85rem', display: 'flex', gap: '6px', alignItems: 'center' }}
+                  >
+                    <Sparkles size={14} />
+                    In Generator laden
+                  </button>
+                </div>
               </div>
             )
           })}
@@ -277,7 +285,7 @@ export default function PromptsPage() {
           className="hover-scale"
           >
             <Lock size={18} />
-            <span>Komplettes Prompt-Paket freischalten 🔓</span>
+            <span>Bis zu 140 exklusive Prompts freigeben. 🔓</span>
           </Link>
         </div>
       </main>
