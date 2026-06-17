@@ -389,7 +389,7 @@ export default function Pricing() {
               Nischen-Kategorien
             </h3>
             <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '2.5rem', fontSize: '0.95rem' }}>
-              Klicke auf eine Nische, um das Paket für diese Kategorie einzeln freizuschalten (1 Nische für 7,99 €) oder sichere dir oben das All-Access-Bundle.
+              Bis zu 60 exklusive Prompts für Bild & Videogenerierung je Kategorie. Klicke auf eine Nische, um das Paket einzeln freizuschalten (1 Nische für 7,99 €) oder sichere dir oben das All-Access-Bundle.
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
               {[
