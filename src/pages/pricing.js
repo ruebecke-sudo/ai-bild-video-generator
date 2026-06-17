@@ -381,6 +381,7 @@ export default function Pricing() {
                 All-Access sichern
               </button>
             </div>
+          </div>
 
           {/* NEU: Übersicht aller 14 Prompt-Kategorien */}
           <div className="glass-panel" style={{ marginTop: '4rem', padding: '3rem', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
