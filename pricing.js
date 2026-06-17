@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { supabase } from '../lib/supabase'
-import { Check, Zap, Sparkles, CreditCard, Video } from 'lucide-react'
+import { Check, Zap, Sparkles, CreditCard, Video, Globe, Book, BookOpen, ArrowLeft } from 'lucide-react'
 
 // WICHTIG: Ersetze diese Platzhalter durch deine echten Stripe Price IDs aus deinem Dashboard (Test-Modus oder Live-Modus)
 // Erstelle dafür in Stripe ein Produkt (z.B. "Starter Paket", 3.99€ Einmalzahlung) und kopiere die Preis-ID (beginnt mit price_...)
@@ -112,9 +112,18 @@ export default function Pricing() {
         <Link href="/" className="brand">
           <span>AI Bild & Videogenerator</span>
         </Link>
-        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-          <Link href="/" className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.9rem' }}>
-            Zurück zum Dashboard
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          <Link href="/gallery" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Globe size={16} /> Community-Galerie
+          </Link>
+          <Link href="/prompts" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Book size={16} /> Nischenprompts
+          </Link>
+          <Link href="/manual" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <BookOpen size={16} /> Anleitung
+          </Link>
+          <Link href="/" className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.9rem', display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <ArrowLeft size={16} /> Zum Generator
           </Link>
         </div>
       </header>
