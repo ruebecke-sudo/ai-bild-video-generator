@@ -45,25 +45,38 @@ export default async function handler(req, res) {
         // Lade das aktuelle Profil des Nutzers
         const { data: profile } = await supabaseAdmin
           .from('profiles')
-          .select('credits')
+          .select('credits, unlocked_categories')
           .eq('id', userId)
           .single()
 
         const currentCredits = profile ? profile.credits : 0
+        let unlocked = profile && Array.isArray(profile.unlocked_categories) ? profile.unlocked_categories : []
 
-        // Aktualisiere oder erstelle das Profil mit den neuen Credits
+        const categoryId = session.metadata.categoryId
+
+        if (categoryId) {
+          if (categoryId === 'all') {
+            // Alle 14 Kategorien freischalten
+            unlocked = ['winzer', 'immo', 'hochzeit', 'strand', 'urlaub', 'lostplaces', 'schloesser', 'food', 'fitness', 'auto', 'socialmedia', 'nature', 'cyberpunk', 'artistic']
+          } else if (!unlocked.includes(categoryId)) {
+            unlocked.push(categoryId)
+          }
+        }
+
+        // Aktualisiere oder erstelle das Profil mit den neuen Credits & freigeschalteten Kategorien
         const { error } = await supabaseAdmin
           .from('profiles')
           .upsert({
             id: userId,
             credits: currentCredits + creditsToAdd,
+            unlocked_categories: unlocked,
             updated_at: new Date()
           })
 
         if (error) throw error;
-        console.log(`Erfolgreich ${creditsToAdd} Credits zu Benutzer ${userId} hinzugefügt.`)
+        console.log(`Erfolgreich ${creditsToAdd} Credits und Nische '${categoryId || 'keine'}' zu Benutzer ${userId} hinzugefügt.`)
       } catch (dbError) {
-        console.error('Fehler beim Aktualisieren der Credits in Supabase:', dbError)
+        console.error('Fehler beim Aktualisieren der Credits & Nischen in Supabase:', dbError)
         return res.status(500).json({ error: 'Datenbank-Aktualisierung fehlgeschlagen.' })
       }
     }
