@@ -13,21 +13,41 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Bitte melde dich an, um Credits zu kaufen.' })
   }
 
+  let resolvedPriceId = priceId
+
+  if (!priceId) {
+    return res.status(400).json({ error: 'Keine Price-ID oder Product-ID übergeben.' })
+  }
+
   try {
+    // Falls eine Product-ID übergeben wurde (startet mit prod_), holen wir uns den aktiven Preis dafür
+    if (priceId.startsWith('prod_')) {
+      const prices = await stripe.prices.list({
+        product: priceId,
+        active: true,
+        limit: 1,
+      })
+      if (prices.data.length === 0) {
+        throw new Error(`Kein aktiver Preis für Produkt ${priceId} gefunden.`)
+      }
+      resolvedPriceId = prices.data[0].id
+    }
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card', 'paypal', 'sofort', 'giropay'],
       line_items: [
         {
-          price: priceId, // Stripe Price ID (z.B. starter, pro etc.)
+          price: resolvedPriceId,
           quantity: 1,
         },
       ],
       mode: 'payment',
       metadata: {
         userId: userId,
-        credits: credits.toString()
+        credits: credits.toString(),
+        categoryId: req.body.categoryId || ''
       },
-      success_url: `${req.headers.origin}/?payment=success`,
+      success_url: `${req.headers.origin}/?payment=success&category=${req.body.categoryId || ''}`,
       cancel_url: `${req.headers.origin}/pricing?payment=cancelled`,
     })
 
