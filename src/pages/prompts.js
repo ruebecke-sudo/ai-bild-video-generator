@@ -27,21 +27,47 @@ export default function PromptsPage() {
   const [activePromptType, setActivePromptType] = useState('image') // 'image', 'video'
   const [copiedPromptText, setCopiedPromptText] = useState('')
 
+  const [unlockedCategories, setUnlockedCategories] = useState([])
+  const [loadingProfile, setLoadingProfile] = useState(true)
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null)
       if (session?.user) {
-        supabase.auth.getUser().then(() => {
-          // Credits laden
-          supabase.from('profiles').select('credits').eq('id', session.user.id).single().then(({ data }) => {
-            if (data) setCredits(data.credits)
-          })
-        })
+        // Falls Gastzugang, schalten wir direkt alles frei
+        if (session.user.email === 'gast@my-digital-world.de') {
+          setUnlockedCategories(['winzer', 'immo', 'hochzeit', 'strand', 'urlaub', 'lostplaces', 'schloesser', 'food', 'fitness', 'auto', 'socialmedia', 'nature', 'cyberpunk', 'artistic'])
+          setCredits(9999)
+          setLoadingProfile(false)
+          return
+        }
+
+        // Profil inklusive Credits und freigeschalteten Kategorien abfragen
+        supabase
+          .from('profiles')
+          .select('credits, unlocked_categories')
+          .eq('id', session.user.id)
+          .single()
+          .then(({ data }) => {
+            if (data) {
+              setCredits(data.credits)
+              if (Array.isArray(data.unlocked_categories)) {
+                setUnlockedCategories(data.unlocked_categories)
+              }
+            }
+            setLoadingProfile(false)
+          }).catch(() => setLoadingProfile(false))
+      } else {
+        setLoadingProfile(false)
       }
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
+      if (!session?.user) {
+        setUnlockedCategories([])
+        setCredits(0)
+      }
     })
 
     return () => subscription.unsubscribe()
@@ -212,17 +238,32 @@ export default function PromptsPage() {
         </div>
 
         {/* Prompt Liste */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '2.5rem' }}>
-          {(activePromptType === 'image' ? activeCategory.images : activeCategory.videos).slice(0, 3).map((promptText, idx) => {
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '2.5rem' }}>
+          {(activePromptType === 'image' ? activeCategory.images : activeCategory.videos).map((promptText, idx) => {
+            const isLocked = !unlockedCategories.includes(activeCategory.id) && idx >= 3;
+
             return (
               <div 
                 key={idx} 
                 className="prompt-card glass-panel"
+                style={{ 
+                  position: 'relative',
+                  overflow: 'hidden',
+                  border: isLocked ? '1px dashed rgba(168, 85, 247, 0.3)' : '1px solid var(--border-color)',
+                  background: isLocked ? 'rgba(30, 41, 66, 0.1)' : 'rgba(30, 41, 66, 0.25)'
+                }}
               >
-                <div style={{ flex: 1 }}>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                    Prompt #{idx + 1}
-                  </span>
+                <div style={{ flex: 1, filter: isLocked ? 'blur(4px)' : 'none', pointerEvents: isLocked ? 'none' : 'auto', transition: 'filter 0.3s' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      Prompt #{idx + 1}
+                    </span>
+                    {isLocked && (
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700 }}>
+                        <Lock size={12} /> GESPERRT
+                      </span>
+                    )}
+                  </div>
                   
                   {/* Deutsche Übersetzung (nicht kopierbar) */}
                   {PROMPT_TRANSLATIONS[promptText] && (
@@ -252,56 +293,109 @@ export default function PromptsPage() {
                   </p>
                 </div>
 
-                <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-                  <button
-                    onClick={() => handleCopyPrompt(promptText)}
-                    className="btn-outline"
-                    title="In Zwischenablage kopieren"
-                    style={{ padding: '10px 12px' }}
-                  >
-                    {copiedPromptText === promptText ? (
-                      <Check size={18} style={{ color: '#22c55e' }} />
-                    ) : (
-                      <Copy size={18} />
-                    )}
-                  </button>
-                  <button
-                    onClick={() => handleUsePrompt(promptText, activePromptType)}
-                    className="btn-gold"
-                    style={{ padding: '10px 16px', fontSize: '0.85rem', display: 'flex', gap: '6px', alignItems: 'center' }}
-                  >
-                    <Sparkles size={14} />
-                    In Generator laden
-                  </button>
-                </div>
+                {/* Buttons bzw. Lock-Overlay */}
+                {isLocked ? (
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'rgba(15, 23, 42, 0.4)',
+                    backdropFilter: 'blur(2px)'
+                  }}>
+                    <button 
+                      onClick={() => {
+                        window.location.href = `/pricing#nischen-pricing`;
+                      }}
+                      className="btn-gold"
+                      style={{ 
+                        padding: '10px 20px', 
+                        fontSize: '0.85rem', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '8px',
+                        boxShadow: 'var(--shadow-neon)',
+                        background: 'var(--gradient-neon)'
+                      }}
+                    >
+                      <Lock size={14} />
+                      Nische freischalten
+                    </button>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                    <button
+                      onClick={() => handleCopyPrompt(promptText)}
+                      className="btn-outline"
+                      title="In Zwischenablage kopieren"
+                      style={{ padding: '10px 12px' }}
+                    >
+                      {copiedPromptText === promptText ? (
+                        <Check size={18} style={{ color: '#22c55e' }} />
+                      ) : (
+                        <Copy size={18} />
+                      )}
+                    </button>
+                    <button
+                      onClick={() => handleUsePrompt(promptText, activePromptType)}
+                      className="btn-gold"
+                      style={{ padding: '10px 16px', fontSize: '0.85rem', display: 'flex', gap: '6px', alignItems: 'center' }}
+                    >
+                      <Sparkles size={14} />
+                      In Generator laden
+                    </button>
+                  </div>
+                )}
               </div>
             )
           })}
         </div>
 
-        {/* Globaler Button zur Freigabe des Prompt-Pakets */}
+        {/* Globaler Status-Button unten */}
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '5rem' }}>
-          <Link href="/pricing#nischen-pricing" style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '10px', 
-            background: 'var(--gradient-gold)', 
-            color: '#fff', 
-            padding: '16px 32px', 
-            borderRadius: '30px', 
-            textDecoration: 'none', 
-            fontSize: '1.1rem', 
-            fontWeight: 800,
-            boxShadow: '0 4px 20px rgba(246, 190, 26, 0.4)',
-            transition: 'transform 0.2s',
-            border: 'none',
-            cursor: 'pointer'
-          }}
-          className="hover-scale"
-          >
-            <Lock size={18} />
-            <span>Bis zu 140 exklusive Prompts freigeben. 🔓</span>
-          </Link>
+          {unlockedCategories.includes(activeCategory.id) ? (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              background: 'rgba(34, 197, 94, 0.15)',
+              color: '#22c55e',
+              padding: '14px 28px',
+              borderRadius: '30px',
+              fontSize: '1rem',
+              fontWeight: 700,
+              border: '1px solid rgba(34, 197, 94, 0.4)'
+            }}>
+              <Check size={18} />
+              <span>Diese Kategorie ist erfolgreich freigeschaltet! 🎉</span>
+            </div>
+          ) : (
+            <Link href="/pricing#nischen-pricing" style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '10px', 
+              background: 'var(--gradient-gold)', 
+              color: '#fff', 
+              padding: '16px 32px', 
+              borderRadius: '30px', 
+              textDecoration: 'none', 
+              fontSize: '1.1rem', 
+              fontWeight: 800,
+              boxShadow: '0 4px 20px rgba(246, 190, 26, 0.4)',
+              transition: 'transform 0.2s',
+              border: 'none',
+              cursor: 'pointer'
+            }}
+            className="hover-scale"
+            >
+              <Lock size={18} />
+              <span>Gesamtes Paket oder diese Nische freischalten 🔓</span>
+            </Link>
+          )}
         </div>
       </main>
     </div>

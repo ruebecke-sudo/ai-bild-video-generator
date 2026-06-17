@@ -3,13 +3,14 @@ import Link from 'next/link'
 import { supabase } from '../lib/supabase'
 import { Check, Zap, Sparkles, CreditCard, Video } from 'lucide-react'
 
-// WICHTIG: Ersetze diese Platzhalter durch deine echten Stripe Price IDs aus deinem Dashboard (Test-Modus)
+// WICHTIG: Ersetze diese Platzhalter durch deine echten Stripe Price IDs aus deinem Dashboard (Test-Modus oder Live-Modus)
+// Erstelle dafür in Stripe ein Produkt (z.B. "Starter Paket", 3.99€ Einmalzahlung) und kopiere die Preis-ID (beginnt mit price_...)
 const PLANS = [
   {
     name: 'Starter',
     price: '3.99',
     credits: 100,
-    priceId: 'price_1StarterPlaceholder', // Ersetzen mit z.B. price_1Qx...
+    priceId: 'prod_Uih8x4OpHVszWh', // 3,99 €
     description: 'Der perfekte Einstieg zum Testen.',
     features: [
       '100 Credits (~20 Videos oder 100 Bilder)',
@@ -24,7 +25,7 @@ const PLANS = [
     name: 'Pro (Empfohlen)',
     price: '8.99',
     credits: 350,
-    priceId: 'price_1ProPlaceholder', // Ersetzen mit z.B. price_1Qx...
+    priceId: 'prod_UihAz4aPM1AZJ6', // 8,99 €
     description: 'Für Content-Creator und professionelle Ansprüche.',
     features: [
       '350 Credits (~70 Videos oder 350 Bilder)',
@@ -40,7 +41,7 @@ const PLANS = [
     name: 'Elite',
     price: '20.99',
     credits: 1000,
-    priceId: 'price_1ElitePlaceholder', // Ersetzen mit z.B. price_1Qx...
+    priceId: 'prod_UihBUKHr6GOhtp', // 20,99 €
     description: 'Das ultimative Paket für Power-User.',
     features: [
       '1000 Credits (~200 Videos oder 1000 Bilder)',
@@ -249,11 +250,11 @@ export default function Pricing() {
                 </li>
               </ul>
 
-              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '1 Nische - 20 Prompts', priceId: 'price_1Nische20Placeholder', credits: 200 })}>
+              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '1 Nische - 20 Prompts', priceId: 'prod_UihEMBqexHpgIQ', credits: 200 })}>
                 Wählen
               </button>
             </div>
-
+ 
             {/* Paket 2: 1 Nische - 40 Prompts */}
             <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1rem' }}>
@@ -265,12 +266,12 @@ export default function Pricing() {
                   <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>Mehr Auswahl für deine Nische</p>
                 </div>
               </div>
-
+ 
               <div style={{ margin: '1rem 0', display: 'flex', alignItems: 'baseline', gap: '4px' }}>
                 <span style={{ fontSize: '2.2rem', fontWeight: 800 }}>€13.99</span>
                 <span style={{ color: 'var(--text-muted)' }}>einmalig</span>
               </div>
-
+ 
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '2rem', flex: 1 }}>
                 <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                   <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
@@ -285,12 +286,12 @@ export default function Pricing() {
                   <span>Lebenslange Updates für diese Nische</span>
                 </li>
               </ul>
-
-              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '1 Nische - 40 Prompts', priceId: 'price_1Nische40Placeholder', credits: 400 })}>
+ 
+              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '1 Nische - 40 Prompts', priceId: 'prod_UihFhuJMf7nsQg', credits: 400 })}>
                 Wählen
               </button>
             </div>
-
+ 
             {/* Paket 3: 3 Nischen - 60 Prompts */}
             <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '2px solid #3b82f6', boxShadow: '0 0 15px rgba(59, 130, 246, 0.25)', position: 'relative' }}>
               <span style={{ 
@@ -308,7 +309,7 @@ export default function Pricing() {
               }}>
                 Top Deal
               </span>
-
+ 
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1rem' }}>
                 <div style={{ background: 'rgba(59, 130, 246, 0.25)', padding: '10px', borderRadius: '10px' }}>
                   <Video size={20} style={{ color: '#3b82f6' }} />
@@ -318,12 +319,12 @@ export default function Pricing() {
                   <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>Für vielseitige Dienstleister</p>
                 </div>
               </div>
-
+ 
               <div style={{ margin: '1rem 0', display: 'flex', alignItems: 'baseline', gap: '4px' }}>
                 <span style={{ fontSize: '2.2rem', fontWeight: 800 }}>€19.99</span>
                 <span style={{ color: 'var(--text-muted)' }}>einmalig</span>
               </div>
-
+ 
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '2rem', flex: 1 }}>
                 <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                   <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
@@ -338,13 +339,13 @@ export default function Pricing() {
                   <span>Kommerzielle Nutzung inklusive</span>
                 </li>
               </ul>
-
-              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '3 Nischen - 60 Prompts', priceId: 'price_3Nischen60Placeholder', credits: 600 })}>
+ 
+              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '3 Nischen - 60 Prompts', priceId: 'prod_UihIJxfZVR0Yax', credits: 600 })}>
                 Bundle sichern
               </button>
             </div>
-
-            {/* Paket 4: All Access - 140 Prompts */}
+ 
+            {/* Paket 4: All Access - 840 Prompts */}
             <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1rem' }}>
                 <div style={{ background: 'rgba(59, 130, 246, 0.15)', padding: '10px', borderRadius: '10px' }}>
@@ -364,11 +365,11 @@ export default function Pricing() {
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '2rem', flex: 1 }}>
                 <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                   <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
-                  <span>6 Kategorien vollständig freigeschaltet</span>
+                  <span>Alle 14 Kategorien vollständig freigeschaltet</span>
                 </li>
                 <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                   <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
-                  <span>140 exklusive Prompts</span>
+                  <span>840 exklusive Prompts (420 Bilder / 420 Videos)</span>
                 </li>
                 <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                   <Check size={14} style={{ color: '#3b82f6', flexShrink: 0 }} />
@@ -376,9 +377,52 @@ export default function Pricing() {
                 </li>
               </ul>
 
-              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: 'All Access - 140 Prompts', priceId: 'price_AllAccess140Placeholder', credits: 1400 })}>
+              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: 'All Access - 840 Prompts', priceId: 'prod_UihKEAStIdM6RJ', credits: 1400 })}>
                 All-Access sichern
               </button>
+            </div>
+
+          {/* NEU: Übersicht aller 14 Prompt-Kategorien */}
+          <div className="glass-panel" style={{ marginTop: '4rem', padding: '3rem', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
+            <h3 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '1.5rem', textAlign: 'center', background: 'linear-gradient(135deg, #fff 0%, var(--primary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              Enthaltene Nischen-Kategorien im All-Access Paket
+            </h3>
+            <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '2.5rem', fontSize: '0.95rem' }}>
+              Jede Kategorie enthält genau 30 professionell ausformulierte Bild-Prompts und 30 Video-Prompts (insgesamt 60 Prompts pro Nische).
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
+              {[
+                { name: 'Winzer & Weinberge', icon: '🍇' },
+                { name: 'Immobilienmakler', icon: '🏠' },
+                { name: 'Hochzeit', icon: '💍' },
+                { name: 'Strandmotive', icon: '🏖️' },
+                { name: 'Urlaubsmotive', icon: '✈️' },
+                { name: 'Lost Places', icon: '🏚️' },
+                { name: 'Schlösser & Burgen', icon: '🏰' },
+                { name: 'Food & Gastronomie', icon: '🍔' },
+                { name: 'Fitness & Sport', icon: '🏋️' },
+                { name: 'Automotive & Autos', icon: '🏎️' },
+                { name: 'Social Media', icon: '📱' },
+                { name: 'Natur & Landschaften', icon: '🏔️' },
+                { name: 'Cyberpunk & Sci-Fi', icon: '👾' },
+                { name: 'Kunst & Abstrakt', icon: '🎨' }
+              ].map((item, index) => (
+                <div 
+                  key={index} 
+                  style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '12px', 
+                    background: 'rgba(255, 255, 255, 0.02)', 
+                    padding: '12px 18px', 
+                    borderRadius: '10px', 
+                    border: '1px solid var(--border-color)' 
+                  }}
+                >
+                  <span style={{ fontSize: '1.5rem' }}>{item.icon}</span>
+                  <span style={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>{item.name}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
