@@ -24,7 +24,8 @@ import {
   ArrowRight,
   RefreshCw,
   Lock,
-  Zap
+  Zap,
+  LogOut
 } from 'lucide-react'
 
 const PRODUCT_PROMPTS = [
@@ -584,13 +585,51 @@ export default function EcommerceLanding() {
         <Link href="/" className="brand">
           <span>AI Bild & Videogenerator</span>
         </Link>
-        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <Link href="/ecommerce" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center', borderBottom: '2px solid var(--secondary)', paddingBottom: '2px' }}>
+            <ShoppingBag size={16} /> E-Commerce
+          </Link>
+
+          <Link href="/gallery" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Globe size={16} /> Community-Galerie
+          </Link>
+
+          <Link href="/prompts" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Book size={16} /> Nischenprompts
+          </Link>
+          
+          <Link href="/manual" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <BookOpen size={16} /> Anleitung
+          </Link>
+          
+          <Link href="/pricing" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
+            Preise
+          </Link>
           {user ? (
-            <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px' }}>
-              <Coins size={16} style={{ color: 'var(--primary)' }} />
-              <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{credits} Credits</span>
-            </div>
-          ) : null}
+            <>
+              {user.email === 'gast@my-digital-world.de' ? (
+                <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px', borderColor: 'var(--secondary)' }}>
+                  <Sparkles size={16} style={{ color: 'var(--secondary)' }} />
+                  <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--secondary)' }}>Demo-Modus</span>
+                </div>
+              ) : (
+                <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px' }}>
+                  <Coins size={16} style={{ color: 'var(--primary)' }} />
+                  <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{credits} Credits</span>
+                </div>
+              )}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{user.email}</span>
+                <button onClick={handleLogout} className="btn-outline" style={{ padding: '6px 12px', fontSize: '0.85rem' }}>
+                  <LogOut size={14} />
+                  Abmelden
+                </button>
+              </div>
+            </>
+          ) : (
+            <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Nicht angemeldet</span>
+          )}
         </div>
       </header>
 
