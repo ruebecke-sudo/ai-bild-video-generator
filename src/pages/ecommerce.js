@@ -617,6 +617,8 @@ export default function EcommerceLanding() {
               </form>
               <button onClick={handleGuestLogin} className="btn-outline" style={{ marginTop: '1rem' }}>Gast-Modus starten</button>
             </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
               {/* Grid für Upload (links) und Output (rechts) */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem' }}>
                 
