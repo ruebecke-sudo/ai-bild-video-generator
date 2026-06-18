@@ -135,9 +135,9 @@ export default function Home() {
   const [aspectRatio, setAspectRatio] = useState('16:9')
   const [resolution, setResolution] = useState('1080p')
   
-  // Status State
   const [isGenerating, setIsGenerating] = useState(false)
   const [isEnhancing, setIsEnhancing] = useState(false)
+  const [generationProgress, setGenerationProgress] = useState(0)
   const [prediction, setPrediction] = useState(null)
   const [history, setHistory] = useState([])
   const [selectedArchiveItem, setSelectedArchiveItem] = useState(null)
@@ -485,6 +485,15 @@ export default function Home() {
   }
 
   const pollEnhance = async (id) => {
+    setGenerationProgress(10)
+    const progressInterval = setInterval(() => {
+      setGenerationProgress(prev => {
+        if (prev >= 95) return 95
+        const increment = prev < 50 ? 5 : (prev < 80 ? 2 : 0.5)
+        return prev + increment
+      })
+    }, 500)
+
     const interval = setInterval(async () => {
       try {
         const response = await fetch(`/api/check-status?id=${id}`)
@@ -492,12 +501,17 @@ export default function Home() {
 
         if (data.status === 'succeeded') {
           clearInterval(interval)
-          setPrediction(data)
-          setIsEnhancing(false)
-          loadUserStats(user.id)
-          alert('Bild erfolgreich hochskaliert!')
+          clearInterval(progressInterval)
+          setGenerationProgress(100)
+          setTimeout(() => {
+            setPrediction(data)
+            setIsEnhancing(false)
+            loadUserStats(user.id)
+            alert('Bild erfolgreich hochskaliert!')
+          }, 800)
         } else if (data.status === 'failed') {
           clearInterval(interval)
+          clearInterval(progressInterval)
           alert('Bildverbesserung fehlgeschlagen.')
           setIsEnhancing(false)
         }
@@ -508,6 +522,15 @@ export default function Home() {
   }
 
   const pollPrediction = async (id) => {
+    setGenerationProgress(5)
+    const progressInterval = setInterval(() => {
+      setGenerationProgress(prev => {
+        if (prev >= 95) return 95
+        const increment = prev < 50 ? 5 : (prev < 80 ? 2 : 0.5)
+        return prev + increment
+      })
+    }, 500)
+
     const interval = setInterval(async () => {
       try {
         const response = await fetch(`/api/check-status?id=${id}`)
@@ -515,21 +538,26 @@ export default function Home() {
 
         if (data.status === 'succeeded') {
           clearInterval(interval)
-          setSelectedArchiveItem(null) // Archiv-Auswahl zurücksetzen!
-          
-          // Wichtig: Replicate liefert 'output' zurück (als Array oder String). 
-          // Wir weisen es activeMediaUrl-kompatibel als 'output_url' zu.
-          const outputUrl = Array.isArray(data.output) ? data.output[0] : data.output
-          const formattedData = {
-            ...data,
-            output_url: outputUrl
-          }
-          
-          setPrediction(formattedData) // Setzt das neue Bild als aktive prediction
-          setIsGenerating(false)
-          loadUserStats(user.id) // Lädt die Historie neu
+          clearInterval(progressInterval)
+          setGenerationProgress(100)
+          setTimeout(() => {
+            setSelectedArchiveItem(null) // Archiv-Auswahl zurücksetzen!
+            
+            // Wichtig: Replicate liefert 'output' zurück (als Array oder String). 
+            // Wir weisen es activeMediaUrl-kompatibel als 'output_url' zu.
+            const outputUrl = Array.isArray(data.output) ? data.output[0] : data.output
+            const formattedData = {
+              ...data,
+              output_url: outputUrl
+            }
+            
+            setPrediction(formattedData) // Setzt das neue Bild als aktive prediction
+            setIsGenerating(false)
+            loadUserStats(user.id) // Lädt die Historie neu
+          }, 800)
         } else if (data.status === 'failed') {
           clearInterval(interval)
+          clearInterval(progressInterval)
           alert('Generierung fehlgeschlagen.')
           setIsGenerating(false)
         }
@@ -1028,11 +1056,36 @@ export default function Home() {
               {/* Rechte Spalte */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
                 <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', position: 'relative', width: '100%', maxWidth: '100%', overflow: 'hidden', boxSizing: 'border-box' }}>
-                  {isGenerating || isEnhancing ? (
-                    <div style={{ textAlign: 'center' }}>
-                      <div className="shimmer-bg" style={{ width: '320px', height: '180px', borderRadius: '12px', marginBottom: '1.5rem' }}></div>
+                   {isGenerating || isEnhancing ? (
+                    <div style={{ textAlign: 'center', width: '100%', maxWidth: '400px', padding: '0 20px', boxSizing: 'border-box' }}>
+                      <div className="shimmer-bg" style={{ width: '100%', height: '180px', borderRadius: '12px', marginBottom: '1.5rem' }}></div>
                       <h3>{isEnhancing ? 'Bild wird hochskaliert (Enhance)...' : 'Dein Kunstwerk wird generiert...'}</h3>
-                      <p style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginTop: '6px' }}>Bitte verlasse diese Seite nicht.</p>
+                      
+                      {/* Fortschrittsbalken */}
+                      <div style={{ 
+                        width: '100%', 
+                        height: '8px', 
+                        background: 'rgba(255,255,255,0.05)', 
+                        borderRadius: '4px', 
+                        marginTop: '15px', 
+                        overflow: 'hidden',
+                        border: '1px solid var(--border-color)'
+                      }}>
+                        <div style={{ 
+                          width: `${generationProgress}%`, 
+                          height: '100%', 
+                          background: 'var(--gradient-neon)', 
+                          boxShadow: 'var(--shadow-neon)',
+                          transition: 'width 0.4s ease-out',
+                          borderRadius: '4px'
+                        }}></div>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-dim)', marginTop: '6px' }}>
+                        <span>Status: {generationProgress < 20 ? 'Warteschlange...' : (generationProgress < 85 ? 'Generiere Medien...' : 'Finalisiere...')}</span>
+                        <span>{Math.round(generationProgress)}%</span>
+                      </div>
+                      
+                      <p style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginTop: '12px' }}>Bitte verlasse diese Seite nicht.</p>
                     </div>
                   ) : activeMediaUrl ? (
                     <div style={{ width: '100%', maxWidth: '700px', position: 'relative', boxSizing: 'border-box' }}>
