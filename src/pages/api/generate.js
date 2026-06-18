@@ -55,11 +55,20 @@ export default async function handler(req, res) {
     if (type === 'image' || type === 'ecommerce') {
       if (refImageUrl) {
         // FLUX Dev (Image-to-Image / Img2Img)
+        // Replicate erwartet ein vollständiges Data-URI oder einen HTTP-Link.
+        // Falls refImageUrl mit "/" beginnt (z.B. Beispieldatei /whiskey-before.png), müssen wir den Hostnamen anfügen.
+        let processedImage = refImageUrl
+        if (refImageUrl.startsWith('/')) {
+          const host = req.headers.host || 'mdw-bild-videogenerator.netlify.app'
+          const protocol = host.includes('localhost') ? 'http' : 'https'
+          processedImage = `${protocol}://${host}${refImageUrl}`
+        }
+
         prediction = await replicate.predictions.create({
           model: "black-forest-labs/flux-dev",
           input: {
             prompt: prompt,
-            image: refImageUrl,
+            image: processedImage,
             prompt_strength: promptStrength !== undefined ? promptStrength : 0.65,
             output_format: "webp",
             disable_safety_checker: true
@@ -85,7 +94,13 @@ export default async function handler(req, res) {
       }
 
       if ((type === 'image-to-video' || type === 'ecommerce-video') && (imageUrl || refImageUrl)) {
-        inputOptions.image = imageUrl || refImageUrl
+        let rawImage = imageUrl || refImageUrl
+        if (rawImage.startsWith('/')) {
+          const host = req.headers.host || 'mdw-bild-videogenerator.netlify.app'
+          const protocol = host.includes('localhost') ? 'http' : 'https'
+          rawImage = `${protocol}://${host}${rawImage}`
+        }
+        inputOptions.image = rawImage
       }
 
       prediction = await replicate.predictions.create({
