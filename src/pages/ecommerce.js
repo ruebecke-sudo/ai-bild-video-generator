@@ -14,6 +14,7 @@ import {
   Check, 
   ShoppingBag,
   Image as ImageIcon,
+  Video,
   Upload,
   Trash2,
   Download,
@@ -65,6 +66,7 @@ export default function EcommerceLanding() {
   const [prompt, setPrompt] = useState('High-end commercial product photography of an amber whiskey glass bottle, placed on a dark polished marble bar counter. Next to it is a crystal glass with ice. Swirling dramatic golden smoke rising behind the bottle. Moody luxury bar background with warm out-of-focus lights, depth of field, 8k resolution, professional studio lighting.')
   const [promptStrength, setPromptStrength] = useState(0.7)
   const [aspectRatio, setAspectRatio] = useState('1:1')
+  const [mode, setMode] = useState('image') // 'image' | 'video'
   
   // Statuses
   const [isRemovingBg, setIsRemovingBg] = useState(false)
@@ -103,6 +105,25 @@ export default function EcommerceLanding() {
 
     return () => subscription.unsubscribe()
   }, [])
+
+  useEffect(() => {
+    // Falls der Benutzer noch das Standard-Demoszenario verwendet, passen wir das Vorschaubild und die Prediction an
+    if (refImageUrl === '/whiskey-before.png' || refImageUrl === '') {
+      if (mode === 'image') {
+        setPrediction({
+          id: 'demo-whiskey',
+          output_url: '/whiskey-after.png',
+          status: 'succeeded'
+        })
+      } else {
+        setPrediction({
+          id: 'demo-video',
+          output_url: '/beispiel.mp4',
+          status: 'succeeded'
+        })
+      }
+    }
+  }, [mode])
 
   const loadUserStats = async (userId) => {
     try {
@@ -346,7 +367,7 @@ export default function EcommerceLanding() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          type: 'ecommerce',
+          type: mode === 'image' ? 'ecommerce' : 'ecommerce-video',
           prompt: prompt,
           refImageUrl: base64Image,
           promptStrength: promptStrength,
@@ -620,7 +641,55 @@ export default function EcommerceLanding() {
               {/* Linke Spalte: Upload & Einstellungen */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.8rem' }}>
                 
-                {/* Schritt 1: Produktbild */}
+                {/* Modus-Wähler */}
+                <div style={{ display: 'flex', gap: '10px', background: 'rgba(0,0,0,0.2)', padding: '6px', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
+                  <button
+                    type="button"
+                    onClick={() => setMode('image')}
+                    style={{
+                      flex: 1,
+                      padding: '10px 0',
+                      borderRadius: '8px',
+                      background: mode === 'image' ? 'var(--primary)' : 'transparent',
+                      color: mode === 'image' ? '#000' : 'var(--text-muted)',
+                      border: 'none',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      fontSize: '0.85rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px'
+                    }}
+                  >
+                    <ImageIcon size={16} />
+                    Bild erstellen (2 Credits)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMode('video')}
+                    style={{
+                      flex: 1,
+                      padding: '10px 0',
+                      borderRadius: '8px',
+                      background: mode === 'video' ? 'var(--primary)' : 'transparent',
+                      color: mode === 'video' ? '#000' : 'var(--text-muted)',
+                      border: 'none',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      fontSize: '0.85rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px'
+                    }}
+                  >
+                    <Video size={16} />
+                    Video erstellen (5 Credits)
+                  </button>
+                </div>
+
+                {/* Schritt 1: Produktfoto hochladen */}
                 <div>
                   <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ background: 'var(--secondary)', color: '#fff', borderRadius: '50%', width: '22px', height: '22px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}>1</span>
@@ -713,24 +782,26 @@ export default function EcommerceLanding() {
                   </h4>
                   
                   {/* Prompt Strength */}
-                  <div style={{ marginBottom: '1rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '5px' }}>
-                      <span style={{ color: 'var(--text-muted)' }}>Bildtreue (Prompt-Stärke):</span>
-                      <span style={{ fontWeight: 600, color: 'var(--primary)' }}>{Math.round(promptStrength * 100)}%</span>
+                  {mode === 'image' && (
+                    <div style={{ marginBottom: '1rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '5px' }}>
+                        <span style={{ color: 'var(--text-muted)' }}>Bildtreue (Prompt-Stärke):</span>
+                        <span style={{ fontWeight: 600, color: 'var(--primary)' }}>{Math.round(promptStrength * 100)}%</span>
+                      </div>
+                      <input 
+                        type="range" 
+                        min="0.1" 
+                        max="1.0" 
+                        step="0.05"
+                        value={promptStrength}
+                        onChange={(e) => setPromptStrength(parseFloat(e.target.value))}
+                        style={{ width: '100%', accentColor: 'var(--primary)' }}
+                      />
+                      <div style={{ fontSize: '0.7rem', color: 'var(--text-dim)', marginTop: '3px' }}>
+                        Höhere Werte verändern das Produktfoto stärker. Empfohlen: 65% - 75% für beste Konsistenz.
+                      </div>
                     </div>
-                    <input 
-                      type="range" 
-                      min="0.1" 
-                      max="1.0" 
-                      step="0.05"
-                      value={promptStrength}
-                      onChange={(e) => setPromptStrength(parseFloat(e.target.value))}
-                      style={{ width: '100%', accentColor: 'var(--primary)' }}
-                    />
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-dim)', marginTop: '3px' }}>
-                      Höhere Werte verändern das Produktfoto stärker. Empfohlen: 65% - 75% für beste Konsistenz.
-                    </div>
-                  </div>
+                  )}
 
                   {/* Aspekt-Verhältnis */}
                   <div>
@@ -761,24 +832,24 @@ export default function EcommerceLanding() {
                 </div>
 
                 {/* Generieren Button */}
-                <button 
-                  onClick={handleStartGeneration}
-                  className="btn-gold"
-                  style={{ background: 'var(--gradient-gold)', padding: '14px', fontSize: '1rem', display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'center' }}
-                  disabled={isGenerating || isRemovingBg}
-                >
-                  {isGenerating ? (
-                    <>
-                      <Loader2 className="animate-spin" size={20} />
-                      Erstelle Werbebild ({generationProgress}%)
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles size={20} />
-                      Werbebild erstellen (Kosten: 2 Credits)
-                    </>
-                  )}
-                </button>
+                 <button 
+                   onClick={handleStartGeneration}
+                   className="btn-gold"
+                   style={{ background: 'var(--gradient-gold)', padding: '14px', fontSize: '1rem', display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'center' }}
+                   disabled={isGenerating || isRemovingBg}
+                 >
+                   {isGenerating ? (
+                     <>
+                       <Loader2 className="animate-spin" size={20} />
+                       {mode === 'image' ? 'Erstelle Werbebild' : 'Erstelle Werbevideo'} ({generationProgress}%)
+                     </>
+                   ) : (
+                     <>
+                       <Sparkles size={20} />
+                       {mode === 'image' ? 'Werbebild erstellen (Kosten: 2 Credits)' : 'Werbevideo erstellen (Kosten: 5 Credits)'}
+                     </>
+                   )}
+                 </button>
 
                 {isGenerating && (
                   <div className="progress-bar-container" style={{ height: '8px' }}>
@@ -792,19 +863,32 @@ export default function EcommerceLanding() {
               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '350px', border: '1px solid var(--border-color)', borderRadius: '16px', background: 'rgba(0,0,0,0.15)', padding: '2rem' }}>
                 {prediction && prediction.output_url ? (
                   <div style={{ width: '100%', textAlign: 'center' }}>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '1rem' }}>Generiertes Studio-Werbebild</h3>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '1rem' }}>
+                      {prediction.output_url.endsWith('.mp4') || prediction.id === 'demo-video' ? 'Generiertes Studio-Werbevideo' : 'Generiertes Studio-Werbebild'}
+                    </h3>
                     <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-color)', display: 'inline-block', maxWidth: '100%' }}>
-                      <img 
-                        src={prediction.output_url} 
-                        alt="Generiertes E-Commerce Bild" 
-                        style={{ maxWidth: '100%', maxHeight: '400px', objectFit: 'contain', borderRadius: '12px' }} 
-                      />
+                      {prediction.output_url.endsWith('.mp4') || prediction.id === 'demo-video' ? (
+                        <video 
+                          src={prediction.output_url} 
+                          controls 
+                          loop 
+                          autoPlay 
+                          muted 
+                          style={{ maxWidth: '100%', maxHeight: '400px', objectFit: 'contain', borderRadius: '12px' }} 
+                        />
+                      ) : (
+                        <img 
+                          src={prediction.output_url} 
+                          alt="Generiertes E-Commerce Bild" 
+                          style={{ maxWidth: '100%', maxHeight: '400px', objectFit: 'contain', borderRadius: '12px' }} 
+                        />
+                      )}
                     </div>
 
                     <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginTop: '1.5rem', flexWrap: 'wrap' }}>
                       <a 
                         href={prediction.output_url} 
-                        download={`product-studio-${prediction.id}.png`}
+                        download={`product-studio-${prediction.id}${prediction.output_url.endsWith('.mp4') ? '.mp4' : '.png'}`}
                         target="_blank"
                         rel="noreferrer"
                         className="btn-gold"
@@ -814,24 +898,26 @@ export default function EcommerceLanding() {
                         Downloaden
                       </a>
                       
-                      <button 
-                        onClick={handleEnhanceImage}
-                        className="btn-outline"
-                        style={{ display: 'flex', gap: '8px', alignItems: 'center', padding: '10px 20px' }}
-                        disabled={isEnhancing}
-                      >
-                        {isEnhancing ? (
-                          <>
-                            <Loader2 className="animate-spin" size={16} />
-                            Verbesse... ({enhancingProgress}%)
-                          </>
-                        ) : (
-                          <>
-                            <RefreshCw size={16} />
-                            4K High-Res Upscale (1 Credit)
-                          </>
-                        )}
-                      </button>
+                      {!(prediction.output_url.endsWith('.mp4') || prediction.id === 'demo-video') && (
+                        <button 
+                          onClick={handleEnhanceImage}
+                          className="btn-outline"
+                          style={{ display: 'flex', gap: '8px', alignItems: 'center', padding: '10px 20px' }}
+                          disabled={isEnhancing}
+                        >
+                          {isEnhancing ? (
+                            <>
+                              <Loader2 className="animate-spin" size={16} />
+                              Verbesse... ({enhancingProgress}%)
+                            </>
+                          ) : (
+                            <>
+                              <RefreshCw size={16} />
+                              4K High-Res Upscale (1 Credit)
+                            </>
+                          )}
+                        </button>
+                      )}
                     </div>
 
                     {isEnhancing && (

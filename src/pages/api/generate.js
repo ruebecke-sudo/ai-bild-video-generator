@@ -44,7 +44,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Benutzerprofil nicht gefunden.' })
     }
 
-    const requiredCredits = type === 'ecommerce' ? 2 : (type === 'image' ? 1 : 5)
+    const requiredCredits = type === 'ecommerce' ? 2 : (type === 'ecommerce-video' ? 5 : (type === 'image' ? 1 : 5))
     if (!isGuest && profile.credits < requiredCredits) {
       return res.status(402).json({ error: 'Nicht genügend Credits.' })
     }
@@ -84,8 +84,8 @@ export default async function handler(req, res) {
         aspect_ratio: aspect_ratio || "16:9"
       }
 
-      if (type === 'image-to-video' && imageUrl) {
-        inputOptions.image = imageUrl
+      if ((type === 'image-to-video' || type === 'ecommerce-video') && (imageUrl || refImageUrl)) {
+        inputOptions.image = imageUrl || refImageUrl
       }
 
       prediction = await replicate.predictions.create({
