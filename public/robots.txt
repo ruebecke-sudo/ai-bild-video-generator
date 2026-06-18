@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Hier die tatsächliche Domain anpassen, falls abweichend
+Sitemap: https://ai-video-generator.my-digital-world.de/sitemap.xml

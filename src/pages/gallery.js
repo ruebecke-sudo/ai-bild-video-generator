@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
 import { supabase } from '../lib/supabase'
 import { PROMPT_CATEGORIES } from '../lib/promptsData'
 import { 
@@ -148,6 +149,11 @@ export default function GalleryPage() {
 
   return (
     <div className="app-container" style={{ background: 'var(--bg-main)', minHeight: '100vh' }}>
+      <Head>
+        <title>Community Galerie - KI-generierte Bilder & Videos | AI Video Generator</title>
+        <meta name="description" content="Entdecke atemberaubende, KI-generierte Bilder und Videos aus unserer Community. Lass dich inspirieren und lade Prompts direkt in den Generator." />
+        <meta name="robots" content="index, follow" />
+      </Head>
       {/* Header */}
       <header className="header">
         <Link href="/" className="brand">
@@ -169,10 +175,17 @@ export default function GalleryPage() {
           
           {user ? (
             <>
-              <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px' }}>
-                <Coins size={16} style={{ color: 'var(--primary)' }} />
-                <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{credits} Credits</span>
-              </div>
+              {user.email === 'gast@my-digital-world.de' ? (
+                <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px', borderColor: 'var(--secondary)' }}>
+                  <Sparkles size={16} style={{ color: 'var(--secondary)' }} />
+                  <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--secondary)' }}>Demo-Modus</span>
+                </div>
+              ) : (
+                <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px' }}>
+                  <Coins size={16} style={{ color: 'var(--primary)' }} />
+                  <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{credits} Credits</span>
+                </div>
+              )}
               <Link href="/" className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.9rem', display: 'flex', gap: '6px', alignItems: 'center' }}>
                 <ArrowLeft size={16} /> Zum Generator
               </Link>

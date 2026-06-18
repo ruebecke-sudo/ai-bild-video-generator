@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { Download, Sparkles, Video, Image as ImageIcon, Zap, Shield, Mail, ArrowLeft, TrendingUp } from 'lucide-react'
+import Head from 'next/head'
+import { Download, Sparkles, Video, Image as ImageIcon, Zap, Shield, Mail, ArrowLeft, TrendingUp, Globe, Book } from 'lucide-react'
 
 export default function Manual() {
   const handlePrint = () => {
@@ -8,16 +9,30 @@ export default function Manual() {
 
   return (
     <div className="app-container" style={{ background: 'var(--bg-main)' }}>
+      <Head>
+        <title>Anleitung & Handbuch - KI-Bilder & Videos optimal erstellen | AI Video Generator</title>
+        <meta name="description" content="Lerne, wie du perfekte KI-Bilder und Videos in 1080p generierst. Tipps zu Prompts, Upscaling, Nischenprompts und der Community-Galerie." />
+        <meta name="robots" content="index, follow" />
+      </Head>
       {/* Header */}
       <header className="header no-print">
         <Link href="/" className="brand">
           <span>AI Bild & Videogenerator</span>
         </Link>
-        <div style={{ display: 'flex', gap: '15px' }}>
-          <Link href="/" className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.9rem', display: 'flex', gap: '6px', alignItems: 'center' }}>
-            <ArrowLeft size={16} /> Dashboard
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          <Link href="/gallery" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Globe size={16} /> Community-Galerie
           </Link>
-          <button onClick={handlePrint} className="btn-gold" style={{ padding: '8px 16px', fontSize: '0.9rem' }}>
+          <Link href="/prompts" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Book size={16} /> Nischenprompts
+          </Link>
+          <Link href="/pricing" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
+            Preise
+          </Link>
+          <Link href="/" className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.9rem', display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <ArrowLeft size={16} /> Zum Generator
+          </Link>
+          <button onClick={handlePrint} className="btn-gold" style={{ padding: '8px 16px', fontSize: '0.9rem', display: 'flex', gap: '6px', alignItems: 'center' }}>
             <Download size={16} /> PDF speichern / Drucken
           </button>
         </div>
@@ -103,7 +118,7 @@ export default function Manual() {
           </section>
 
           {/* Section 5: Nischenprompts */}
-          <section style={{ marginBottom: '3rem' }}>
+          <section style={{ marginBottom: '2.5rem' }}>
             <h2 style={{ fontSize: '1.4rem', color: '#fff', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <Sparkles size={20} style={{ color: 'var(--primary)' }} />
               5. Verwendung von Nischenprompts
@@ -115,6 +130,23 @@ export default function Manual() {
                 <li><strong>Deutsche Übersetzung lesen:</strong> Jeder Prompt hat eine deutsche Kurzbeschreibung zur Vorschau (diese ist kopiergeschützt und dient nur zur Orientierung).</li>
                 <li><strong>Englischen Prompt nutzen:</strong> Klicke auf <i>In Generator laden</i>, um den optimierten englischen Prompt direkt in das Dashboard zu übertragen, oder kopiere ihn mit dem <i>Kopieren</i>-Button. Für beste KI-Ergebnisse arbeiten die Modelle ausschließlich mit englischen Begriffen.</li>
                 <li><strong>Pakete freischalten:</strong> Die ersten 3 Prompts sind frei nutzbar. Die restlichen Prompts können über den Button am Ende der Liste als Paket auf der Preise-Seite freigeschaltet werden.</li>
+              </ul>
+            </div>
+          </section>
+
+          {/* Section 6: Community-Galerie */}
+          <section style={{ marginBottom: '3rem' }}>
+            <h2 style={{ fontSize: '1.4rem', color: '#fff', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Globe size={20} style={{ color: 'var(--secondary)' }} />
+              6. Die Community-Galerie
+            </h2>
+            <div style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '0.95rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <p>Nutze die Galerie, um deine Kreationen zu präsentieren oder dich von anderen inspirieren zu lassen:</p>
+              <ul style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <li><strong>Kreationen teilen:</strong> Klicke direkt unter deinem fertigen Bild/Video oder im Medienarchiv auf <i>„In Galerie teilen“</i> 🌐. Deine Generierung ist ab sofort öffentlich in der Community-Galerie sichtbar.</li>
+                <li><strong>Teilen widerrufen:</strong> Ein Klick auf <i>„Aus Galerie entfernen“</i> zieht dein Bild/Video sofort wieder zurück.</li>
+                <li><strong>Prompt-Kopierschutz:</strong> Um exklusive Inhalte zu schützen, werden Premium-Nischenprompts für Nutzer, die diese Nische nicht erworben haben, weichgezeichnet (blurred) dargestellt.</li>
+                <li><strong>Inspiration & Wiederverwendung:</strong> Eigene Kreationen und Prompts deiner erworbenen Nischen-Pakete können mit Klick auf <i>„In Generator laden“</i> direkt geladen und angepasst werden.</li>
               </ul>
             </div>
           </section>

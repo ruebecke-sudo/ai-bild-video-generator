@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
 import { supabase, getUserCredits } from '../lib/supabase'
 import { PROMPT_CATEGORIES } from '../lib/promptsData'
 import { 
@@ -579,6 +580,15 @@ export default function Home() {
 
   return (
     <div className="app-container" style={{ background: 'var(--bg-main)' }}>
+      <Head>
+        <title>AI Bild & Videogenerator - 1080p Full-HD Medien mit KI erstellen</title>
+        <meta name="description" content="Erstelle atemberaubende, hochauflösende KI-Bilder und Videos in 1080p Full-HD. Nutze professionelle Nischenprompts für Marketing, Immobilien, E-Commerce und mehr." />
+        <meta name="keywords" content="AI Video Generator, KI Video Generator, KI Bildgenerator, Text to Video, Image to Video, 1080p Video erstellen, Flux AI, Luma Dream Machine, Nischenprompts" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="AI Bild & Videogenerator - 1080p Full-HD Medien mit KI erstellen" />
+        <meta property="og:description" content="Erstelle hochauflösende KI-Bilder und Videos in 1080p Full-HD mit modernen KI-Modellen." />
+        <meta property="og:type" content="website" />
+      </Head>
       {/* Header */}
       <header className="header">
         <Link href="/" className="brand">
@@ -602,12 +612,17 @@ export default function Home() {
             Preise
           </Link>
           
-          {user ? (
-            <>
-              <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px' }}>
-                <Coins size={16} style={{ color: 'var(--primary)' }} />
-                <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{credits} Credits</span>
-              </div>
+              {user.email === 'gast@my-digital-world.de' ? (
+                <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px', borderColor: 'var(--secondary)' }}>
+                  <Sparkles size={16} style={{ color: 'var(--secondary)' }} />
+                  <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--secondary)' }}>Demo-Modus</span>
+                </div>
+              ) : (
+                <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px' }}>
+                  <Coins size={16} style={{ color: 'var(--primary)' }} />
+                  <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{credits} Credits</span>
+                </div>
+              )}
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{user.email}</span>
                 <button onClick={handleLogout} className="btn-outline" style={{ padding: '6px 12px', fontSize: '0.85rem' }}>
