@@ -611,7 +611,8 @@ export default function Home() {
           <Link href="/pricing" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
             Preise
           </Link>
-          
+          {user ? (
+            <>
               {user.email === 'gast@my-digital-world.de' ? (
                 <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px', borderColor: 'var(--secondary)' }}>
                   <Sparkles size={16} style={{ color: 'var(--secondary)' }} />
