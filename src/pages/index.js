@@ -35,7 +35,9 @@ import {
   Book,
   Copy,
   Check,
-  Globe
+  Globe,
+  ShoppingBag,
+  ArrowRight
 } from 'lucide-react'
 
 const STYLES = [
@@ -624,6 +626,10 @@ export default function Home() {
         </Link>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <Link href="/ecommerce" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <ShoppingBag size={16} /> E-Commerce
+          </Link>
+
           <Link href="/gallery" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
             <Globe size={16} /> Community-Galerie
           </Link>
@@ -1355,81 +1361,21 @@ export default function Home() {
                 </div>
               </section>
 
-              {/* NEU: E-Commerce & Produktfotografie Showcase */}
-              <section className="features-grid glass-panel" style={{ padding: '3rem', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-neon)' }}>
-                <div>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '1px', background: 'rgba(249, 115, 22, 0.1)', padding: '6px 12px', borderRadius: '20px' }}>
-                    Für Onlineshops & E-Commerce 🛍️
-                  </span>
-                  <h2 style={{ fontSize: '2.2rem', fontWeight: 800, marginTop: '1.2rem', marginBottom: '1.2rem', background: 'linear-gradient(135deg, #fff 0%, var(--secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                    Mache aus einfachen Produktfotos spektakuläre Werbebilder
-                  </h2>
-                  <p style={{ color: 'var(--text-muted)', lineHeight: '1.7', fontSize: '1.05rem', marginBottom: '1.5rem' }}>
-                    Shopbetreiber aufgepasst: Lade einfach ein Foto deines Produkts hoch und beschreibe deine Wunsch-Szene. Unsere KI setzt dein Produkt in einen fotorealistischen, verkaufsstarken Hintergrund – perfekt für Social Media, Banner und Werbeanzeigen.
-                  </p>
-                  
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '2rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
-                      <CheckCircle size={18} style={{ color: 'var(--secondary)' }} />
-                      <span><strong>Kein teures Fotostudio nötig:</strong> Generiere unendlich viele Hintergründe für dein Produkt.</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
-                      <CheckCircle size={18} style={{ color: 'var(--secondary)' }} />
-                      <span><strong>Volle Kontrolle über die Szene:</strong> Passe Stimmung und Lichteffekte flexibel per Text an.</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
-                      <CheckCircle size={18} style={{ color: 'var(--secondary)' }} />
-                      <span><strong>Auch als Video:</strong> Animiere dein Produktbild zu einem flüssigen 1080p Werbeclip.</span>
-                    </div>
+              {/* NEU: E-Commerce & Produktfotografie Banner */}
+              <section className="glass-panel animate-hover" style={{ padding: '2rem 3rem', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-neon)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px', flexWrap: 'wrap' }}>
+                  <div style={{ background: 'rgba(249, 115, 22, 0.1)', padding: '12px', borderRadius: '50%', color: 'var(--secondary)' }}>
+                    <ShoppingBag size={32} />
                   </div>
-
-                  <button 
-                    onClick={() => {
-                      setActiveTab('image-to-video');
-                      setPrompt('High-end commercial product photography of an amber whiskey glass bottle, placed on a dark polished marble bar counter. Next to it is a crystal glass with ice. Swirling dramatic golden smoke rising behind the bottle. Moody luxury bar background with warm out-of-focus lights, depth of field.');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }} 
-                    className="btn-gold" 
-                    style={{ background: 'var(--gradient-gold)' }}
-                  >
-                    <Sparkles size={16} />
-                    Jetzt selbst ausprobieren
-                  </button>
-                </div>
-
-                {/* Vorher / Nachher Container */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center', width: '100%' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', width: '100%' }}>
-                    
-                    {/* Vorher */}
-                    <div style={{ textAlign: 'center' }}>
-                      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-dim)', display: 'block', marginBottom: '8px' }}>Vorher (Produktfoto)</span>
-                      <div className="glass-panel" style={{ padding: '10px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                        <img 
-                          src="/whiskey-before.png" 
-                          alt="Produkt Vorher" 
-                          style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '8px' }} 
-                        />
-                      </div>
-                    </div>
-
-                    {/* Nachher */}
-                    <div style={{ textAlign: 'center' }}>
-                      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--secondary)', display: 'block', marginBottom: '8px' }}>Nachher (KI-Ergebnis)</span>
-                      <div className="glass-panel" style={{ padding: '10px', borderRadius: '12px', border: '1px solid var(--border-color)', boxShadow: '0 0 15px rgba(249, 115, 22, 0.15)' }}>
-                        <img 
-                          src="/whiskey-after.png" 
-                          alt="Produkt Nachher" 
-                          style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '8px' }} 
-                        />
-                      </div>
-                    </div>
-
-                  </div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)', fontStyle: 'italic', textAlign: 'center' }}>
-                    Beispiel: Aus einer freigestellten Flasche wird mit einem Klick ein verkaufsstarkes Werbemotiv.
+                  <div>
+                    <h3 style={{ fontSize: '1.4rem', fontWeight: 800 }}>Onlineshop & Produkt-Studio 🛍️</h3>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginTop: '4px' }}>Mache aus einfachen Produktfotos verkaufsstarke High-End-Motive für Shopify, Amazon & Social Media.</p>
                   </div>
                 </div>
+                <Link href="/ecommerce" className="btn-gold" style={{ background: 'var(--gradient-gold)', textDecoration: 'none', display: 'flex', gap: '8px', alignItems: 'center', whiteSpace: 'nowrap' }}>
+                  Fotostudio öffnen
+                  <ArrowRight size={16} />
+                </Link>
               </section>
 
               {/* NEU: Kundenbewertungen (Testimonials) */}

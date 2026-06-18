@@ -19,7 +19,8 @@ import {
   X, 
   Sparkles,
   Download,
-  ExternalLink
+  ExternalLink,
+  ShoppingBag
 } from 'lucide-react'
 
 // Helper to determine which premium category a prompt belongs to
@@ -160,6 +161,9 @@ export default function GalleryPage() {
           <span>AI Bild & Videogenerator</span>
         </Link>
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          <Link href="/ecommerce" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <ShoppingBag size={16} /> E-Commerce
+          </Link>
           <Link href="/gallery" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
             <Globe size={16} /> Community-Galerie
           </Link>

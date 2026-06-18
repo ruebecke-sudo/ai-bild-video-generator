@@ -19,7 +19,8 @@ import {
   LogOut,
   HelpCircle,
   ChevronDown,
-  Globe
+  Globe,
+  ShoppingBag
 } from 'lucide-react'
 
 export default function PromptsPage() {
@@ -102,6 +103,9 @@ export default function PromptsPage() {
           <span>AI Bild & Videogenerator</span>
         </Link>
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          <Link href="/ecommerce" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <ShoppingBag size={16} /> E-Commerce
+          </Link>
           <Link href="/gallery" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
             <Globe size={16} /> Community-Galerie
           </Link>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { supabase } from '../lib/supabase'
-import { Check, Zap, Sparkles, CreditCard, Video, Globe, Book, BookOpen, ArrowLeft } from 'lucide-react'
+import { Check, Zap, Sparkles, CreditCard, Video, Globe, Book, BookOpen, ArrowLeft, ShoppingBag } from 'lucide-react'
 
 // WICHTIG: Ersetze diese Platzhalter durch deine echten Stripe Price IDs aus deinem Dashboard (Test-Modus oder Live-Modus)
 // Erstelle dafür in Stripe ein Produkt (z.B. "Starter Paket", 3.99€ Einmalzahlung) und kopiere die Preis-ID (beginnt mit price_...)
@@ -119,6 +119,9 @@ export default function Pricing() {
           <span>AI Bild & Videogenerator</span>
         </Link>
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          <Link href="/ecommerce" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <ShoppingBag size={16} /> E-Commerce
+          </Link>
           <Link href="/gallery" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
             <Globe size={16} /> Community-Galerie
           </Link>
