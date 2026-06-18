@@ -574,7 +574,7 @@ export default function EcommerceLanding() {
             Integrierter KI-Produktfoto-Generator 🛍️
           </span>
           <h1 style={{ fontSize: '3rem', fontWeight: 800, marginTop: '1.5rem', marginBottom: '1rem', background: 'linear-gradient(135deg, #fff 0%, var(--secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', lineHeight: '1.2' }}>
-            KI-Fotostudio & Freisteller für dein E-Commerce
+            KI Bild & Video Marketingstudio
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', maxWidth: '800px', margin: '0 auto', lineHeight: '1.6' }}>
             Lade dein Produktfoto hoch, entferne unschöne Hintergründe mit einem Klick und lasse unsere KI ein verkaufsstarkes Werbemotiv in Fotostudio-Qualität erstellen.
@@ -724,7 +724,7 @@ export default function EcommerceLanding() {
                 {refImageUrl && (
                   <div style={{ padding: '1rem', borderRadius: '12px', background: 'rgba(249, 115, 22, 0.05)', border: '1px dashed var(--secondary)' }}>
                     <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '0.5rem', color: 'var(--secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      Hintergrund unordentlich?
+                      Hintergrund entfernen
                     </h3>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.8rem' }}>
                       Entferne den aktuellen Hintergrund deines Produktes automatisch mit unserer integrierten KI, um eine perfekte Verschmelzung mit dem neuen Hintergrund zu garantieren.
