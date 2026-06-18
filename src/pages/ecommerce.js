@@ -61,8 +61,8 @@ export default function EcommerceLanding() {
 
   // Generator States
   const [refImageFile, setRefImageFile] = useState(null)
-  const [refImageUrl, setRefImageUrl] = useState('')
-  const [prompt, setPrompt] = useState('')
+  const [refImageUrl, setRefImageUrl] = useState('/whiskey-before.png')
+  const [prompt, setPrompt] = useState('High-end commercial product photography of an amber whiskey glass bottle, placed on a dark polished marble bar counter. Next to it is a crystal glass with ice. Swirling dramatic golden smoke rising behind the bottle. Moody luxury bar background with warm out-of-focus lights, depth of field, 8k resolution, professional studio lighting.')
   const [promptStrength, setPromptStrength] = useState(0.7)
   const [aspectRatio, setAspectRatio] = useState('1:1')
   
@@ -78,7 +78,11 @@ export default function EcommerceLanding() {
   const [copiedText, setCopiedText] = useState('')
 
   // Predictions output
-  const [prediction, setPrediction] = useState(null)
+  const [prediction, setPrediction] = useState({
+    id: 'demo-whiskey',
+    output_url: '/whiskey-after.png',
+    status: 'succeeded'
+  })
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
