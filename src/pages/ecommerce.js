@@ -50,6 +50,59 @@ const PRODUCT_PROMPTS = [
   }
 ]
 
+const EXCLUSIVE_TEMPLATES = [
+  {
+    name: "Luxusuhren",
+    image: "/previews/watch.png",
+    prompt: "Ultra-realistic product photography of a luxury gold chronograph watch, placed on a dark reflective liquid surface. Golden light streaks, sharp metallic reflections, high contrast, studio background, 8k resolution, razor sharp details. No borders, premium style."
+  },
+  {
+    name: "Schmuck & Ringe",
+    image: "/previews/ring.png",
+    prompt: "Spectacular macro shot of a diamond engagement ring, resting on a glowing quartz crystal. Sparkling highlights, dramatic dark background, shallow depth of field, high contrast, professional jewelry photography, 8k. No borders, luxury feel."
+  },
+  {
+    name: "Handtaschen",
+    image: "/previews/handbag.png",
+    prompt: "Modern studio commercial photography of a designer leather handbag, standing on a minimalist architectural concrete pedestal. Warm sunset volumetric rays, palm leaf shadows, premium textures, sharp detail, 8k. No borders, aesthetic styling."
+  },
+  {
+    name: "Kaffee & Bohnen",
+    image: "/previews/coffee.png",
+    prompt: "Ultra-realistic dynamic shot of coffee beans exploding around a glossy black ceramic coffee cup. Rich espresso splashes, dark wood background, warm side lighting, high contrast, macro photography. No borders, professional food styling."
+  },
+  {
+    name: "Tech-Gadgets",
+    image: "/previews/gadget.png",
+    prompt: "Spectacular product shot of sleek wireless headphones, hovering above a neon blue glowing circuit board. Deep shadows, electric blue and purple rim lights, ultra-modern tech aesthetic, razor sharp. No borders, professional tech shot."
+  },
+  {
+    name: "Sonnenbrillen",
+    image: "/previews/sunglasses.png",
+    prompt: "Luxury commercial shot of designer sunglasses, resting on wet golden sand with gentle sea foam washing up. Clear water droplets, bright sun rays reflecting off the lenses, high contrast, premium summer vibe. No borders, professional commercial."
+  },
+  {
+    name: "Sportnahrung",
+    image: "/previews/fitness.png",
+    prompt: "Dynamic product photography of a black supplement container, next to a water shaker with water splashes exploding around it. Dark concrete background, high contrast, powerful green neon backlighting, sharp details. No borders, professional sports commercial."
+  },
+  {
+    name: "Bio-Skincare",
+    image: "/previews/skincare.png",
+    prompt: "Minimalist skincare product shot of a green glass dropper bottle, placed on a light beige sandstone block next to a monstera leaf. Warm direct sunlight, hard shadows, organic aesthetic, ultra-sharp. No borders, professional cosmetic photography."
+  },
+  {
+    name: "Profi-Messer",
+    image: "/previews/knife.png",
+    prompt: "Dramatic product shot of a Damascus steel chef knife, embedded in a rustic dark wood chopping board. Scattered fresh herbs, salt dust floating in the air, side studio lighting, sharp metal texture, high contrast. No borders, premium kitchenware."
+  },
+  {
+    name: "Edelschokolade",
+    image: "/previews/chocolate.png",
+    prompt: "Macro studio shot of a broken dark chocolate bar, revealing gold leaf accents inside. Melted rich chocolate dripping, dark cocoa powder dusting, warm amber lighting, ultra-realistic texture, 8k. No borders, professional chocolate styling."
+  }
+]
+
 export default function EcommerceLanding() {
   // Auth & Account
   const [user, setUser] = useState(null)
@@ -770,7 +823,55 @@ export default function EcommerceLanding() {
                     style={{ minHeight: '100px', fontFamily: 'inherit', resize: 'vertical' }}
                   />
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '4px' }}>
-                    Tipp: Klicke unten auf eine unserer Vorlagen, um einen Prompt automatisch einzufügen!
+                    Tipp: Klicke auf ein Bild unten, um einen spektakulären Prompt sofort in den Generator zu laden!
+                  </div>
+                  <div style={{ 
+                    display: 'flex', 
+                    gap: '12px', 
+                    overflowX: 'auto', 
+                    padding: '12px 5px',
+                    marginTop: '12px',
+                    scrollbarWidth: 'thin',
+                    scrollbarColor: 'var(--secondary) transparent'
+                  }} className="custom-scrollbar">
+                    {EXCLUSIVE_TEMPLATES.map((tmpl, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => {
+                          setPrompt(tmpl.prompt);
+                        }}
+                        style={{
+                          flexShrink: 0,
+                          width: '100px',
+                          cursor: 'pointer',
+                          textAlign: 'center',
+                          transition: 'transform 0.2s',
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                        onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1.0)'}
+                      >
+                        <div style={{
+                          width: '100px',
+                          height: '100px',
+                          borderRadius: '8px',
+                          overflow: 'hidden',
+                          border: '2px solid',
+                          borderColor: prompt === tmpl.prompt ? 'var(--secondary)' : 'var(--border-color)',
+                          boxShadow: prompt === tmpl.prompt ? '0 0 10px rgba(249, 115, 22, 0.4)' : 'none',
+                          background: 'rgba(0,0,0,0.3)',
+                          marginBottom: '6px'
+                        }}>
+                          <img 
+                            src={tmpl.image} 
+                            alt={tmpl.name} 
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                          />
+                        </div>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 600, color: prompt === tmpl.prompt ? 'var(--secondary)' : 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {tmpl.name}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
