@@ -808,7 +808,19 @@ export default function EcommerceLanding() {
                     onChange={(e) => setPrompt(e.target.value)}
                     placeholder="Beschreibe das gewünschte Ambiente (z. B. 'High-end product photography, luxury stone block counter, soft morning sun, botanical background')"
                     className="input-field"
-                    style={{ minHeight: '120px', fontSize: '1rem', fontFamily: 'inherit', resize: 'vertical', width: '100%', padding: '15px' }}
+                    style={{ 
+                      minHeight: '120px', 
+                      fontSize: '1rem', 
+                      fontFamily: 'inherit', 
+                      resize: 'vertical', 
+                      width: '100%', 
+                      padding: '15px',
+                      background: 'rgba(15, 23, 42, 0.6)', // Dunkler, kontrastreicher Schieferton
+                      color: '#ffffff', // Klares reines Weiß für beste Lesbarkeit
+                      border: '1px solid rgba(255, 255, 255, 0.15)', // Dezenter, heller Rahmen
+                      borderRadius: '8px',
+                      lineHeight: '1.6'
+                    }}
                   />
                   
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textAlign: 'center' }}>
