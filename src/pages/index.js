@@ -612,12 +612,17 @@ export default function Home() {
             Preise
           </Link>
           
-          {user ? (
-            <>
-              <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px' }}>
-                <Coins size={16} style={{ color: 'var(--primary)' }} />
-                <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{credits} Credits</span>
-              </div>
+              {user.email === 'gast@my-digital-world.de' ? (
+                <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px', borderColor: 'var(--secondary)' }}>
+                  <Sparkles size={16} style={{ color: 'var(--secondary)' }} />
+                  <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--secondary)' }}>Demo-Modus</span>
+                </div>
+              ) : (
+                <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px' }}>
+                  <Coins size={16} style={{ color: 'var(--primary)' }} />
+                  <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{credits} Credits</span>
+                </div>
+              )}
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{user.email}</span>
                 <button onClick={handleLogout} className="btn-outline" style={{ padding: '6px 12px', fontSize: '0.85rem' }}>
