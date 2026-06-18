@@ -128,7 +128,7 @@ export default function EcommerceLanding() {
 
   // Generator States
   const [refImageFile, setRefImageFile] = useState(null)
-  const [refImageUrl, setRefImageUrl] = useState('/whiskey-before.png')
+  const [refImageUrl, setRefImageUrl] = useState('')
   const [prompt, setPrompt] = useState('High-end commercial product photography of an amber whiskey glass bottle, placed on a dark polished marble bar counter. Next to it is a crystal glass with ice. Swirling dramatic golden smoke rising behind the bottle. Moody luxury bar background with warm out-of-focus lights, depth of field, 8k resolution, professional studio lighting.')
   const [promptStrength, setPromptStrength] = useState(0.7)
   const [aspectRatio, setAspectRatio] = useState('1:1')
