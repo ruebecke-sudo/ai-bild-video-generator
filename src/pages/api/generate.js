@@ -89,7 +89,7 @@ export default async function handler(req, res) {
       }
 
       prediction = await replicate.predictions.create({
-        model: "luma/dream-machine",
+        model: "luma/ray-2-720p",
         input: inputOptions
       })
     }
