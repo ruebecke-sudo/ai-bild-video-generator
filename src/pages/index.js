@@ -33,7 +33,8 @@ import {
   Star,
   Book,
   Copy,
-  Check
+  Check,
+  Globe
 } from 'lucide-react'
 
 const STYLES = [
@@ -537,6 +538,37 @@ export default function Home() {
     }, 4000)
   }
 
+  const activeGen = selectedArchiveItem 
+    ? selectedArchiveItem 
+    : history.find(h => h.prediction_id === prediction?.id)
+
+  const handleShareToggle = async (gen) => {
+    if (!gen) return
+    try {
+      const response = await fetch('/api/gallery', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          genId: gen.id,
+          isPublic: !gen.is_public,
+          userId: user.id
+        })
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setHistory(prev => prev.map(item => item.id === gen.id ? { ...item, is_public: data.isPublic } : item))
+        if (selectedArchiveItem && selectedArchiveItem.id === gen.id) {
+          setSelectedArchiveItem(prev => ({ ...prev, is_public: data.isPublic }))
+        }
+      } else {
+        alert(data.error || 'Fehler beim Teilen.')
+      }
+    } catch (err) {
+      console.error(err)
+      alert('Netzwerkfehler beim Teilen.')
+    }
+  }
+
   const activeMediaUrl = selectedArchiveItem 
     ? selectedArchiveItem.output_url 
     : (prediction?.output_url ? prediction.output_url : null)
@@ -554,6 +586,10 @@ export default function Home() {
         </Link>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <Link href="/gallery" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Globe size={16} /> Community-Galerie
+          </Link>
+
           <Link href="/prompts" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
             <Book size={16} /> Nischenprompts
           </Link>
@@ -1017,17 +1053,36 @@ export default function Home() {
                         />
                       )}
 
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1.5rem', gap: '15px' }}>
-                        {isCurrentImage && (
-                          <button 
-                            onClick={() => enhanceImage(activeMediaUrl)}
-                            className="btn-outline"
-                            style={{ borderColor: 'var(--primary)', color: 'var(--primary)', display: 'flex', gap: '8px', alignItems: 'center' }}
-                          >
-                            <TrendingUp size={16} />
-                            Enhance (1 Credit)
-                          </button>
-                        )}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1.5rem', gap: '15px', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                          {isCurrentImage && (
+                            <button 
+                              onClick={() => enhanceImage(activeMediaUrl)}
+                              className="btn-outline"
+                              style={{ borderColor: 'var(--primary)', color: 'var(--primary)', display: 'flex', gap: '8px', alignItems: 'center' }}
+                            >
+                              <TrendingUp size={16} />
+                              Enhance (1 Credit)
+                            </button>
+                          )}
+                          
+                          {activeGen && (
+                            <button
+                              onClick={() => handleShareToggle(activeGen)}
+                              className="btn-outline"
+                              style={{ 
+                                borderColor: activeGen.is_public ? '#ef4444' : 'var(--primary)', 
+                                color: activeGen.is_public ? '#ef4444' : 'var(--primary)', 
+                                display: 'flex', 
+                                gap: '8px', 
+                                alignItems: 'center' 
+                              }}
+                            >
+                              <span>🌐</span>
+                              {activeGen.is_public ? 'Aus Galerie entfernen' : 'In Galerie teilen'}
+                            </button>
+                          )}
+                        </div>
                         
                         <a 
                           href={activeMediaUrl} 
@@ -1142,10 +1197,13 @@ export default function Home() {
                               <span style={{ fontSize: '0.65rem', marginTop: '4px' }}>Generiere...</span>
                             </div>
                           )}
-                          <div style={{ padding: '6px' }}>
-                            <p style={{ fontSize: '0.75rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: 'var(--text-muted)' }}>
+                          <div style={{ padding: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <p style={{ fontSize: '0.75rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: 'var(--text-muted)', flex: 1 }}>
                               {gen.prompt}
                             </p>
+                            {gen.is_public && (
+                              <span title="In Galerie geteilt" style={{ fontSize: '0.75rem', marginLeft: '6px' }}>🌐</span>
+                            )}
                           </div>
                         </div>
                       ))}
