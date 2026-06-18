@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
 import { supabase } from '../lib/supabase'
 import { PROMPT_CATEGORIES } from '../lib/promptsData'
 import { PROMPT_TRANSLATIONS } from '../lib/translations'
@@ -17,7 +18,8 @@ import {
   Coins,
   LogOut,
   HelpCircle,
-  ChevronDown
+  ChevronDown,
+  Globe
 } from 'lucide-react'
 
 export default function PromptsPage() {
@@ -90,11 +92,19 @@ export default function PromptsPage() {
 
   return (
     <div className="app-container" style={{ background: 'var(--bg-main)' }}>
+      <Head>
+        <title>Nischenprompts für KI-Generierung - Vorlagen & Ideen | AI Video Generator</title>
+        <meta name="description" content="Entdecke exklusive, professionell optimierte KI-Prompts für deine Branche. Perfekt geeignet für Marketing, Immobilien, Fotografie und Social Media." />
+        <meta name="robots" content="index, follow" />
+      </Head>
       <header className="header">
         <Link href="/" className="brand">
           <span>AI Bild & Videogenerator</span>
         </Link>
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          <Link href="/gallery" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Globe size={16} /> Community-Galerie
+          </Link>
           <Link href="/prompts" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
             <Book size={16} /> Nischenprompts
           </Link>

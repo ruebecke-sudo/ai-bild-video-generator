@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
 import { supabase } from '../lib/supabase'
-import { Check, Zap, Sparkles, CreditCard, Video } from 'lucide-react'
+import { Check, Zap, Sparkles, CreditCard, Video, Globe, Book, BookOpen, ArrowLeft } from 'lucide-react'
 
 // WICHTIG: Ersetze diese Platzhalter durch deine echten Stripe Price IDs aus deinem Dashboard (Test-Modus oder Live-Modus)
 // Erstelle dafür in Stripe ein Produkt (z.B. "Starter Paket", 3.99€ Einmalzahlung) und kopiere die Preis-ID (beginnt mit price_...)
@@ -108,13 +109,27 @@ export default function Pricing() {
 
   return (
     <div className="app-container" style={{ background: 'var(--bg-main)' }}>
+      <Head>
+        <title>Preise & Credit-Pakete - Günstig KI Videos erstellen | AI Video Generator</title>
+        <meta name="description" content="Lade deine Credits flexibel ohne Abo-Zwang auf. Starter, Pro und Elite Pakete sowie exklusive Nischenprompts für professionelle KI-Medien-Generierung." />
+        <meta name="robots" content="index, follow" />
+      </Head>
       <header className="header">
         <Link href="/" className="brand">
           <span>AI Bild & Videogenerator</span>
         </Link>
-        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-          <Link href="/" className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.9rem' }}>
-            Zurück zum Dashboard
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          <Link href="/gallery" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Globe size={16} /> Community-Galerie
+          </Link>
+          <Link href="/prompts" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Book size={16} /> Nischenprompts
+          </Link>
+          <Link href="/manual" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <BookOpen size={16} /> Anleitung
+          </Link>
+          <Link href="/" className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.9rem', display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <ArrowLeft size={16} /> Zum Generator
           </Link>
         </div>
       </header>
@@ -381,46 +396,55 @@ export default function Pricing() {
                 All-Access sichern
               </button>
             </div>
+          </div>
 
           {/* NEU: Übersicht aller 14 Prompt-Kategorien */}
           <div className="glass-panel" style={{ marginTop: '4rem', padding: '3rem', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
             <h3 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '1.5rem', textAlign: 'center', background: 'linear-gradient(135deg, #fff 0%, var(--primary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              Enthaltene Nischen-Kategorien im All-Access Paket
+              Nischen-Kategorien
             </h3>
             <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '2.5rem', fontSize: '0.95rem' }}>
-              Jede Kategorie enthält genau 30 professionell ausformulierte Bild-Prompts und 30 Video-Prompts (insgesamt 60 Prompts pro Nische).
+              Bis zu 60 exklusive Prompts für Bild & Videogenerierung je Kategorie. Klicke auf eine Nische, um das Paket einzeln freizuschalten (1 Nische für 7,99 €) oder sichere dir oben das All-Access-Bundle.
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
               {[
-                { name: 'Winzer & Weinberge', icon: '🍇' },
-                { name: 'Immobilienmakler', icon: '🏠' },
-                { name: 'Hochzeit', icon: '💍' },
-                { name: 'Strandmotive', icon: '🏖️' },
-                { name: 'Urlaubsmotive', icon: '✈️' },
-                { name: 'Lost Places', icon: '🏚️' },
-                { name: 'Schlösser & Burgen', icon: '🏰' },
-                { name: 'Food & Gastronomie', icon: '🍔' },
-                { name: 'Fitness & Sport', icon: '🏋️' },
-                { name: 'Automotive & Autos', icon: '🏎️' },
-                { name: 'Social Media', icon: '📱' },
-                { name: 'Natur & Landschaften', icon: '🏔️' },
-                { name: 'Cyberpunk & Sci-Fi', icon: '👾' },
-                { name: 'Kunst & Abstrakt', icon: '🎨' }
+                { id: 'winzer', name: 'Winzer & Weinberge', icon: '🍇' },
+                { id: 'immo', name: 'Immobilienmakler', icon: '🏠' },
+                { id: 'hochzeit', name: 'Hochzeit', icon: '💍' },
+                { id: 'strand', name: 'Strandmotive', icon: '🏖️' },
+                { id: 'urlaub', name: 'Urlaubsmotive', icon: '✈️' },
+                { id: 'lostplaces', name: 'Lost Places', icon: '🏚️' },
+                { id: 'schloesser', name: 'Schlösser & Burgen', icon: '🏰' },
+                { id: 'food', name: 'Food & Gastronomie', icon: '🍔' },
+                { id: 'fitness', name: 'Fitness & Sport', icon: '🏋️' },
+                { id: 'auto', name: 'Automotive & Autos', icon: '🏎️' },
+                { id: 'socialmedia', name: 'Social Media', icon: '📱' },
+                { id: 'nature', name: 'Natur & Landschaften', icon: '🏔️' },
+                { id: 'cyberpunk', name: 'Cyberpunk & Sci-Fi', icon: '👾' },
+                { id: 'artistic', name: 'Kunst & Abstrakt', icon: '🎨' }
               ].map((item, index) => (
                 <div 
                   key={index} 
+                  onClick={() => handleCheckout({ name: `Nische - ${item.name}`, priceId: 'prod_UihEMBqexHpgIQ', credits: 200, categoryId: item.id })}
+                  className="hover-scale"
                   style={{ 
                     display: 'flex', 
                     alignItems: 'center', 
                     gap: '12px', 
-                    background: 'rgba(255, 255, 255, 0.02)', 
+                    background: 'rgba(168, 85, 247, 0.05)', 
                     padding: '12px 18px', 
                     borderRadius: '10px', 
-                    border: '1px solid var(--border-color)' 
+                    border: '1px solid rgba(168, 85, 247, 0.2)',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
                   }}
+                  title={`Nischenpaket "${item.name}" jetzt freischalten`}
                 >
                   <span style={{ fontSize: '1.5rem' }}>{item.icon}</span>
-                  <span style={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>{item.name}</span>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>{item.name}</span>
+                    <span style={{ color: 'var(--primary)', fontSize: '0.75rem', fontWeight: 700 }}>Einzeln freischalten</span>
+                  </div>
                 </div>
               ))}
             </div>
