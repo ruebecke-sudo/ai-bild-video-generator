@@ -17,7 +17,8 @@ import {
   Coins,
   LogOut,
   HelpCircle,
-  ChevronDown
+  ChevronDown,
+  Globe
 } from 'lucide-react'
 
 export default function PromptsPage() {
@@ -95,6 +96,9 @@ export default function PromptsPage() {
           <span>AI Bild & Videogenerator</span>
         </Link>
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          <Link href="/gallery" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Globe size={16} /> Community-Galerie
+          </Link>
           <Link href="/prompts" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
             <Book size={16} /> Nischenprompts
           </Link>
