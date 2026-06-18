@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { supabase } from '../lib/supabase'
+import { PROMPT_CATEGORIES } from '../lib/promptsData'
 import { 
   Globe, 
   Book, 
@@ -50,58 +51,22 @@ const PRODUCT_PROMPTS = [
   }
 ]
 
-const EXCLUSIVE_TEMPLATES = [
-  {
-    name: "Luxusuhren",
-    image: "/previews/watch.png",
-    prompt: "Ultra-realistic product photography of a luxury gold chronograph watch, placed on a dark reflective liquid surface. Golden light streaks, sharp metallic reflections, high contrast, studio background, 8k resolution, razor sharp details. No borders, premium style."
-  },
-  {
-    name: "Schmuck & Ringe",
-    image: "/previews/ring.png",
-    prompt: "Spectacular macro shot of a diamond engagement ring, resting on a glowing quartz crystal. Sparkling highlights, dramatic dark background, shallow depth of field, high contrast, professional jewelry photography, 8k. No borders, luxury feel."
-  },
-  {
-    name: "Handtaschen",
-    image: "/previews/handbag.png",
-    prompt: "Modern studio commercial photography of a designer leather handbag, standing on a minimalist architectural concrete pedestal. Warm sunset volumetric rays, palm leaf shadows, premium textures, sharp detail, 8k. No borders, aesthetic styling."
-  },
-  {
-    name: "Kaffee & Bohnen",
-    image: "/previews/coffee.png",
-    prompt: "Ultra-realistic dynamic shot of coffee beans exploding around a glossy black ceramic coffee cup. Rich espresso splashes, dark wood background, warm side lighting, high contrast, macro photography. No borders, professional food styling."
-  },
-  {
-    name: "Tech-Gadgets",
-    image: "/previews/gadget.png",
-    prompt: "Spectacular product shot of sleek wireless headphones, hovering above a neon blue glowing circuit board. Deep shadows, electric blue and purple rim lights, ultra-modern tech aesthetic, razor sharp. No borders, professional tech shot."
-  },
-  {
-    name: "Sonnenbrillen",
-    image: "/previews/sunglasses.png",
-    prompt: "Luxury commercial shot of designer sunglasses, resting on wet golden sand with gentle sea foam washing up. Clear water droplets, bright sun rays reflecting off the lenses, high contrast, premium summer vibe. No borders, professional commercial."
-  },
-  {
-    name: "Sportnahrung",
-    image: "/previews/fitness.png",
-    prompt: "Dynamic product photography of a black supplement container, next to a water shaker with water splashes exploding around it. Dark concrete background, high contrast, powerful green neon backlighting, sharp details. No borders, professional sports commercial."
-  },
-  {
-    name: "Bio-Skincare",
-    image: "/previews/skincare.png",
-    prompt: "Minimalist skincare product shot of a green glass dropper bottle, placed on a light beige sandstone block next to a monstera leaf. Warm direct sunlight, hard shadows, organic aesthetic, ultra-sharp. No borders, professional cosmetic photography."
-  },
-  {
-    name: "Profi-Messer",
-    image: "/previews/knife.png",
-    prompt: "Dramatic product shot of a Damascus steel chef knife, embedded in a rustic dark wood chopping board. Scattered fresh herbs, salt dust floating in the air, side studio lighting, sharp metal texture, high contrast. No borders, premium kitchenware."
-  },
-  {
-    name: "Edelschokolade",
-    image: "/previews/chocolate.png",
-    prompt: "Macro studio shot of a broken dark chocolate bar, revealing gold leaf accents inside. Melted rich chocolate dripping, dark cocoa powder dusting, warm amber lighting, ultra-realistic texture, 8k. No borders, professional chocolate styling."
-  }
-]
+const WHITE_BG_PROMPTS = {
+  winzer: "Premium wine bottle, isolated on a pure white background, soft studio shadows, professional commercial photography, 8k.",
+  immo: "Elegant house model keychain, isolated on a pure white background, high contrast, clean product shot.",
+  hochzeit: "Fairytale diamond wedding rings, isolated on a pure white background, sparkling reflections, jewelry photography.",
+  strand: "Beautiful tropical seashell, isolated on a pure white background, clear details, summer aesthetic.",
+  urlaub: "Classic vintage leather travel suitcase, isolated on a pure white background, adventure theme.",
+  lostplaces: "Dusty retro vintage camera, isolated on a pure white background, antique details.",
+  schloesser: "Medieval iron knight helmet, isolated on a pure white background, shiny metallic texture.",
+  food: "Gourmet beef burger, isolated on a pure white background, fresh ingredients, professional food shot.",
+  fitness: "Black sports supplement bottle and shaker, isolated on a pure white background, clean athletic look.",
+  auto: "Sleek modern sports car, isolated on a pure white background, glossy reflections, studio lighting.",
+  socialmedia: "Creator microphone and ring light setup, isolated on a pure white background, clean tech shot.",
+  nature: "Lush green pine bonsai tree in a pot, isolated on a pure white background, organic texture.",
+  cyberpunk: "Futuristic neon glowing VR goggles, isolated on a pure white background, sci-fi design.",
+  artistic: "Modern abstract fluid art sculpture, isolated on a pure white background, vibrant colors."
+}
 
 export default function EcommerceLanding() {
   // Auth & Account
@@ -120,6 +85,30 @@ export default function EcommerceLanding() {
   const [promptStrength, setPromptStrength] = useState(0.7)
   const [aspectRatio, setAspectRatio] = useState('1:1')
   const [mode, setMode] = useState('image') // 'image' | 'video'
+  const [selectedCategory, setSelectedCategory] = useState('winzer')
+
+  const getCategoryPrompts = (catId) => {
+    const cat = PROMPT_CATEGORIES.find(c => c.id === catId)
+    if (!cat) return []
+    
+    // Nimm die ersten 9 Prompts aus der Kategorie
+    const list = cat.images.slice(0, 9).map((p, idx) => ({
+      name: `Stil ${idx + 1}`,
+      prompt: p,
+      image: cat.previewImage
+    }))
+
+    // Füge den 10. Prompt hinzu (Freistehendes Motiv mit weißem Hintergrund)
+    const whiteBgPrompt = WHITE_BG_PROMPTS[catId] || "Isolated product, pure white background, studio light, clean shot."
+    list.push({
+      name: "Weißer HG",
+      prompt: whiteBgPrompt,
+      image: cat.previewImage,
+      isWhiteBg: true
+    })
+
+    return list
+  }
   
   // Statuses
   const [isRemovingBg, setIsRemovingBg] = useState(false)
@@ -814,15 +803,32 @@ export default function EcommerceLanding() {
                     <span style={{ background: 'var(--secondary)', color: '#fff', borderRadius: '50%', width: '22px', height: '22px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}>2</span>
                     Szenerie & Design-Prompt wählen
                   </h3>
+
+                  {/* Kategorie-Auswahlfeld */}
+                  <div style={{ marginBottom: '1.2rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: 600 }}>Stil-Kategorie:</label>
+                    <select
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                      className="input-field"
+                      style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.25)', border: '1px solid var(--border-color)', color: '#fff', borderRadius: '8px', width: '100%', cursor: 'pointer', fontSize: '0.95rem' }}
+                    >
+                      {PROMPT_CATEGORIES.map(cat => (
+                        <option key={cat.id} value={cat.id} style={{ background: '#0f172a', color: '#fff' }}>
+                          {cat.icon} {cat.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                   
                   <textarea 
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
                     placeholder="Beschreibe das gewünschte Ambiente (z. B. 'High-end product photography, luxury stone block counter, soft morning sun, botanical background')"
                     className="input-field"
-                    style={{ minHeight: '100px', fontFamily: 'inherit', resize: 'vertical' }}
+                    style={{ minHeight: '200px', fontSize: '1.05rem', fontFamily: 'inherit', resize: 'vertical' }}
                   />
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '4px' }}>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '6px' }}>
                     Tipp: Klicke auf ein Bild unten, um einen spektakulären Prompt sofort in den Generator zu laden!
                   </div>
                   <div style={{ 
@@ -834,7 +840,7 @@ export default function EcommerceLanding() {
                     scrollbarWidth: 'thin',
                     scrollbarColor: 'var(--secondary) transparent'
                   }} className="custom-scrollbar">
-                    {EXCLUSIVE_TEMPLATES.map((tmpl, idx) => (
+                    {getCategoryPrompts(selectedCategory).map((tmpl, idx) => (
                       <div
                         key={idx}
                         onClick={() => {
@@ -859,13 +865,30 @@ export default function EcommerceLanding() {
                           borderColor: prompt === tmpl.prompt ? 'var(--secondary)' : 'var(--border-color)',
                           boxShadow: prompt === tmpl.prompt ? '0 0 10px rgba(249, 115, 22, 0.4)' : 'none',
                           background: 'rgba(0,0,0,0.3)',
-                          marginBottom: '6px'
+                          marginBottom: '6px',
+                          position: 'relative'
                         }}>
                           <img 
                             src={tmpl.image} 
                             alt={tmpl.name} 
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                           />
+                          {/* Stylischer Overlay-Badge */}
+                          <div style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            background: tmpl.isWhiteBg ? 'var(--secondary)' : 'rgba(0,0,0,0.6)',
+                            color: tmpl.isWhiteBg ? '#000' : '#fff',
+                            fontSize: '0.65rem',
+                            fontWeight: 700,
+                            padding: '4px 0',
+                            textAlign: 'center',
+                            textTransform: 'uppercase'
+                          }}>
+                            {tmpl.name}
+                          </div>
                         </div>
                         <div style={{ fontSize: '0.75rem', fontWeight: 600, color: prompt === tmpl.prompt ? 'var(--secondary)' : 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           {tmpl.name}
