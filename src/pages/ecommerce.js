@@ -775,8 +775,8 @@ export default function EcommerceLanding() {
 
               </div>
 
-              {/* Design-Prompt & Stile komplett darunter, zentriert und doppelte Breite */}
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', maxWidth: '800px', margin: '0 auto', width: '100%', borderTop: '1px solid var(--border-color)', paddingTop: '2.5rem' }}>
+              {/* Design-Prompt & Stile komplett darunter, zentriert und volle Breite wie das erste Element */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', width: '100%', borderTop: '1px solid var(--border-color)', paddingTop: '2.5rem' }}>
                 <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
                     <h3 style={{ fontSize: '1.2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
