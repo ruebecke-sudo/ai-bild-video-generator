@@ -396,6 +396,101 @@ export default function Pricing() {
                 All-Access sichern
               </button>
             </div>
+
+          {/* NEU: Übersicht aller 14 Prompt-Kategorien */}
+          <div className="glass-panel" style={{ marginTop: '4rem', padding: '3rem', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
+            <h3 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '1.5rem', textAlign: 'center', background: 'linear-gradient(135deg, #fff 0%, var(--primary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              Enthaltene Nischen-Kategorien im All-Access Paket
+            </h3>
+            <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '2.5rem', fontSize: '0.95rem' }}>
+              Jede Kategorie enthält genau 30 professionell ausformulierte Bild-Prompts und 30 Video-Prompts (insgesamt 60 Prompts pro Nische).
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
+              {[
+                { name: 'Winzer & Weinberge', icon: '🍇' },
+                { name: 'Immobilienmakler', icon: '🏠' },
+                { name: 'Hochzeit', icon: '💍' },
+                { name: 'Strandmotive', icon: '🏖️' },
+                { name: 'Urlaubsmotive', icon: '✈️' },
+                { name: 'Lost Places', icon: '🏚️' },
+                { name: 'Schlösser & Burgen', icon: '🏰' },
+                { name: 'Food & Gastronomie', icon: '🍔' },
+                { name: 'Fitness & Sport', icon: '🏋️' },
+                { name: 'Automotive & Autos', icon: '🏎️' },
+                { name: 'Social Media', icon: '📱' },
+                { name: 'Natur & Landschaften', icon: '🏔️' },
+                { name: 'Cyberpunk & Sci-Fi', icon: '👾' },
+                { name: 'Kunst & Abstrakt', icon: '🎨' }
+              ].map((item, index) => (
+                <div 
+                  key={index} 
+                  style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '12px', 
+                    background: 'rgba(255, 255, 255, 0.02)', 
+                    padding: '12px 18px', 
+                    borderRadius: '10px', 
+                    border: '1px solid var(--border-color)' 
+                  }}
+                >
+                  <span style={{ fontSize: '1.5rem' }}>{item.icon}</span>
+                  <span style={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>{item.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* NEU: Übersicht aller 14 Prompt-Kategorien */}
+          <div className="glass-panel" style={{ marginTop: '4rem', padding: '3rem', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
+            <h3 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '1.5rem', textAlign: 'center', background: 'linear-gradient(135deg, #fff 0%, var(--primary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              Nischen-Kategorien
+            </h3>
+            <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '2.5rem', fontSize: '0.95rem' }}>
+              Bis zu 60 exklusive Prompts für Bild & Videogenerierung je Kategorie. Klicke auf eine Nische, um das Paket einzeln freizuschalten (1 Nische für 7,99 €) oder sichere dir oben das All-Access-Bundle.
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
+              {[
+                { id: 'winzer', name: 'Winzer & Weinberge', icon: '🍇' },
+                { id: 'immo', name: 'Immobilienmakler', icon: '🏠' },
+                { id: 'hochzeit', name: 'Hochzeit', icon: '💍' },
+                { id: 'strand', name: 'Strandmotive', icon: '🏖️' },
+                { id: 'urlaub', name: 'Urlaubsmotive', icon: '✈️' },
+                { id: 'lostplaces', name: 'Lost Places', icon: '🏚️' },
+                { id: 'schloesser', name: 'Schlösser & Burgen', icon: '🏰' },
+                { id: 'food', name: 'Food & Gastronomie', icon: '🍔' },
+                { id: 'fitness', name: 'Fitness & Sport', icon: '🏋️' },
+                { id: 'auto', name: 'Automotive & Autos', icon: '🏎️' },
+                { id: 'socialmedia', name: 'Social Media', icon: '📱' },
+                { id: 'nature', name: 'Natur & Landschaften', icon: '🏔️' },
+                { id: 'cyberpunk', name: 'Cyberpunk & Sci-Fi', icon: '👾' },
+                { id: 'artistic', name: 'Kunst & Abstrakt', icon: '🎨' }
+              ].map((item, index) => (
+                <div 
+                  key={index} 
+                  onClick={() => handleCheckout({ name: `Nische - ${item.name}`, priceId: 'prod_UihEMBqexHpgIQ', credits: 200, categoryId: item.id })}
+                  className="hover-scale"
+                  style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '12px', 
+                    background: 'rgba(168, 85, 247, 0.05)', 
+                    padding: '12px 18px', 
+                    borderRadius: '10px', 
+                    border: '1px solid rgba(168, 85, 247, 0.2)',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                  title={`Nischenpaket "${item.name}" jetzt freischalten`}
+                >
+                  <span style={{ fontSize: '1.5rem' }}>{item.icon}</span>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>{item.name}</span>
+                    <span style={{ color: 'var(--primary)', fontSize: '0.75rem', fontWeight: 700 }}>Einzeln freischalten</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* NEU: Übersicht aller 14 Prompt-Kategorien */}
