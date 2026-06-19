@@ -556,8 +556,13 @@ export default function PromptsPage() {
                 style={{
                   width: '100%',
                   height: '100%',
+                  minHeight: '350px',
                   objectFit: 'cover',
-                  display: 'block'
+                  display: 'block',
+                  background: '#000'
+                }}
+                onCanPlay={(e) => {
+                  e.target.play().catch(err => console.log("Autoplay blockiert:", err));
                 }}
               />
             ) : (
