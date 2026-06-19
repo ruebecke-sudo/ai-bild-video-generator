@@ -10,6 +10,15 @@ const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
 })
 
+// Erlaube größere Payloads (Base64-Bilder von Kameras/Smartphones)
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
