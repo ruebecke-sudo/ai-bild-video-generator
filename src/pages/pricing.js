@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase'
 import { Check, Zap, Sparkles, CreditCard, Video, Globe, Book, BookOpen, ArrowLeft, ShoppingBag } from 'lucide-react'
 
 // WICHTIG: Ersetze diese Platzhalter durch deine echten Stripe Price IDs aus deinem Dashboard (Abonnements)
-const PLANS = [
+const SUBSCRIPTION_PLANS = [
   {
     name: 'Basic',
     description: 'Für den regelmäßigen Bedarf und Einstieg.',
@@ -68,6 +68,56 @@ const PLANS = [
       ],
     }
   }
+]
+
+const PREPAID_PLANS = [
+  {
+    name: 'Starter',
+    price: '3.99',
+    credits: 100,
+    priceId: 'price_1TjFkECNQcSoGQI6fSGQOCOS', // Stripe Live Price-ID Starter
+    description: 'Der perfekte Einstieg zum Testen.',
+    features: [
+      '100 Credits (~20 Videos oder 100 Bilder)',
+      'Standard-Verarbeitungsgeschwindigkeit',
+      'Bild & Video-Ausgabe in HD (720p)',
+      'Persönliche Nutzungslizenz',
+    ],
+    popular: false,
+    icon: Zap,
+  },
+  {
+    name: 'Pro (Einmalig)',
+    price: '8.99',
+    credits: 350,
+    priceId: 'price_1TjFmLCNQcSoGQI6o9opPfQ3', // Stripe Live Price-ID Pro
+    description: 'Für Content-Creator und professionelle Ansprüche.',
+    features: [
+      '350 Credits (~70 Videos oder 350 Bilder)',
+      'Priorisierte Generierung (Schneller)',
+      'Full-HD-Ausgabe (1080p) & Enhance-Funktion',
+      'Kommerzielle Nutzungslizenz',
+      'Premium-Support',
+    ],
+    popular: true,
+    icon: Sparkles,
+  },
+  {
+    name: 'Elite',
+    price: '20.99',
+    credits: 1000,
+    priceId: 'price_1TjFnFCNQcSoGQI6g2BpmUzI', // Stripe Live Price-ID Elite
+    description: 'Das ultimative Paket für Power-User.',
+    features: [
+      '1000 Credits (~200 Videos oder 1000 Bilder)',
+      'Höchste Priorität in der Warteschlange',
+      'Full-HD-Ausgabe (1080p) & Maximale Qualität',
+      'Kommerzielle Lizenz & API-Zugang',
+      'Exklusiver VIP-Support',
+    ],
+    popular: false,
+    icon: Video,
+  },
 ]
 
 export default function Pricing() {
@@ -201,7 +251,7 @@ export default function Pricing() {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', maxWidth: '900px', margin: '0 auto' }}>
-          {PLANS.map((plan) => {
+          {SUBSCRIPTION_PLANS.map((plan) => {
             const Icon = plan.icon
             const currentPeriodData = plan[billingPeriod]
             return (
@@ -272,6 +322,93 @@ export default function Pricing() {
                   style={{ width: '100%', background: plan.popular ? 'var(--gradient-neon)' : 'var(--gradient-gold)' }}
                 >
                   {loadingPlan === plan.name ? 'Verbinde...' : (billingPeriod === 'monthly' ? 'Monatlich abonnieren' : 'Jährlich abonnieren')}
+                </button>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* NEU: Sektion für Einmalige Credit-Aufladungen */}
+        <div style={{ textAlign: 'center', margin: '6rem 0 3rem 0' }}>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem', background: 'linear-gradient(135deg, #fff 0%, #a855f7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            Einmalige Credit-Aufladungen
+          </h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
+            Lade deine Credits ganz flexibel auf – ohne Vertragsbindung, ohne monatliche Fixkosten.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
+          {PREPAID_PLANS.map((plan) => {
+            const Icon = plan.icon
+            return (
+              <div 
+                key={plan.name} 
+                className="glass-panel" 
+                style={{ 
+                  padding: '2.5rem', 
+                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  border: plan.popular ? '2px solid var(--primary)' : '1px solid var(--border-color)',
+                  boxShadow: plan.popular ? 'var(--shadow-neon)' : 'var(--shadow-premium)'
+                }}
+              >
+                {plan.popular && (
+                  <span style={{ 
+                    position: 'absolute', 
+                    top: '-15px', 
+                    left: '50%', 
+                    transform: 'translateX(-50%)', 
+                    background: 'var(--gradient-neon)', 
+                    color: '#fff', 
+                    padding: '4px 16px', 
+                    borderRadius: '50px', 
+                    fontSize: '0.8rem', 
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px'
+                  }}>
+                    Beliebt
+                  </span>
+                )}
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1rem' }}>
+                  <div style={{ background: plan.popular ? 'var(--gradient-neon)' : 'var(--bg-input)', padding: '10px', borderRadius: '10px' }}>
+                    <Icon size={24} style={{ color: '#fff' }} />
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.5rem', fontWeight: 700 }}>{plan.name}</h3>
+                    <p style={{ color: 'var(--text-dim)', fontSize: '0.85rem' }}>{plan.description}</p>
+                  </div>
+                </div>
+
+                <div style={{ margin: '1.5rem 0', display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                  <span style={{ fontSize: '2.5rem', fontWeight: 800 }}>€{plan.price}</span>
+                  <span style={{ color: 'var(--text-muted)' }}>einmalig</span>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(168, 85, 247, 0.15)', padding: '10px 15px', borderRadius: '8px', marginBottom: '2rem', border: '1px solid rgba(168, 85, 247, 0.3)' }}>
+                  <CreditCard size={18} style={{ color: 'var(--primary)' }} />
+                  <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>{plan.credits} Credits inklusive</span>
+                </div>
+
+                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '2.5rem', flex: 1 }}>
+                  {plan.features.map((feature, i) => (
+                    <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
+                      <Check size={16} style={{ color: 'var(--primary)', flexShrink: 0 }} />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <button 
+                  onClick={() => handleCheckout(plan, plan)}
+                  disabled={loadingPlan === plan.name}
+                  className="btn-gold" 
+                  style={{ width: '100%', background: plan.popular ? 'var(--gradient-neon)' : 'var(--gradient-gold)' }}
+                >
+                  {loadingPlan === plan.name ? 'Verbinde...' : 'Einmalig aufladen'}
                 </button>
               </div>
             )
