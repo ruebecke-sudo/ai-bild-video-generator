@@ -630,6 +630,10 @@ export default function EcommerceLanding() {
         </Link>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <ArrowLeft size={16} /> Zum Generator
+          </Link>
+
           <Link href="/ecommerce" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center', borderBottom: '2px solid var(--secondary)', paddingBottom: '2px' }}>
             <ShoppingBag size={16} /> E-Commerce
           </Link>
