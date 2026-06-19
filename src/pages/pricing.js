@@ -4,61 +4,76 @@ import Head from 'next/head'
 import { supabase } from '../lib/supabase'
 import { Check, Zap, Sparkles, CreditCard, Video, Globe, Book, BookOpen, ArrowLeft, ShoppingBag } from 'lucide-react'
 
-// WICHTIG: Ersetze diese Platzhalter durch deine echten Stripe Price IDs aus deinem Dashboard (Test-Modus oder Live-Modus)
-// Erstelle dafür in Stripe ein Produkt (z.B. "Starter Paket", 3.99€ Einmalzahlung) und kopiere die Preis-ID (beginnt mit price_...)
+// WICHTIG: Ersetze diese Platzhalter durch deine echten Stripe Price IDs aus deinem Dashboard (Abonnements)
 const PLANS = [
   {
-    name: 'Starter',
-    price: '3.99',
-    credits: 100,
-    priceId: 'prod_Uih8x4OpHVszWh', // 3,99 €
-    description: 'Der perfekte Einstieg zum Testen.',
-    features: [
-      '100 Credits (~20 Videos oder 100 Bilder)',
-      'Standard-Verarbeitungsgeschwindigkeit',
-      'Bild & Video-Ausgabe in HD (720p)',
-      'Persönliche Nutzungslizenz',
-    ],
+    name: 'Basic',
+    description: 'Für den regelmäßigen Bedarf und Einstieg.',
     popular: false,
     icon: Zap,
+    monthly: {
+      price: '6.99',
+      credits: 200,
+      priceId: 'price_1TjxIBCNQcSoGQI6PAqZOJEA', // Stripe monatlicher Basic Price ID
+      features: [
+        '200 Credits inklusive',
+        'Entspricht 40 Videos oder 299 Bildern',
+        'Standard-Verarbeitungsgeschwindigkeit',
+        'Bild & Video-Ausgabe in HD (bis 720p)',
+        'Persönliche Nutzungslizenz',
+      ],
+    },
+    yearly: {
+      price: '70.00', // 12 * 6,99 € = 83,88 €, abzüglich 15% = 71,29 €, abgerundet auf gerade Zahl
+      credits: 2400, // 200 * 12
+      priceId: 'price_1TjxLbCNQcSoGQI6bypb7uT1', // Stripe jährlicher Basic Price ID
+      features: [
+        '2.400 Credits inklusive',
+        'Entspricht 480 Videos oder 3.588 Bildern',
+        'Standard-Verarbeitungsgeschwindigkeit',
+        'Bild & Video-Ausgabe in HD (bis 720p)',
+        'Persönliche Nutzungslizenz',
+      ],
+    }
   },
   {
-    name: 'Pro (Empfohlen)',
-    price: '8.99',
-    credits: 350,
-    priceId: 'prod_UihAz4aPM1AZJ6', // 8,99 €
-    description: 'Für Content-Creator und professionelle Ansprüche.',
-    features: [
-      '350 Credits (~70 Videos oder 350 Bilder)',
-      'Priorisierte Generierung (Schneller)',
-      'Full-HD-Ausgabe (1080p) & Enhance-Funktion',
-      'Kommerzielle Nutzungslizenz',
-      'Premium-Support',
-    ],
+    name: 'Pro',
+    description: 'Für anspruchsvolle Anwender und Creator.',
     popular: true,
     icon: Sparkles,
-  },
-  {
-    name: 'Elite',
-    price: '20.99',
-    credits: 1000,
-    priceId: 'prod_UihBUKHr6GOhtp', // 20,99 €
-    description: 'Das ultimative Paket für Power-User.',
-    features: [
-      '1000 Credits (~200 Videos oder 1000 Bilder)',
-      'Höchste Priorität in der Warteschlange',
-      'Full-HD-Ausgabe (1080p) & Maximale Qualität',
-      'Kommerzielle Lizenz & API-Zugang',
-      'Exklusiver VIP-Support',
-    ],
-    popular: false,
-    icon: Video,
-  },
+    monthly: {
+      price: '17.99',
+      credits: 700,
+      priceId: 'price_1TjxPFCNQcSoGQI608gwHihE', // Stripe monatlicher Pro Price ID
+      features: [
+        '700 Credits inklusive',
+        'Entspricht 140 Videos oder 700 Bildern',
+        'Priorisierte Generierung (Schneller)',
+        'Full-HD-Ausgabe (1080p) & Enhance-Funktion',
+        'Kommerzielle Nutzungslizenz',
+        'Premium-Support',
+      ],
+    },
+    yearly: {
+      price: '182.00', // 12 * 17,99 € = 215,88 €, abzüglich 15% = 183,50 €, abgerundet auf gerade Zahl
+      credits: 8400, // 700 * 12
+      priceId: 'price_1TjxT9CNQcSoGQI6YP8kYD4W', // Stripe jährlicher Pro Price ID
+      features: [
+        '8.400 Credits inklusive',
+        'Entspricht 1.680 Videos oder 8.400 Bildern',
+        'Priorisierte Generierung (Schneller)',
+        'Full-HD-Ausgabe (1080p) & Enhance-Funktion',
+        'Kommerzielle Nutzungslizenz',
+        'Premium-Support',
+      ],
+    }
+  }
 ]
 
 export default function Pricing() {
   const [user, setUser] = useState(null)
   const [loadingPlan, setLoadingPlan] = useState(null)
+  const [billingPeriod, setBillingPeriod] = useState('monthly') // 'monthly' oder 'yearly'
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -72,9 +87,9 @@ export default function Pricing() {
     return () => subscription.unsubscribe()
   }, [])
 
-  const handleCheckout = async (plan) => {
+  const handleCheckout = async (plan, currentPeriodData) => {
     if (!user) {
-      alert('Bitte melde dich zuerst an, um Credits zu erwerben!')
+      alert('Bitte melde dich zuerst an, um ein Paket zu abonnieren!')
       return
     }
 
@@ -87,9 +102,9 @@ export default function Pricing() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          priceId: plan.priceId,
+          priceId: currentPeriodData.priceId,
           userId: user.id,
-          credits: plan.credits,
+          credits: currentPeriodData.credits,
         }),
       })
 
@@ -110,8 +125,8 @@ export default function Pricing() {
   return (
     <div className="app-container" style={{ background: 'var(--bg-main)' }}>
       <Head>
-        <title>Preise & Credit-Pakete - Günstig KI Videos erstellen | AI Video Generator</title>
-        <meta name="description" content="Lade deine Credits flexibel ohne Abo-Zwang auf. Starter, Pro und Elite Pakete sowie exklusive Nischenprompts für professionelle KI-Medien-Generierung." />
+        <title>Preise & Abonnements - Günstig KI Videos erstellen | AI Video Generator</title>
+        <meta name="description" content="Wähle dein passendes Abonnement. Basic oder Pro mit monatlicher oder jährlicher Abrechnung (15% Rabatt) für professionelle KI-Medien-Generierung." />
         <meta name="robots" content="index, follow" />
       </Head>
       <header className="header">
@@ -138,18 +153,57 @@ export default function Pricing() {
       </header>
 
       <main className="main-content" style={{ maxWidth: '1200px' }}>
-        <div style={{ textAlign: 'center', margin: '3rem 0 4rem 0' }}>
+        <div style={{ textAlign: 'center', margin: '3rem 0 2rem 0' }}>
           <h1 style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '1rem', background: 'linear-gradient(135deg, #fff 0%, #a855f7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            Wähle dein Credit-Paket
+            Wähle dein Abonnement
           </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
-            Lade deine Credits zu unschlagbaren Preisen auf. Keine Abo-Falle, zahle nur, was du brauchst.
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto 2rem auto' }}>
+            Profitiere von monatlichen Credits ohne Limits. Jederzeit kündbar.
           </p>
+
+          {/* Stylischer Abrechnungs-Umschalter */}
+          <div style={{ display: 'inline-flex', alignItems: 'center', background: 'var(--bg-input)', padding: '6px', borderRadius: '50px', border: '1px solid var(--border-color)', position: 'relative', marginBottom: '2rem' }}>
+            <button 
+              onClick={() => setBillingPeriod('monthly')}
+              style={{
+                background: billingPeriod === 'monthly' ? 'var(--gradient-neon)' : 'transparent',
+                color: '#fff',
+                border: 'none',
+                padding: '8px 24px',
+                borderRadius: '50px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+              }}
+            >
+              Monatlich
+            </button>
+            <button 
+              onClick={() => setBillingPeriod('yearly')}
+              style={{
+                background: billingPeriod === 'yearly' ? 'var(--gradient-neon)' : 'transparent',
+                color: '#fff',
+                border: 'none',
+                padding: '8px 24px',
+                borderRadius: '50px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              Jährlich
+              <span style={{ fontSize: '0.75rem', background: '#22c55e', color: '#fff', padding: '2px 8px', borderRadius: '50px', fontWeight: 800 }}>-15%</span>
+            </button>
+          </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', maxWidth: '900px', margin: '0 auto' }}>
           {PLANS.map((plan) => {
             const Icon = plan.icon
+            const currentPeriodData = plan[billingPeriod]
             return (
               <div 
                 key={plan.name} 
@@ -178,7 +232,7 @@ export default function Pricing() {
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                   }}>
-                    Bestseller - Top Deal
+                    Empfohlen
                   </span>
                 )}
 
@@ -193,17 +247,17 @@ export default function Pricing() {
                 </div>
 
                 <div style={{ margin: '1.5rem 0', display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                  <span style={{ fontSize: '2.5rem', fontWeight: 800 }}>€{plan.price}</span>
-                  <span style={{ color: 'var(--text-muted)' }}>einmalig</span>
+                  <span style={{ fontSize: '2.5rem', fontWeight: 800 }}>€{currentPeriodData.price}</span>
+                  <span style={{ color: 'var(--text-muted)' }}>/{billingPeriod === 'monthly' ? 'Monat' : 'Jahr'}</span>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(168, 85, 247, 0.15)', padding: '10px 15px', borderRadius: '8px', marginBottom: '2rem', border: '1px solid rgba(168, 85, 247, 0.3)' }}>
                   <CreditCard size={18} style={{ color: 'var(--primary)' }} />
-                  <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>{plan.credits} Credits inklusive</span>
+                  <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>{currentPeriodData.credits} Credits inklusive</span>
                 </div>
 
                 <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '2.5rem', flex: 1 }}>
-                  {plan.features.map((feature, i) => (
+                  {currentPeriodData.features.map((feature, i) => (
                     <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
                       <Check size={16} style={{ color: 'var(--primary)', flexShrink: 0 }} />
                       <span>{feature}</span>
@@ -212,12 +266,12 @@ export default function Pricing() {
                 </ul>
 
                 <button 
-                  onClick={() => handleCheckout(plan)}
+                  onClick={() => handleCheckout(plan, currentPeriodData)}
                   disabled={loadingPlan === plan.name}
                   className="btn-gold" 
                   style={{ width: '100%', background: plan.popular ? 'var(--gradient-neon)' : 'var(--gradient-gold)' }}
                 >
-                  {loadingPlan === plan.name ? 'Verbinde...' : 'Jetzt aufladen'}
+                  {loadingPlan === plan.name ? 'Verbinde...' : (billingPeriod === 'monthly' ? 'Monatlich abonnieren' : 'Jährlich abonnieren')}
                 </button>
               </div>
             )
@@ -268,7 +322,7 @@ export default function Pricing() {
                 </li>
               </ul>
 
-              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '1 Nische - 20 Prompts', priceId: 'prod_UihEMBqexHpgIQ', credits: 200 })}>
+              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '1 Nische - 20 Prompts', priceId: 'price_1TjFpmCNQcSoGQI6fkHIYXgW', credits: 200 })}>
                 Wählen
               </button>
             </div>
@@ -305,7 +359,7 @@ export default function Pricing() {
                 </li>
               </ul>
  
-              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '1 Nische - 40 Prompts', priceId: 'prod_UihFhuJMf7nsQg', credits: 400 })}>
+              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '1 Nische - 40 Prompts', priceId: 'price_1TjFqpCNQcSoGQI6LYRwAN0i', credits: 400 })}>
                 Wählen
               </button>
             </div>
@@ -358,7 +412,7 @@ export default function Pricing() {
                 </li>
               </ul>
  
-              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '3 Nischen - 60 Prompts', priceId: 'prod_UihIJxfZVR0Yax', credits: 600 })}>
+              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: '3 Nischen - 60 Prompts', priceId: 'price_1TjFtwCNQcSoGQI6YEiB8DDz', credits: 600 })}>
                 Bundle sichern
               </button>
             </div>
@@ -395,7 +449,7 @@ export default function Pricing() {
                 </li>
               </ul>
 
-              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: 'All Access - 840 Prompts', priceId: 'prod_UihKEAStIdM6RJ', credits: 1400 })}>
+              <button className="btn-gold" style={{ width: '100%', padding: '10px 16px', background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }} onClick={() => handleCheckout({ name: 'All Access - 840 Prompts', priceId: 'price_1TjFvNCNQcSoGQI6psW8GZ25', credits: 1400 })}>
                 All-Access sichern
               </button>
             </div>
@@ -472,7 +526,7 @@ export default function Pricing() {
               ].map((item, index) => (
                 <div 
                   key={index} 
-                  onClick={() => handleCheckout({ name: `Nische - ${item.name}`, priceId: 'prod_UihEMBqexHpgIQ', credits: 200, categoryId: item.id })}
+                  onClick={() => handleCheckout({ name: `Nische - ${item.name}`, priceId: 'price_1TjFpmCNQcSoGQI6fkHIYXgW', credits: 200, categoryId: item.id })}
                   className="hover-scale"
                   style={{ 
                     display: 'flex', 

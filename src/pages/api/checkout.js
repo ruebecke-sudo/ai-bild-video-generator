@@ -20,6 +20,8 @@ export default async function handler(req, res) {
   }
 
   try {
+    let mode = 'payment'
+
     // Falls eine Product-ID übergeben wurde (startet mit prod_), holen wir uns den aktiven Preis dafür
     if (priceId.startsWith('prod_')) {
       const prices = await stripe.prices.list({
@@ -33,15 +35,26 @@ export default async function handler(req, res) {
       resolvedPriceId = prices.data[0].id
     }
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card', 'paypal', 'sofort', 'giropay'],
+    // Überprüfen, ob es sich um einen wiederkehrenden Preis (Abo) handelt
+    try {
+      if (resolvedPriceId.startsWith('price_')) {
+        const priceDetails = await stripe.prices.retrieve(resolvedPriceId)
+        if (priceDetails && priceDetails.type === 'recurring') {
+          mode = 'subscription'
+        }
+      }
+    } catch (e) {
+      console.warn('Preis-Typ konnte nicht bestimmt werden, fahre mit payment fort:', e)
+    }
+
+    const sessionData = {
       line_items: [
         {
           price: resolvedPriceId,
           quantity: 1,
         },
       ],
-      mode: 'payment',
+      mode: mode,
       metadata: {
         userId: userId,
         credits: credits.toString(),
@@ -49,7 +62,15 @@ export default async function handler(req, res) {
       },
       success_url: `${req.headers.origin}/?payment=success&category=${req.body.categoryId || ''}`,
       cancel_url: `${req.headers.origin}/pricing?payment=cancelled`,
-    })
+    }
+
+    // Bei Subscriptions lassen wir Stripe die optimalen Zahlungsmethoden aus dem Dashboard wählen.
+    // Bei Einmalzahlungen verwenden wir die explizite Liste.
+    if (mode === 'payment') {
+      sessionData.payment_method_types = ['card', 'paypal', 'sofort', 'giropay']
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionData)
 
     return res.status(200).json({ sessionId: session.id, url: session.url })
   } catch (err) {
