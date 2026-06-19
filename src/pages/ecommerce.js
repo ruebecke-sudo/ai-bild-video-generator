@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { supabase } from '../lib/supabase'
-import { PROMPT_CATEGORIES } from '../lib/promptsData'
 import { 
   Globe, 
   Book, 
@@ -42,75 +41,95 @@ const PRODUCT_PROMPTS = [
     prompt: "Minimalist luxury product photography of perfume bottle, standing on a wet dark volcanic rock plate with water droplets. Volumetric sunlight rays piercing through dark sand, elegant stone blocks, packaging, cinematic shadows, highly detailed.",
     translation: "Minimalistische Luxus-Produktfotografie einer Parfümflasche auf einer nassen, dunklen Vulkansteinplatte mit Wassertropfen. Sonnenstrahlen scheinen durch dunklen Sand, elegante Steinblöcke, filmische Schatten.",
     type: "ecommerce"
+  },
+  {
+    title: "Accessoires (Uhren, Schmuck etc.)",
+    desc: "Platziert Uhren oder Schmuck auf elegantem Marmor oder Beton.",
+    prompt: "High-end luxury commercial shot of a gold wristwatch, resting on a clean minimalist sandstone block, sharp shadows, elegant sunset lighting, 8k, professional jewelry photography.",
+    translation: "Hochwertige luxuriöse Werbeaufnahme einer goldenen Armbanduhr auf einem sauberen, minimalistischen Sandsteinblock, scharfe Schatten, elegantes Sonnenuntergangslicht.",
+    type: "ecommerce"
+  },
+  {
+    title: "Schokoladenprodukte (Pralinen, Tafeln etc.)",
+    desc: "Präsentiert Schokolade cremig schmelzend in warmem Licht.",
+    prompt: "Macro studio commercial shot of dark chocolate pieces with golden leaf accents, melted rich chocolate dripping around, cocoa powder dust in the air, warm ambient lighting, highly detailed texture.",
+    translation: "Makro-Studioaufnahme von dunklen Schokoladenstücken mit Blattgold-Akzenten, geschmolzene Schokolade tropft herum, Kakaopulver in der Luft, warme Beleuchtung.",
+    type: "ecommerce"
+  },
+  {
+    title: "Exklusive Damenmode (Taschen, Kleider etc.)",
+    desc: "Platziert Modeprodukte in minimalistisch-architektonischen Kulissen.",
+    prompt: "High-end fashion commercial photography of a luxury leather handbag, standing on a sleek concrete architectural pedestal, volumetric sun rays, tropical leaf shadows, modern minimal design.",
+    translation: "High-End-Modewerbung einer luxuriösen Lederhandtasche auf einem eleganten, architektonischen Betonpodest, Sonnenstrahlen, tropische Blattschatten.",
+    type: "ecommerce"
+  },
+  {
+    title: "Exklusive Herrenmode (Anzüge, Schuhe etc.)",
+    desc: "Inszeniert Herrenschnürschuhe oder Anzüge im modernen Studio-Look.",
+    prompt: "Professional studio product photography of a classic brown leather dress shoe, isolated on a textured grey background, perfect studio rim lighting, sharp leather texture details, high-end commercial style.",
+    translation: "Professionelle Studio-Produktfotografie eines klassischen braunen Lederschuhs, isoliert auf einem strukturierten grauen Hintergrund, perfekte Studio-Randbeleuchtung.",
+    type: "ecommerce"
   }
 ]
 
-const CATEGORY_SUBJECTS = {
-  winzer: "a luxury wine bottle",
-  immo: "a modern house model",
-  hochzeit: "a wedding decoration ornament",
-  strand: "a tropical seashell",
-  urlaub: "a traveler travel bag",
-  lostplaces: "a vintage retro item",
-  schloesser: "a historical antique artifact",
-  food: "a delicious gourmet dish",
-  fitness: "a fitness shaker bottle",
-  auto: "a luxury sports car",
-  socialmedia: "a creator microphone",
-  nature: "an organic natural product",
-  cyberpunk: "a futuristic cyberpunk gadget",
-  artistic: "an abstract colorful sculpture"
-}
+const ECOMMERCE_CATEGORIES = [
+  { id: 'spirituosen', name: 'Edle Spirituosen & Getränke', icon: '🥃', subject: 'a luxury whiskey bottle' },
+  { id: 'kosmetik', name: 'Parfüm & Kosmetik', icon: '🧴', subject: 'a premium perfume bottle' },
+  { id: 'accessoires', name: 'Accessoires', icon: '⌚', subject: 'a luxury gold watch' },
+  { id: 'schokoladen', name: 'Schokoladenprodukte', icon: '🍫', subject: 'an organic dark chocolate bar' },
+  { id: 'damenmode', name: 'Exklusive Damenmode', icon: '👗', subject: 'a designer handbag' },
+  { id: 'herrenmode', name: 'Exklusive Herrenmode', icon: '👔', subject: 'a classic leather dress shoe' }
+]
 
 const STYLE_TEMPLATES = [
   {
     name: "Marmor Bar",
-    image: "/previews/watch.png",
+    image: "/previews/whiskey_marmor_bar.png",
     promptPattern: "High-end commercial product photography of [SUBJECT], placed on a dark polished marble bar counter. Next to it is a crystal glass with ice. Swirling dramatic golden smoke rising behind. Moody luxury bar background with warm out-of-focus lights, depth of field, 8k resolution, professional studio lighting."
   },
   {
     name: "Vulkanstein",
-    image: "/previews/ring.png",
+    image: "/previews/whiskey_vulkanstein.png",
     promptPattern: "Minimalist luxury product photography of [SUBJECT], standing on a wet dark volcanic rock plate with water droplets. Volumetric sunlight rays piercing through dark sand, elegant stone blocks, packaging, cinematic shadows, highly detailed."
   },
   {
     name: "Neon-Splash",
-    image: "/previews/fitness.png",
+    image: "/previews/whiskey_neon_splash.png",
     promptPattern: "Professional studio commercial shot of [SUBJECT], floating in mid-air. Splashes of colorful neon water and liquid paint exploding around. Dark background with blue and purple studio backlighting, high speed action photography, sharp details."
   },
   {
     name: "Beton-Podest",
-    image: "/previews/handbag.png",
+    image: "/previews/whiskey_beton_podest.png",
     promptPattern: "Modern studio commercial photography of [SUBJECT], standing on a minimalist architectural concrete pedestal. Warm sunset volumetric rays, palm leaf shadows, premium textures, sharp detail, 8k."
   },
   {
     name: "Strand & Sand",
-    image: "/previews/sunglasses.png",
+    image: "/previews/whiskey_strand.png",
     promptPattern: "Luxury commercial shot of [SUBJECT], resting on wet golden sand with gentle sea foam washing up. Clear water droplets, bright sun rays reflecting off, high contrast, premium summer vibe."
   },
   {
     name: "Bio-Natur",
-    image: "/previews/skincare.png",
+    image: "/previews/whiskey_bio_natur.png",
     promptPattern: "Minimalist product shot of [SUBJECT], placed on a light beige sandstone block next to a green monstera leaf. Warm direct sunlight, hard shadows, organic aesthetic, ultra-sharp, professional cosmetic photography."
   },
   {
     name: "Cyberpunk",
-    image: "/previews/gadget.png",
+    image: "/previews/whiskey_cyberpunk.png",
     promptPattern: "Spectacular product shot of [SUBJECT], hovering above a neon blue glowing circuit board. Deep shadows, electric blue and purple rim lights, ultra-modern tech aesthetic, razor sharp."
   },
   {
     name: "Profi-Küche",
-    image: "/previews/knife.png",
+    image: "/previews/whiskey_profi_kueche.png",
     promptPattern: "Dramatic product shot of [SUBJECT], embedded in a rustic dark wood chopping board. Scattered fresh herbs, salt dust floating in the air, side studio lighting, sharp texture, high contrast."
   },
   {
     name: "Edelschoko",
-    image: "/previews/chocolate.png",
+    image: "/previews/whiskey_edelschoko.png",
     promptPattern: "Macro studio shot of [SUBJECT], with gold leaf accents. Melted rich chocolate dripping, dark cocoa powder dusting, warm amber lighting, ultra-realistic texture, 8k."
   },
   {
     name: "Weißer HG",
-    image: "/whiskey-before.png",
+    image: "/previews/whiskey_weisser_hg.png",
     promptPattern: "[SUBJECT], isolated on a pure white background, soft studio shadows, professional commercial photography, 8k.",
     isWhiteBg: true
   }
@@ -133,7 +152,7 @@ export default function EcommerceLanding() {
   const [promptStrength, setPromptStrength] = useState(0.7)
   const [aspectRatio, setAspectRatio] = useState('1:1')
   const [mode, setMode] = useState('image')
-  const [selectedCategory, setSelectedCategory] = useState('winzer')
+  const [selectedCategory, setSelectedCategory] = useState('spirituosen')
   
   // Statuses
   const [isRemovingBg, setIsRemovingBg] = useState(false)
@@ -144,7 +163,8 @@ export default function EcommerceLanding() {
   const [enhancingProgress, setEnhancingProgress] = useState(0)
 
   const getCategoryPrompts = (catId) => {
-    const subject = CATEGORY_SUBJECTS[catId] || "a product"
+    const category = ECOMMERCE_CATEGORIES.find(c => c.id === catId)
+    const subject = category ? category.subject : "a product"
     return STYLE_TEMPLATES.map(tmpl => {
       const p = tmpl.promptPattern.replace("[SUBJECT]", subject)
       return {
@@ -789,11 +809,16 @@ export default function EcommerceLanding() {
                       <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Kategorie:</span>
                       <select
                         value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        onChange={(e) => {
+                          setSelectedCategory(e.target.value);
+                          // Direkt den ersten Prompt der neuen Kategorie laden
+                          const prompts = getCategoryPrompts(e.target.value);
+                          if (prompts.length > 0) setPrompt(prompts[0].prompt);
+                        }}
                         className="input-field"
                         style={{ padding: '4px 8px', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-color)', color: '#fff', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', width: 'auto' }}
                       >
-                        {PROMPT_CATEGORIES.map(cat => (
+                        {ECOMMERCE_CATEGORIES.map(cat => (
                           <option key={cat.id} value={cat.id} style={{ background: '#0f172a', color: '#fff' }}>
                             {cat.icon} {cat.name}
                           </option>
@@ -823,21 +848,18 @@ export default function EcommerceLanding() {
                     }}
                   />
                   
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textAlign: 'center' }}>
-                    Tipp: Klicke auf eine Stil-Vorschau unten, um einen spektakulären Prompt für deine Kategorie sofort zu laden!
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)', textAlign: 'center', fontWeight: 600 }}>
+                    Tipp: Wähle ein Design-Szenario aus den 2 Reihen unten, um dein Produkt in diesem Stil rendern zu lassen!
                   </div>
 
-                  {/* Stil Vorschaubilder horizontal scrollbar */}
+                  {/* Stil Vorschaubilder in 2 Reihen (5 Spalten) und vergrößert */}
                   <div style={{ 
-                    display: 'flex', 
-                    gap: '10px', 
-                    overflowX: 'auto', 
-                    padding: '8px 4px',
-                    scrollbarWidth: 'thin',
-                    scrollbarColor: 'var(--secondary) transparent',
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', 
+                    gap: '12px', 
                     width: '100%',
-                    justifyContent: 'center'
-                  }} className="custom-scrollbar">
+                    marginTop: '10px'
+                  }}>
                     {getCategoryPrompts(selectedCategory).map((tmpl, idx) => (
                       <div
                         key={idx}
@@ -845,26 +867,24 @@ export default function EcommerceLanding() {
                           setPrompt(tmpl.prompt);
                         }}
                         style={{
-                          flexShrink: 0,
-                          width: '72px',
                           cursor: 'pointer',
                           textAlign: 'center',
                           transition: 'transform 0.2s',
+                          width: '100%'
                         }}
-                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
                         onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1.0)'}
                       >
                         <div style={{
-                          width: '72px',
-                          height: '72px',
-                          borderRadius: '6px',
+                          height: '110px',
+                          borderRadius: '8px',
                           overflow: 'hidden',
                           border: '2px solid',
                           borderColor: prompt === tmpl.prompt ? 'var(--secondary)' : 'var(--border-color)',
-                          boxShadow: prompt === tmpl.prompt ? '0 0 8px rgba(249, 115, 22, 0.4)' : 'none',
+                          boxShadow: prompt === tmpl.prompt ? '0 0 12px rgba(249, 115, 22, 0.5)' : 'none',
                           background: 'rgba(0,0,0,0.3)',
-                          marginBottom: '4px',
-                          position: 'relative'
+                          position: 'relative',
+                          width: '100%'
                         }}>
                           <img 
                             src={tmpl.image} 
@@ -876,13 +896,14 @@ export default function EcommerceLanding() {
                             bottom: 0,
                             left: 0,
                             right: 0,
-                            background: tmpl.isWhiteBg ? 'var(--secondary)' : 'rgba(0,0,0,0.7)',
-                            color: tmpl.isWhiteBg ? '#000' : '#fff',
-                            fontSize: '0.55rem',
+                            background: prompt === tmpl.prompt ? 'var(--gradient-neon)' : 'rgba(0,0,0,0.75)',
+                            color: '#fff',
+                            fontSize: '0.65rem',
                             fontWeight: 700,
-                            padding: '2px 0',
+                            padding: '4px 0',
                             textAlign: 'center',
-                            textTransform: 'uppercase'
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px'
                           }}>
                             {tmpl.name}
                           </div>
