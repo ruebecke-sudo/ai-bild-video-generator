@@ -120,19 +120,28 @@ export default function Manual() {
             </p>
           </section>
 
-          {/* Section 5: Nischenprompts */}
+          {/* Section 5: Exkl. Prompt-Generator */}
           <section style={{ marginBottom: '2.5rem' }}>
             <h2 style={{ fontSize: '1.4rem', color: '#fff', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <Sparkles size={20} style={{ color: 'var(--primary)' }} />
-              5. Verwendung von Nischenprompts
+              5. Exkl. Prompt-Generator (Nischen-Prompts)
             </h2>
             <div style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '0.95rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <p>Unser System bietet exklusive, erprobte Prompts für verschiedene Branchen (Nischen):</p>
+              <p>Unser <strong>Exklusive Prompt-Generator</strong> bietet zwei mächtige Wege, um professionelle und verkaufsstarke Prompts für deine Branche oder Produkte zu erhalten:</p>
+              
+              <h3 style={{ fontSize: '1.1rem', color: '#fff', margin: '10px 0 5px 0' }}>A) Vordefinierte Premium-Prompts</h3>
+              <ul style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '15px' }}>
+                <li><strong>Branche auswählen:</strong> Wähle eine der vorkonfigurierten Kategorien (z. B. <i>Winzer</i>, <i>Immobilien</i>, <i>Kosmetik</i>, <i>Schokolade</i>, <i>Herrenmode</i> u.v.m.).</li>
+                <li><strong>Deutsche Vorschau:</strong> Jeder Prompt zeigt eine deutsche Beschreibung zur Orientierung.</li>
+                <li><strong>Englischen Prompt laden:</strong> Klicke auf <i>In Generator laden</i>, um den optimierten englischen Prompt direkt in dein Dashboard zu übertragen, oder kopiere ihn. Die Bild- und Videomodelle arbeiten für beste Ergebnisse ausschließlich auf Englisch.</li>
+                <li><strong>Pakete freischalten:</strong> Die ersten 3 Prompts sind frei nutzbar. Die restlichen Prompts der Kategorie lassen sich über den Freischalt-Button als Paket freischalten.</li>
+              </ul>
+
+              <h3 style={{ fontSize: '1.1rem', color: '#fff', margin: '10px 0 5px 0' }}>B) Eigene exklusive Nischen-Prompts generieren (KI-gestützt)</h3>
               <ul style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <li><strong>Branche auswählen:</strong> Navigiere über das obere Menü auf „Nischenprompts“ und wähle eine Kategorie wie <i>Winzer</i>, <i>Immobilien</i>, <i>Hochzeit</i>, <i>Social Media</i>, <i>Cyberpunk</i> u.v.m.</li>
-                <li><strong>Deutsche Übersetzung lesen:</strong> Jeder Prompt hat eine deutsche Kurzbeschreibung zur Vorschau (diese ist kopiergeschützt und dient nur zur Orientierung).</li>
-                <li><strong>Englischen Prompt nutzen:</strong> Klicke auf <i>In Generator laden</i>, um den optimierten englischen Prompt direkt in das Dashboard zu übertragen, oder kopiere ihn mit dem <i>Kopieren</i>-Button. Für beste KI-Ergebnisse arbeiten die Modelle ausschließlich mit englischen Begriffen.</li>
-                <li><strong>Pakete freischalten:</strong> Die ersten 3 Prompts sind frei nutzbar. Die restlichen Prompts können über den Button am Ende der Liste als Paket auf der Preise-Seite freigeschaltet werden.</li>
+                <li><strong>Zielgerichtete hooks nutzen:</strong> Suchst du für deine spezielle Nische, Branche oder deine Produkte den perfekten Prompt? Verwende das Generierungs-Formular direkt über der Liste.</li>
+                <li><strong>Reale KI-Generierung:</strong> Gib deine Nische oder dein Produkt ein und klicke auf <i>„Exklusiven Prompt generieren“</i>. Unser System nutzt modernste KI (Meta Llama-3-70b), um in Sekundenschnelle einen maßgeschneiderten, hochqualitativen englischen Prompt sowie eine deutsche Übersetzung für dich zu erstellen.</li>
+                <li><strong>Direkt anwenden:</strong> Übertrage deinen frisch generierten, exklusiven Prompt mit einem Klick in den Generator und erstelle sofort perfekt passende Bilder oder Videos für dein Business.</li>
               </ul>
             </div>
           </section>
