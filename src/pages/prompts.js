@@ -20,7 +20,10 @@ import {
   HelpCircle,
   ChevronDown,
   Globe,
-  ShoppingBag
+  ShoppingBag,
+  Wand2,
+  Loader2,
+  Gift
 } from 'lucide-react'
 
 export default function PromptsPage() {
@@ -32,6 +35,65 @@ export default function PromptsPage() {
 
   const [unlockedCategories, setUnlockedCategories] = useState([])
   const [loadingProfile, setLoadingProfile] = useState(true)
+
+  // Nischen-Prompt-Assistent States
+  const [wizardIndustry, setWizardIndustry] = useState('')
+  const [wizardProduct, setWizardProduct] = useState('')
+  const [wizardStyle, setWizardStyle] = useState('Elegant & Luxuriös')
+  const [wizardType, setWizardType] = useState('image')
+  const [isGeneratingWizard, setIsGeneratingWizard] = useState(false)
+  const [wizardResult, setWizardResult] = useState(null) // { prompt: '', translation: '' }
+  const [wizardError, setWizardError] = useState('')
+
+  const handleGenerateWizardPrompt = async (e) => {
+    e.preventDefault()
+    if (!user) {
+      alert('Bitte logge dich ein, um eigene Nischenprompts zu generieren!')
+      return
+    }
+    if (!wizardIndustry.trim() || !wizardProduct.trim()) {
+      alert('Bitte fülle Branche und Produkt aus.')
+      return
+    }
+    if (credits < 1) {
+      alert('Nicht genügend Credits. Das Generieren von maßgeschneiderten Prompts kostet 1 Credit.')
+      return
+    }
+
+    setIsGeneratingWizard(true)
+    setWizardError('')
+    setWizardResult(null)
+
+    try {
+      const response = await fetch('/api/generate-prompt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          industry: wizardIndustry,
+          product: wizardProduct,
+          style: wizardStyle,
+          type: wizardType,
+          userId: user.id
+        })
+      })
+
+      const data = await response.json()
+      if (response.ok) {
+        setWizardResult({
+          prompt: data.prompt,
+          translation: data.translation
+        })
+        setCredits(data.creditsLeft)
+      } else {
+        setWizardError(data.error || 'Fehler beim Generieren des Prompts.')
+      }
+    } catch (err) {
+      console.error(err)
+      setWizardError('Netzwerkfehler beim Generieren.')
+    } finally {
+      setIsGeneratingWizard(false)
+    }
+  }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -138,7 +200,209 @@ export default function PromptsPage() {
         </div>
       </header>
 
-      <main className="main-content" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        {/* GRANDIOSE IDEE: Der Interaktive Nischen-Prompt-Assistent */}
+        <section className="glass-panel" style={{ 
+          padding: '0', 
+          marginBottom: '4rem', 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
+          overflow: 'hidden', 
+          border: '2px solid var(--secondary)', 
+          boxShadow: 'var(--shadow-neon)',
+          background: 'linear-gradient(135deg, rgba(19, 27, 46, 0.95) 0%, rgba(30, 41, 66, 0.4) 100%)'
+        }}>
+          {/* Linker Bereich: Das grandiose Vorschau-Bild */}
+          <div style={{ position: 'relative', minHeight: '350px', borderRight: '1px solid var(--border-color)' }}>
+            <img 
+              src="/previews/geschenk_exklusiv.png" 
+              alt="Exklusiver Geschenk-Prompt-Assistent" 
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+            <div style={{
+              position: 'absolute',
+              top: '20px',
+              left: '20px',
+              background: 'var(--gradient-neon)',
+              color: '#fff',
+              padding: '6px 14px',
+              borderRadius: '20px',
+              fontSize: '0.85rem',
+              fontWeight: 800,
+              boxShadow: '0 4px 15px rgba(168,85,247,0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <Wand2 size={14} /> NEU: Prompt-Assistent
+            </div>
+          </div>
+
+          {/* Rechter Bereich: Formular & Generierung */}
+          <div style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '1.2rem' }}>
+            <div>
+              <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#fff', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.5rem' }}>
+                <Sparkles style={{ color: 'var(--secondary)' }} size={24} />
+                Eigene exklusive Nischenprompts erstellen
+              </h2>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: '1.5' }}>
+                Du suchst für deine Branche oder deine Produkte die besten Prompts? Hier ist die Lösung! Gib einfach deine Nische und dein Produkt ein und unser KI-Assistent formuliert dir sofort verkaufsstarke Prompts für Bilder und Videos.
+              </p>
+            </div>
+
+            <form onSubmit={handleGenerateWizardPrompt} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-dim)' }}>Deine Branche / Nische</label>
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="z.B. Kaffeerösterei, Zahnarzt" 
+                    className="glass-input" 
+                    style={{ width: '100%', fontSize: '0.9rem', padding: '10px 12px' }}
+                    value={wizardIndustry}
+                    onChange={(e) => setWizardIndustry(e.target.value)}
+                  />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-dim)' }}>Dein Produkt / Service</label>
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="z.B. Bio-Espresso, Bleaching" 
+                    className="glass-input" 
+                    style={{ width: '100%', fontSize: '0.9rem', padding: '10px 12px' }}
+                    value={wizardProduct}
+                    onChange={(e) => setWizardProduct(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-dim)' }}>Gewünschter Stil</label>
+                  <select 
+                    className="glass-input"
+                    style={{ width: '100%', fontSize: '0.9rem', padding: '10px 12px', color: '#fff', background: 'var(--bg-input)' }}
+                    value={wizardStyle}
+                    onChange={(e) => setWizardStyle(e.target.value)}
+                  >
+                    <option value="Elegant & Luxuriös">✨ Elegant & Luxuriös</option>
+                    <option value="Modern & Minimalistisch">📐 Modern & Minimalistisch</option>
+                    <option value="Natürlich & Organisch">🌿 Natürlich & Organisch</option>
+                    <option value="Cyberpunk & Neon">👾 Cyberpunk & Neon</option>
+                    <option value="Fotorealistisch & Studio">📷 Fotorealistisch & Studio</option>
+                    <option value="Klassisch & Rustikal">🪵 Klassisch & Rustikal</option>
+                  </select>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-dim)' }}>Erstellungs-Typ</label>
+                  <div style={{ display: 'flex', gap: '6px', height: '100%' }}>
+                    <button 
+                      type="button" 
+                      onClick={() => setWizardType('image')}
+                      style={{ flex: 1, padding: '8px', fontSize: '0.85rem', fontWeight: 700, borderRadius: '8px', border: wizardType === 'image' ? '1px solid var(--primary)' : '1px solid var(--border-color)', background: wizardType === 'image' ? 'rgba(168,85,247,0.15)' : 'transparent', color: '#fff', cursor: 'pointer' }}
+                    >
+                      Bild
+                    </button>
+                    <button 
+                      type="button" 
+                      onClick={() => setWizardType('video')}
+                      style={{ flex: 1, padding: '8px', fontSize: '0.85rem', fontWeight: 700, borderRadius: '8px', border: wizardType === 'video' ? '1px solid var(--primary)' : '1px solid var(--border-color)', background: wizardType === 'video' ? 'rgba(168,85,247,0.15)' : 'transparent', color: '#fff', cursor: 'pointer' }}
+                    >
+                      Video
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {wizardError && (
+                <div style={{ color: '#ef4444', fontSize: '0.85rem', fontWeight: 600, background: 'rgba(239, 68, 68, 0.1)', padding: '8px 12px', borderRadius: '6px' }}>
+                  ⚠️ {wizardError}
+                </div>
+              )}
+
+              <button 
+                type="submit" 
+                disabled={isGeneratingWizard} 
+                className="btn-gold" 
+                style={{ 
+                  background: 'var(--gradient-neon)', 
+                  boxShadow: 'var(--shadow-neon)', 
+                  fontWeight: 800, 
+                  padding: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
+              >
+                {isGeneratingWizard ? (
+                  <>
+                    <Loader2 className="animate-spin" size={16} />
+                    Analysiere Nische & Generiere...
+                  </>
+                ) : (
+                  <>
+                    <Wand2 size={16} />
+                    Maßgeschneiderten Prompt erstellen (1 Credit)
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Generierungs-Ergebnis */}
+            {wizardResult && (
+              <div className="glass-panel" style={{ 
+                padding: '1.25rem', 
+                background: 'rgba(168, 85, 247, 0.08)', 
+                border: '1px solid var(--primary)', 
+                borderRadius: '12px',
+                marginTop: '0.5rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px'
+              }}>
+                <div>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Deutscher Übersetzungs-Entwurf (Kopierschutz)</span>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontStyle: 'italic', margin: '4px 0 0 0', userSelect: 'none', WebkitUserSelect: 'none' }}>
+                    {wizardResult.translation}
+                  </p>
+                </div>
+                <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '10px' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Generierter Englischer Prompt</span>
+                  <p style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 600, margin: '4px 0 0 0' }}>
+                    {wizardResult.prompt}
+                  </p>
+                </div>
+                <div style={{ display: 'flex', gap: '8px', marginTop: '5px' }}>
+                  <button 
+                    onClick={() => handleCopyPrompt(wizardResult.prompt)}
+                    className="btn-outline" 
+                    style={{ flex: 1, fontSize: '0.8rem', padding: '8px' }}
+                  >
+                    {copiedPromptText === wizardResult.prompt ? (
+                      <>
+                        <Check size={14} style={{ color: '#22c55e' }} /> Kopiert
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={14} /> Prompt kopieren
+                      </>
+                    )}
+                  </button>
+                  <button 
+                    onClick={() => handleUsePrompt(wizardResult.prompt, wizardType)}
+                    className="btn-gold" 
+                    style={{ flex: 1, fontSize: '0.8rem', padding: '8px', display: 'flex', gap: '4px', alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    <Sparkles size={14} /> In Generator laden
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+
         <div style={{ textAlign: 'center', margin: '3rem 0 3rem 0' }}>
           <h1 style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '1rem', background: 'linear-gradient(135deg, #fff 0%, var(--primary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Bis zu 140 exklusive Prompts zur Bild & Videoerstellung
