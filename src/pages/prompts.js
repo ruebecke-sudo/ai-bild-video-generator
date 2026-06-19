@@ -551,10 +551,13 @@ export default function PromptsPage() {
                 autoPlay
                 muted
                 playsInline
+                webkit-playsinline="true"
+                preload="auto"
                 style={{
                   width: '100%',
                   height: '100%',
-                  objectFit: 'cover'
+                  objectFit: 'cover',
+                  display: 'block'
                 }}
               />
             ) : (
