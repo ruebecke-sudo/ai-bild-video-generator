@@ -95,6 +95,47 @@ export default function PromptsPage() {
     }
   }
 
+  const [isUnlocking, setIsUnlocking] = useState(false)
+
+  const handleUnlockNicheWithCredits = async (categoryId) => {
+    if (!user) {
+      alert('Bitte logge dich zuerst ein.')
+      return
+    }
+    const cost = 50
+    if (credits < cost) {
+      alert(`Nicht genügend Credits. Das Freischalten dieser Nische kostet ${cost} Credits. Du hast ${credits} Credits. Bitte lade dein Guthaben auf der Preise-Seite auf.`)
+      return
+    }
+
+    if (!confirm(`Möchtest du die Kategorie "${activeCategory.name}" für ${cost} Credits freischalten?`)) {
+      return
+    }
+
+    setIsUnlocking(true)
+    try {
+      const response = await fetch('/api/unlock-niche', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ categoryId, userId: user.id })
+      })
+
+      const data = await response.json()
+      if (response.ok) {
+        setUnlockedCategories(data.unlockedCategories)
+        setCredits(data.creditsLeft)
+        alert('Kategorie erfolgreich freigeschaltet!')
+      } else {
+        alert(data.error || 'Fehler beim Freischalten der Kategorie.')
+      }
+    } catch (err) {
+      console.error(err)
+      alert('Verbindungsfehler beim Freischalten.')
+    } finally {
+      setIsUnlocking(false)
+    }
+  }
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null)
@@ -437,29 +478,55 @@ export default function PromptsPage() {
         </div>
 
         {/* Freischalten Button direkt unter der Auswahl */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '3rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px', marginBottom: '3rem' }}>
           {!unlockedCategories.includes(activeCategory.id) ? (
-            <Link href="/pricing#nischen-pricing" style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '10px', 
-              background: 'var(--gradient-gold)', 
-              color: '#fff', 
-              padding: '14px 28px', 
-              borderRadius: '30px', 
-              textDecoration: 'none', 
-              fontSize: '1rem', 
-              fontWeight: 800,
-              boxShadow: '0 4px 15px rgba(246, 190, 26, 0.3)',
-              transition: 'transform 0.2s',
-              border: 'none',
-              cursor: 'pointer'
-            }}
-            className="hover-scale"
-            >
-              <Lock size={16} />
-              <span>Gesamtes Paket oder diese Nische freischalten 🔓</span>
-            </Link>
+            <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <button 
+                onClick={() => handleUnlockNicheWithCredits(activeCategory.id)}
+                disabled={isUnlocking}
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '10px', 
+                  background: 'var(--gradient-neon)', 
+                  color: '#fff', 
+                  padding: '14px 28px', 
+                  borderRadius: '30px', 
+                  fontSize: '1rem', 
+                  fontWeight: 800,
+                  boxShadow: 'var(--shadow-neon)',
+                  transition: 'transform 0.2s',
+                  border: 'none',
+                  cursor: 'pointer'
+                }}
+                className="hover-scale"
+              >
+                <Coins size={16} />
+                <span>{isUnlocking ? 'Wird freigeschaltet...' : 'Mit 50 Credits freischalten 🔓'}</span>
+              </button>
+
+              <Link href="/pricing#nischen-pricing" style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '10px', 
+                background: 'var(--gradient-gold)', 
+                color: '#fff', 
+                padding: '14px 28px', 
+                borderRadius: '30px', 
+                textDecoration: 'none', 
+                fontSize: '1rem', 
+                fontWeight: 800,
+                boxShadow: '0 4px 15px rgba(246, 190, 26, 0.3)',
+                transition: 'transform 0.2s',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+              className="hover-scale"
+              >
+                <Lock size={16} />
+                <span>Paket kaufen / Preise ansehen 💳</span>
+              </Link>
+            </div>
           ) : (
             <div style={{
               display: 'flex',
