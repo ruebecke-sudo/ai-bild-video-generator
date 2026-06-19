@@ -91,6 +91,25 @@ export default function GalleryPage() {
       if (!session?.user) {
         setUnlockedCategories([])
         setCredits(0)
+      } else {
+        if (session.user.email === 'gast@my-digital-world.de') {
+          setUnlockedCategories(['winzer', 'immo', 'hochzeit', 'strand', 'urlaub', 'lostplaces', 'schloesser', 'food', 'fitness', 'auto', 'socialmedia', 'nature', 'cyberpunk', 'artistic'])
+          setCredits(9999)
+        } else {
+          supabase
+            .from('profiles')
+            .select('credits, unlocked_categories')
+            .eq('id', session.user.id)
+            .single()
+            .then(({ data }) => {
+              if (data) {
+                setCredits(data.credits)
+                if (Array.isArray(data.unlocked_categories)) {
+                  setUnlockedCategories(data.unlocked_categories)
+                }
+              }
+            })
+        }
       }
     })
 

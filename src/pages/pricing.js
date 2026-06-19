@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { supabase } from '../lib/supabase'
-import { Check, Zap, Sparkles, CreditCard, Video, Globe, Book, BookOpen, ArrowLeft, ShoppingBag } from 'lucide-react'
+import { Check, Zap, Sparkles, CreditCard, Video, Globe, Book, BookOpen, ArrowLeft, ShoppingBag, Coins } from 'lucide-react'
 
 // WICHTIG: Ersetze diese Platzhalter durch deine echten Stripe Price IDs aus deinem Dashboard (Abonnements)
 const SUBSCRIPTION_PLANS = [
