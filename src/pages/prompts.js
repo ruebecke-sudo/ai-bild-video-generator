@@ -414,7 +414,7 @@ export default function PromptsPage() {
         </div>
 
         {/* Kategorien-Auswahl */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', marginBottom: '2.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', marginBottom: '1.5rem' }}>
           {PROMPT_CATEGORIES.map((cat) => (
             <button
               key={cat.id}
@@ -434,6 +434,49 @@ export default function PromptsPage() {
               <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff' }}>{cat.name}</span>
             </button>
           ))}
+        </div>
+
+        {/* Freischalten Button direkt unter der Auswahl */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '3rem' }}>
+          {!unlockedCategories.includes(activeCategory.id) ? (
+            <Link href="/pricing#nischen-pricing" style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '10px', 
+              background: 'var(--gradient-gold)', 
+              color: '#fff', 
+              padding: '14px 28px', 
+              borderRadius: '30px', 
+              textDecoration: 'none', 
+              fontSize: '1rem', 
+              fontWeight: 800,
+              boxShadow: '0 4px 15px rgba(246, 190, 26, 0.3)',
+              transition: 'transform 0.2s',
+              border: 'none',
+              cursor: 'pointer'
+            }}
+            className="hover-scale"
+            >
+              <Lock size={16} />
+              <span>Gesamtes Paket oder diese Nische freischalten 🔓</span>
+            </Link>
+          ) : (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              background: 'rgba(34, 197, 94, 0.15)',
+              color: '#22c55e',
+              padding: '10px 20px',
+              borderRadius: '30px',
+              fontSize: '0.9rem',
+              fontWeight: 700,
+              border: '1px solid rgba(34, 197, 94, 0.4)'
+            }}>
+              <Check size={16} />
+              <span>Kategorie freigeschaltet! 🎉</span>
+            </div>
+          )}
         </div>
 
         {/* Beschreibung & Vorschau-Bild auf volle Höhe */}
@@ -523,11 +566,14 @@ export default function PromptsPage() {
           )}
         </div>
 
-        {/* Prompt Liste */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '2.5rem' }}>
-          {(activePromptType === 'image' ? activeCategory.images : activeCategory.videos).map((promptText, idx) => {
-            const isLocked = !unlockedCategories.includes(activeCategory.id) && idx >= 3;
+        {/* Neuer Zwischentitel vor der Liste */}
+        <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff', marginBottom: '1.5rem', marginTop: '4rem' }}>
+          Exklusive Prompts Ihrer ausgewählten Kategorie
+        </h3>
 
+        {/* Prompt Liste (Nur die ersten 3 unverschlüsselten/lesbaren zeigen) */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '5rem' }}>
+          {(activePromptType === 'image' ? activeCategory.images : activeCategory.videos).slice(0, 3).map((promptText, idx) => {
             return (
               <div 
                 key={idx} 
@@ -535,20 +581,15 @@ export default function PromptsPage() {
                 style={{ 
                   position: 'relative',
                   overflow: 'hidden',
-                  border: isLocked ? '1px dashed rgba(168, 85, 247, 0.3)' : '1px solid var(--border-color)',
-                  background: isLocked ? 'rgba(30, 41, 66, 0.1)' : 'rgba(30, 41, 66, 0.25)'
+                  border: '1px solid var(--border-color)',
+                  background: 'rgba(30, 41, 66, 0.25)'
                 }}
               >
-                <div style={{ flex: 1, filter: isLocked ? 'blur(4px)' : 'none', pointerEvents: isLocked ? 'none' : 'auto', transition: 'filter 0.3s' }}>
+                <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                       Prompt #{idx + 1}
                     </span>
-                    {isLocked && (
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700 }}>
-                        <Lock size={12} /> GESPERRT
-                      </span>
-                    )}
                   </div>
                   
                   {/* Deutsche Übersetzung (nicht kopierbar) */}
@@ -579,109 +620,31 @@ export default function PromptsPage() {
                   </p>
                 </div>
 
-                {/* Buttons bzw. Lock-Overlay */}
-                {isLocked ? (
-                  <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'rgba(15, 23, 42, 0.4)',
-                    backdropFilter: 'blur(2px)'
-                  }}>
-                    <button 
-                      onClick={() => {
-                        window.location.href = `/pricing#nischen-pricing`;
-                      }}
-                      className="btn-gold"
-                      style={{ 
-                        padding: '10px 20px', 
-                        fontSize: '0.85rem', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '8px',
-                        boxShadow: 'var(--shadow-neon)',
-                        background: 'var(--gradient-neon)'
-                      }}
-                    >
-                      <Lock size={14} />
-                      Nische freischalten
-                    </button>
-                  </div>
-                ) : (
-                  <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-                    <button
-                      onClick={() => handleCopyPrompt(promptText)}
-                      className="btn-outline"
-                      title="In Zwischenablage kopieren"
-                      style={{ padding: '10px 12px' }}
-                    >
-                      {copiedPromptText === promptText ? (
-                        <Check size={18} style={{ color: '#22c55e' }} />
-                      ) : (
-                        <Copy size={18} />
-                      )}
-                    </button>
-                    <button
-                      onClick={() => handleUsePrompt(promptText, activePromptType)}
-                      className="btn-gold"
-                      style={{ padding: '10px 16px', fontSize: '0.85rem', display: 'flex', gap: '6px', alignItems: 'center' }}
-                    >
-                      <Sparkles size={14} />
-                      In Generator laden
-                    </button>
-                  </div>
-                )}
+                <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                  <button
+                    onClick={() => handleCopyPrompt(promptText)}
+                    className="btn-outline"
+                    title="In Zwischenablage kopieren"
+                    style={{ padding: '10px 12px' }}
+                  >
+                    {copiedPromptText === promptText ? (
+                      <Check size={18} style={{ color: '#22c55e' }} />
+                    ) : (
+                      <Copy size={18} />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => handleUsePrompt(promptText, activePromptType)}
+                    className="btn-gold"
+                    style={{ padding: '10px 16px', fontSize: '0.85rem', display: 'flex', gap: '6px', alignItems: 'center' }}
+                  >
+                    <Sparkles size={14} />
+                    In Generator laden
+                  </button>
+                </div>
               </div>
             )
           })}
-        </div>
-
-        {/* Globaler Status-Button unten */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '5rem' }}>
-          {unlockedCategories.includes(activeCategory.id) ? (
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              background: 'rgba(34, 197, 94, 0.15)',
-              color: '#22c55e',
-              padding: '14px 28px',
-              borderRadius: '30px',
-              fontSize: '1rem',
-              fontWeight: 700,
-              border: '1px solid rgba(34, 197, 94, 0.4)'
-            }}>
-              <Check size={18} />
-              <span>Diese Kategorie ist erfolgreich freigeschaltet! 🎉</span>
-            </div>
-          ) : (
-            <Link href="/pricing#nischen-pricing" style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '10px', 
-              background: 'var(--gradient-gold)', 
-              color: '#fff', 
-              padding: '16px 32px', 
-              borderRadius: '30px', 
-              textDecoration: 'none', 
-              fontSize: '1.1rem', 
-              fontWeight: 800,
-              boxShadow: '0 4px 20px rgba(246, 190, 26, 0.4)',
-              transition: 'transform 0.2s',
-              border: 'none',
-              cursor: 'pointer'
-            }}
-            className="hover-scale"
-            >
-              <Lock size={18} />
-              <span>Gesamtes Paket oder diese Nische freischalten 🔓</span>
-            </Link>
-          )}
         </div>
       </main>
     </div>
