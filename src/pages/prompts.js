@@ -544,25 +544,15 @@ export default function PromptsPage() {
             overflow: 'hidden'
           }}>
             {activePromptType === 'video' ? (
-              <video 
-                src="/beispiel.mp4"
-                controls
-                loop
-                autoPlay
-                muted
-                playsInline
-                webkit-playsinline="true"
-                preload="auto"
+              <img 
+                src="/beispiel.jpeg"
+                alt="Video-Vorschau Platzhalter"
                 style={{
                   width: '100%',
                   height: '100%',
                   minHeight: '350px',
                   objectFit: 'cover',
-                  display: 'block',
-                  background: '#000'
-                }}
-                onCanPlay={(e) => {
-                  e.target.play().catch(err => console.log("Autoplay blockiert:", err));
+                  display: 'block'
                 }}
               />
             ) : (
