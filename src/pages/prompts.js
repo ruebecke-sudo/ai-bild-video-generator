@@ -531,39 +531,60 @@ export default function PromptsPage() {
             </div>
           </div>
 
-          {/* Volle Höhe Bild-Vorschau */}
-          {activeCategory.previewImage && (
-            <div style={{ 
-              width: '100%', 
-              minHeight: '350px',
-              position: 'relative',
-              borderLeft: '1px solid var(--border-color)'
-            }}>
-              <img 
-                src={activeCategory.previewImage} 
-                alt={`Vorschau für ${activeCategory.name}`}
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
+          {/* Volle Höhe Bild- oder Video-Vorschau */}
+          <div style={{ 
+            width: '100%', 
+            minHeight: '350px',
+            position: 'relative',
+            borderLeft: '1px solid var(--border-color)',
+            background: '#000',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden'
+          }}>
+            {activePromptType === 'video' ? (
+              <video 
+                src="/beispiel.mp4"
+                controls
+                loop
+                autoPlay
+                muted
+                style={{
+                  width: '100%',
+                  height: '100%',
                   objectFit: 'cover'
                 }}
               />
-              <div style={{
-                position: 'absolute',
-                bottom: '15px',
-                right: '15px',
-                background: 'rgba(0,0,0,0.7)',
-                padding: '6px 14px',
-                borderRadius: '20px',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                color: '#fff',
-                backdropFilter: 'blur(6px)'
-              }}>
-                Beispiel-Generierung 📷
-              </div>
+            ) : (
+              activeCategory.previewImage && (
+                <img 
+                  src={activeCategory.previewImage} 
+                  alt={`Vorschau für ${activeCategory.name}`}
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'cover'
+                  }}
+                />
+              )
+            )}
+            <div style={{
+              position: 'absolute',
+              bottom: '15px',
+              right: '15px',
+              background: 'rgba(0,0,0,0.7)',
+              padding: '6px 14px',
+              borderRadius: '20px',
+              fontSize: '0.8rem',
+              fontWeight: 600,
+              color: '#fff',
+              backdropFilter: 'blur(6px)',
+              zIndex: 10
+            }}>
+              {activePromptType === 'video' ? 'Beispiel-Video 🎥' : 'Beispiel-Bild 📷'}
             </div>
-          )}
+          </div>
         </div>
 
         {/* Neuer Zwischentitel vor der Liste */}
