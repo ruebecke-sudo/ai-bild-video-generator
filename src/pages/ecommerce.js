@@ -84,52 +84,52 @@ const ECOMMERCE_CATEGORIES = [
 const STYLE_TEMPLATES = [
   {
     name: "Marmor Bar",
-    image: "/previews/whiskey_marmor_bar.png",
+    styleId: "marmor_bar",
     promptPattern: "High-end commercial product photography of [SUBJECT], placed on a dark polished marble bar counter. Next to it is a crystal glass with ice. Swirling dramatic golden smoke rising behind. Moody luxury bar background with warm out-of-focus lights, depth of field, 8k resolution, professional studio lighting."
   },
   {
     name: "Vulkanstein",
-    image: "/previews/whiskey_vulkanstein.png",
+    styleId: "vulkanstein",
     promptPattern: "Minimalist luxury product photography of [SUBJECT], standing on a wet dark volcanic rock plate with water droplets. Volumetric sunlight rays piercing through dark sand, elegant stone blocks, packaging, cinematic shadows, highly detailed."
   },
   {
     name: "Neon-Splash",
-    image: "/previews/whiskey_neon_splash.png",
+    styleId: "neon_splash",
     promptPattern: "Professional studio commercial shot of [SUBJECT], floating in mid-air. Splashes of colorful neon water and liquid paint exploding around. Dark background with blue and purple studio backlighting, high speed action photography, sharp details."
   },
   {
     name: "Beton-Podest",
-    image: "/previews/whiskey_beton_podest.png",
+    styleId: "beton_podest",
     promptPattern: "Modern studio commercial photography of [SUBJECT], standing on a minimalist architectural concrete pedestal. Warm sunset volumetric rays, palm leaf shadows, premium textures, sharp detail, 8k."
   },
   {
     name: "Strand & Sand",
-    image: "/previews/whiskey_strand.png",
+    styleId: "strand",
     promptPattern: "Luxury commercial shot of [SUBJECT], resting on wet golden sand with gentle sea foam washing up. Clear water droplets, bright sun rays reflecting off, high contrast, premium summer vibe."
   },
   {
     name: "Bio-Natur",
-    image: "/previews/whiskey_bio_natur.png",
+    styleId: "bio_natur",
     promptPattern: "Minimalist product shot of [SUBJECT], placed on a light beige sandstone block next to a green monstera leaf. Warm direct sunlight, hard shadows, organic aesthetic, ultra-sharp, professional cosmetic photography."
   },
   {
     name: "Cyberpunk",
-    image: "/previews/whiskey_cyberpunk.png",
+    styleId: "cyberpunk",
     promptPattern: "Spectacular product shot of [SUBJECT], hovering above a neon blue glowing circuit board. Deep shadows, electric blue and purple rim lights, ultra-modern tech aesthetic, razor sharp."
   },
   {
     name: "Profi-Küche",
-    image: "/previews/whiskey_profi_kueche.png",
+    styleId: "profi_kueche",
     promptPattern: "Dramatic product shot of [SUBJECT], embedded in a rustic dark wood chopping board. Scattered fresh herbs, salt dust floating in the air, side studio lighting, sharp texture, high contrast."
   },
   {
     name: "Edelschoko",
-    image: "/previews/whiskey_edelschoko.png",
+    styleId: "edelschoko",
     promptPattern: "Macro studio shot of [SUBJECT], with gold leaf accents. Melted rich chocolate dripping, dark cocoa powder dusting, warm amber lighting, ultra-realistic texture, 8k."
   },
   {
     name: "Weißer HG",
-    image: "/previews/whiskey_weisser_hg.png",
+    styleId: "weisser_hg",
     promptPattern: "[SUBJECT], isolated on a pure white background, soft studio shadows, professional commercial photography, 8k.",
     isWhiteBg: true
   }
@@ -169,7 +169,8 @@ export default function EcommerceLanding() {
       const p = tmpl.promptPattern.replace("[SUBJECT]", subject)
       return {
         name: tmpl.name,
-        image: tmpl.image,
+        image: `/previews/${catId}_${tmpl.styleId}.png`,
+        fallbackImage: `/previews/${catId}.png`,
         prompt: p,
         isWhiteBg: tmpl.isWhiteBg || false
       }
@@ -804,9 +805,9 @@ export default function EcommerceLanding() {
                       Szenerie & Design-Prompt wählen
                     </h3>
                     
-                    {/* Kategorie Dropdown sehr klein */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Kategorie:</span>
+                    {/* Kategorie Dropdown vergrößert */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ fontSize: '0.95rem', color: 'var(--text-muted)', fontWeight: 700 }}>Kategorie:</span>
                       <select
                         value={selectedCategory}
                         onChange={(e) => {
@@ -816,7 +817,18 @@ export default function EcommerceLanding() {
                           if (prompts.length > 0) setPrompt(prompts[0].prompt);
                         }}
                         className="input-field"
-                        style={{ padding: '4px 8px', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-color)', color: '#fff', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', width: 'auto' }}
+                        style={{ 
+                          padding: '10px 20px', 
+                          background: 'var(--bg-input)', 
+                          border: '2px solid var(--border-color)', 
+                          color: '#fff', 
+                          borderRadius: '8px', 
+                          cursor: 'pointer', 
+                          fontSize: '1rem', 
+                          fontWeight: '700',
+                          width: 'auto',
+                          boxShadow: 'var(--shadow-premium)'
+                        }}
                       >
                         {ECOMMERCE_CATEGORIES.map(cat => (
                           <option key={cat.id} value={cat.id} style={{ background: '#0f172a', color: '#fff' }}>
@@ -848,15 +860,15 @@ export default function EcommerceLanding() {
                     }}
                   />
                   
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)', textAlign: 'center', fontWeight: 600 }}>
+                  <div style={{ fontSize: '0.9rem', color: 'var(--text-dim)', textAlign: 'center', fontWeight: 700, margin: '5px 0' }}>
                     Tipp: Wähle ein Design-Szenario aus den 2 Reihen unten, um dein Produkt in diesem Stil rendern zu lassen!
                   </div>
 
-                  {/* Stil Vorschaubilder in 2 Reihen (5 Spalten) und vergrößert */}
+                  {/* Stil Vorschaubilder in genau 5 Spalten (2 Reihen) und vergrößert */}
                   <div style={{ 
                     display: 'grid', 
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', 
-                    gap: '12px', 
+                    gridTemplateColumns: 'repeat(5, 1fr)', 
+                    gap: '15px', 
                     width: '100%',
                     marginTop: '10px'
                   }}>
@@ -872,7 +884,7 @@ export default function EcommerceLanding() {
                           transition: 'transform 0.2s',
                           width: '100%'
                         }}
-                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
+                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.04)'}
                         onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1.0)'}
                       >
                         <div style={{
@@ -889,6 +901,10 @@ export default function EcommerceLanding() {
                           <img 
                             src={tmpl.image} 
                             alt={tmpl.name} 
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = tmpl.fallbackImage;
+                            }}
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                           />
                           <div style={{
