@@ -200,6 +200,7 @@ export default function PromptsPage() {
         </div>
       </header>
 
+      <main className="main-content" style={{ maxWidth: '1200px', margin: '0 auto' }}>
         {/* GRANDIOSE IDEE: Der Interaktive Nischen-Prompt-Assistent */}
         <section className="glass-panel" style={{ 
           padding: '0', 
