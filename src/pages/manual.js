@@ -140,7 +140,7 @@ export default function Manual() {
               <h3 style={{ fontSize: '1.1rem', color: '#fff', margin: '10px 0 5px 0' }}>B) Eigene exklusive Nischen-Prompts generieren (KI-gestützt)</h3>
               <ul style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <li><strong>Zielgerichtete hooks nutzen:</strong> Suchst du für deine spezielle Nische, Branche oder deine Produkte den perfekten Prompt? Verwende das Generierungs-Formular direkt über der Liste.</li>
-                <li><strong>Reale KI-Generierung:</strong> Gib deine Nische oder dein Produkt ein und klicke auf <i>„Exklusiven Prompt generieren“</i>. Unser System nutzt modernste KI (Meta Llama-3-70b), um in Sekundenschnelle einen maßgeschneiderten, hochqualitativen englischen Prompt sowie eine deutsche Übersetzung für dich zu erstellen.</li>
+                <li><strong>Reale KI-Generierung:</strong> Gib deine Nische oder dein Produkt ein und klicke auf <i>„Exklusiven Prompt generieren“</i>. Unser System nutzt modernste KI (Meta Llama-3-70b), um in Sekundenschnelle einen maßgeschneiderten, hochqualitativen englischen Prompt sowie eine deutsche Übersetzung für dich zu erstellen (Kosten: 10 Credits).</li>
                 <li><strong>Direkt anwenden:</strong> Übertrage deinen frisch generierten, exklusiven Prompt mit einem Klick in den Generator und erstelle sofort perfekt passende Bilder oder Videos für dein Business.</li>
               </ul>
             </div>
