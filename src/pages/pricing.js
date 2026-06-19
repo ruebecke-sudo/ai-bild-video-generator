@@ -122,16 +122,53 @@ const PREPAID_PLANS = [
 
 export default function Pricing() {
   const [user, setUser] = useState(null)
+  const [credits, setCredits] = useState(0)
   const [loadingPlan, setLoadingPlan] = useState(null)
   const [billingPeriod, setBillingPeriod] = useState('monthly') // 'monthly' oder 'yearly'
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null)
+      if (session?.user) {
+        // Falls Gastzugang, schalten wir direkt alles frei
+        if (session.user.email === 'gast@my-digital-world.de') {
+          setCredits(9999)
+          return
+        }
+
+        supabase
+          .from('profiles')
+          .select('credits')
+          .eq('id', session.user.id)
+          .single()
+          .then(({ data }) => {
+            if (data) {
+              setCredits(data.credits)
+            }
+          })
+      }
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
+      if (!session?.user) {
+        setCredits(0)
+      } else {
+        if (session.user.email === 'gast@my-digital-world.de') {
+          setCredits(9999)
+        } else {
+          supabase
+            .from('profiles')
+            .select('credits')
+            .eq('id', session.user.id)
+            .single()
+            .then(({ data }) => {
+              if (data) {
+                setCredits(data.credits)
+              }
+            })
+        }
+      }
     })
 
     return () => subscription.unsubscribe()
@@ -196,6 +233,21 @@ export default function Pricing() {
           <Link href="/manual" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
             <BookOpen size={16} /> Anleitung
           </Link>
+          
+          {user && (
+            user.email === 'gast@my-digital-world.de' ? (
+              <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px', borderColor: 'var(--secondary)' }}>
+                <Sparkles size={16} style={{ color: 'var(--secondary)' }} />
+                <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--secondary)' }}>Demo-Modus</span>
+              </div>
+            ) : (
+              <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '30px' }}>
+                <Coins size={16} style={{ color: 'var(--primary)' }} />
+                <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{credits} Credits</span>
+              </div>
+            )
+          )}
+
           <Link href="/" className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.9rem', display: 'flex', gap: '6px', alignItems: 'center' }}>
             <ArrowLeft size={16} /> Zum Generator
           </Link>
