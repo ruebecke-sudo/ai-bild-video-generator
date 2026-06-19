@@ -643,7 +643,7 @@ export default function EcommerceLanding() {
           </Link>
 
           <Link href="/prompts" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
-            <Book size={16} /> Nischenprompts
+            <Book size={16} /> Exkl. Prompt-Generator
           </Link>
           
           <Link href="/manual" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>

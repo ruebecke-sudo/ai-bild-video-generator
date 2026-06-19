@@ -172,7 +172,7 @@ export default function PromptsPage() {
             <Globe size={16} /> Community-Galerie
           </Link>
           <Link href="/prompts" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
-            <Book size={16} /> Nischenprompts
+            <Book size={16} /> Exkl. Prompt-Generator
           </Link>
           <Link href="/manual" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
             <BookOpen size={16} /> Anleitung

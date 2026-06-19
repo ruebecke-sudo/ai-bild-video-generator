@@ -27,7 +27,7 @@ export default function Manual() {
             <Globe size={16} /> Community-Galerie
           </Link>
           <Link href="/prompts" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
-            <Book size={16} /> Nischenprompts
+            <Book size={16} /> Exkl. Prompt-Generator
           </Link>
           <Link href="/pricing" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
             Preise
