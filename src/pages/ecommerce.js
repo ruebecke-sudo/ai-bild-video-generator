@@ -81,59 +81,80 @@ const ECOMMERCE_CATEGORIES = [
   { id: 'herrenmode', name: 'Exklusive Herrenmode', icon: '👔', subject: 'a classic leather dress shoe' }
 ]
 
-const STYLE_TEMPLATES = [
-  {
-    name: "Marmor Bar",
-    styleId: "marmor_bar",
-    promptPattern: "High-end commercial product photography of [SUBJECT], placed on a dark polished marble bar counter. Next to it is a crystal glass with ice. Swirling dramatic golden smoke rising behind. Moody luxury bar background with warm out-of-focus lights, depth of field, 8k resolution, professional studio lighting."
-  },
-  {
-    name: "Vulkanstein",
-    styleId: "vulkanstein",
-    promptPattern: "Minimalist luxury product photography of [SUBJECT], standing on a wet dark volcanic rock plate with water droplets. Volumetric sunlight rays piercing through dark sand, elegant stone blocks, packaging, cinematic shadows, highly detailed."
-  },
-  {
-    name: "Neon-Splash",
-    styleId: "neon_splash",
-    promptPattern: "Professional studio commercial shot of [SUBJECT], floating in mid-air. Splashes of colorful neon water and liquid paint exploding around. Dark background with blue and purple studio backlighting, high speed action photography, sharp details."
-  },
-  {
-    name: "Beton-Podest",
-    styleId: "beton_podest",
-    promptPattern: "Modern studio commercial photography of [SUBJECT], standing on a minimalist architectural concrete pedestal. Warm sunset volumetric rays, palm leaf shadows, premium textures, sharp detail, 8k."
-  },
-  {
-    name: "Strand & Sand",
-    styleId: "strand",
-    promptPattern: "Luxury commercial shot of [SUBJECT], resting on wet golden sand with gentle sea foam washing up. Clear water droplets, bright sun rays reflecting off, high contrast, premium summer vibe."
-  },
-  {
-    name: "Bio-Natur",
-    styleId: "bio_natur",
-    promptPattern: "Minimalist product shot of [SUBJECT], placed on a light beige sandstone block next to a green monstera leaf. Warm direct sunlight, hard shadows, organic aesthetic, ultra-sharp, professional cosmetic photography."
-  },
-  {
-    name: "Cyberpunk",
-    styleId: "cyberpunk",
-    promptPattern: "Spectacular product shot of [SUBJECT], hovering above a neon blue glowing circuit board. Deep shadows, electric blue and purple rim lights, ultra-modern tech aesthetic, razor sharp."
-  },
-  {
-    name: "Profi-Küche",
-    styleId: "profi_kueche",
-    promptPattern: "Dramatic product shot of [SUBJECT], embedded in a rustic dark wood chopping board. Scattered fresh herbs, salt dust floating in the air, side studio lighting, sharp texture, high contrast."
-  },
-  {
-    name: "Edelschoko",
-    styleId: "edelschoko",
-    promptPattern: "Macro studio shot of [SUBJECT], with gold leaf accents. Melted rich chocolate dripping, dark cocoa powder dusting, warm amber lighting, ultra-realistic texture, 8k."
-  },
-  {
-    name: "Weißer HG",
-    styleId: "weisser_hg",
-    promptPattern: "[SUBJECT], isolated on a pure white background, soft studio shadows, professional commercial photography, 8k.",
-    isWhiteBg: true
-  }
-]
+const CATEGORY_STYLES = {
+  spirituosen: [
+    { name: "Marmor Bar", styleId: "marmor_bar", promptPattern: "High-end commercial product photography of [SUBJECT], placed on a dark polished marble bar counter. Next to it is a crystal glass with ice. Swirling dramatic golden smoke rising behind. Moody luxury bar background with warm out-of-focus lights, depth of field, 8k resolution, professional studio lighting." },
+    { name: "Vulkanstein", styleId: "vulkanstein", promptPattern: "Minimalist luxury product photography of [SUBJECT], standing on a wet dark volcanic rock plate with water droplets. Volumetric sunlight rays piercing through dark sand, elegant stone blocks, packaging, cinematic shadows, highly detailed." },
+    { name: "Neon-Splash", styleId: "neon_splash", promptPattern: "Professional studio commercial shot of [SUBJECT], floating in mid-air. Splashes of colorful neon water and liquid paint exploding around. Dark background with blue and purple studio backlighting, high speed action photography, sharp details." },
+    { name: "Beton-Podest", styleId: "beton_podest", promptPattern: "Modern studio commercial photography of [SUBJECT], standing on a minimalist architectural concrete pedestal. Warm sunset volumetric rays, palm leaf shadows, premium textures, sharp detail, 8k." },
+    { name: "Strand & Sand", styleId: "strand", promptPattern: "Luxury commercial shot of [SUBJECT], resting on wet golden sand with gentle sea foam washing up. Clear water droplets, bright sun rays reflecting off, high contrast, premium summer vibe." },
+    { name: "Bio-Natur", styleId: "bio_natur", promptPattern: "Minimalist product shot of [SUBJECT], placed on a light beige sandstone block next to a green monstera leaf. Warm direct sunlight, hard shadows, organic aesthetic, ultra-sharp, professional cosmetic photography." },
+    { name: "Cyberpunk", styleId: "cyberpunk", promptPattern: "Spectacular product shot of [SUBJECT], hovering above a neon blue glowing circuit board. Deep shadows, electric blue and purple rim lights, ultra-modern tech aesthetic, razor sharp." },
+    { name: "Profi-Küche", styleId: "profi_kueche", promptPattern: "Dramatic product shot of [SUBJECT], embedded in a rustic dark wood chopping board. Scattered fresh herbs, salt dust floating in the air, side studio lighting, sharp texture, high contrast." },
+    { name: "Edelschoko", styleId: "edelschoko", promptPattern: "Macro studio shot of [SUBJECT], with gold leaf accents. Melted rich chocolate dripping, dark cocoa powder dusting, warm amber lighting, ultra-realistic texture, 8k." },
+    { name: "Weißer HG", styleId: "weisser_hg", promptPattern: "[SUBJECT], isolated on a pure white background, soft studio shadows, professional commercial photography, 8k.", isWhiteBg: true }
+  ],
+  kosmetik: [
+    { name: "Wellness Oase", styleId: "wellness_oase", promptPattern: "Luxury spa cosmetics shot of [SUBJECT], sitting on a wet white marble ledge next to burning incense and soft orchids, warm morning light, zen garden background." },
+    { name: "Rosenwasser", styleId: "rosenwasser", promptPattern: "High-end product photography of [SUBJECT], floating on crystal clear water surface with delicate floating pink rose petals, soft pink studio lighting, elegant ripples." },
+    { name: "Bambuswald", styleId: "bambuswald", promptPattern: "Organic cosmetics presentation of [SUBJECT], placed on a split bamboo trunk, mist rising in a lush green bamboo forest, soft natural sunbeams, fresh wet textures." },
+    { name: "Goldstaub", styleId: "goldstaub", promptPattern: "Elegant studio commercial shot of [SUBJECT], surrounded by swirling fine gold dust and floating gold particles, dark velvet backdrop, dramatic key lighting, luxury look." },
+    { name: "Vulkanstein", styleId: "vulkanstein", promptPattern: "Minimalist luxury product photography of [SUBJECT], standing on a wet dark volcanic rock plate with water droplets. Volumetric sunlight rays piercing through dark sand, elegant stone blocks, packaging, cinematic shadows, highly detailed." },
+    { name: "Marmor Bad", styleId: "marmor_bad", promptPattern: "Luxury cosmetics shot of [SUBJECT] placed on a clean white Carrera marble bathroom counter, soft towels and a green eucalyptus vase in soft-focus background, bright day light." },
+    { name: "Strand & Sand", styleId: "strand", promptPattern: "Luxury commercial shot of [SUBJECT], resting on wet golden sand with gentle sea foam washing up. Clear water droplets, bright sun rays reflecting off, high contrast, premium summer vibe." },
+    { name: "Wüstenoase", styleId: "wuestenoase", promptPattern: "Minimalist shot of [SUBJECT] standing on a dry cracked sand block, warm glowing sunset sun behind, warm orange and beige aesthetic, soft shadows." },
+    { name: "Cyberpunk", styleId: "cyberpunk", promptPattern: "Spectacular product shot of [SUBJECT], hovering above a neon blue glowing circuit board. Deep shadows, electric blue and purple rim lights, ultra-modern tech aesthetic, razor sharp." },
+    { name: "Weißer HG", styleId: "weisser_hg", promptPattern: "[SUBJECT], isolated on a pure white background, soft studio shadows, professional commercial photography, 8k.", isWhiteBg: true }
+  ],
+  accessoires: [
+    { name: "Leder-Unterlage", styleId: "leder_unterlage", promptPattern: "High-end commercial watch photography of [SUBJECT], placed on a dark textured genuine leather desk pad next to a classic fountain pen, rich mahogany wood background, warm moody studio lighting." },
+    { name: "Marmor Bar", styleId: "marmor_bar", promptPattern: "High-end commercial product photography of [SUBJECT], placed on a dark polished marble bar counter. Next to it is a crystal glass with ice. Swirling dramatic golden smoke rising behind. Moody luxury bar background with warm out-of-focus lights, depth of field, 8k resolution, professional studio lighting." },
+    { name: "Beton-Podest", styleId: "beton_podest", promptPattern: "Modern studio commercial photography of [SUBJECT], standing on a minimalist architectural concrete pedestal. Warm sunset volumetric rays, palm leaf shadows, premium textures, sharp detail, 8k." },
+    { name: "Wasserspiegel", styleId: "wasserspiegel", promptPattern: "Creative commercial shot of [SUBJECT] resting on a dark glossy mirror surface flooded with thin layer of water, elegant water ripples, dark moody backdrop, high contrast rim lighting." },
+    { name: "Goldstaub", styleId: "goldstaub", promptPattern: "Elegant studio commercial shot of [SUBJECT], surrounded by swirling fine gold dust and floating gold particles, dark velvet backdrop, dramatic key lighting, luxury look." },
+    { name: "Vulkanstein", styleId: "vulkanstein", promptPattern: "Minimalist luxury product photography of [SUBJECT], standing on a wet dark volcanic rock plate with water droplets. Volumetric sunlight rays piercing through dark sand, elegant stone blocks, packaging, cinematic shadows, highly detailed." },
+    { name: "Modernes Büro", styleId: "modernes_buero", promptPattern: "Professional product shot of [SUBJECT] next to a sleek silver laptop on a polished white oak office desk, modern minimalist design, soft window morning light, blurred green office plant." },
+    { name: "Neon-Splash", styleId: "neon_splash", promptPattern: "Professional studio commercial shot of [SUBJECT], floating in mid-air. Splashes of colorful neon water and liquid paint exploding around. Dark background with blue and purple studio backlighting, high speed action photography, sharp details." },
+    { name: "Strand & Sand", styleId: "strand", promptPattern: "Luxury commercial shot of [SUBJECT], resting on wet golden sand with gentle sea foam washing up. Clear water droplets, bright sun rays reflecting off, high contrast, premium summer vibe." },
+    { name: "Weißer HG", styleId: "weisser_hg", promptPattern: "[SUBJECT], isolated on a pure white background, soft studio shadows, professional commercial photography, 8k.", isWhiteBg: true }
+  ],
+  schokoladen: [
+    { name: "Kakaobohnen", styleId: "kakaobohnen", promptPattern: "Macro food photography of [SUBJECT] resting on a rich bed of raw dark cocoa beans and cinnamon sticks, warm amber spot lighting, cozy chocolate factory vibe, high detail." },
+    { name: "Schoko-Splash", styleId: "schoko_splash", promptPattern: "Action food shot of [SUBJECT] floating while a splash of thick glossy liquid hot milk chocolate explodes around it, dark warm brown background, professional high speed photography." },
+    { name: "Haselnuss-Bett", styleId: "haselnuss_bett", promptPattern: "Macro product shot of [SUBJECT] nestled among whole roasted hazelnuts and dark cocoa powder dusting, rustic dark stone background, dramatic side studio lighting." },
+    { name: "Goldfolie", styleId: "goldfolie", promptPattern: "Premium commercial shot of [SUBJECT], with luxury torn gold foil wrapping details, standing on a dark obsidian stone slab, moody dark ambient light, ultra-premium gourmet styling." },
+    { name: "Marmor Bar", styleId: "marmor_bar", promptPattern: "High-end commercial product photography of [SUBJECT], placed on a dark polished marble bar counter. Next to it is a crystal glass with ice. Swirling dramatic golden smoke rising behind. Moody luxury bar background with warm out-of-focus lights, depth of field, 8k resolution, professional studio lighting." },
+    { name: "Patisserie", styleId: "patisserie", promptPattern: "Commercial food shot of [SUBJECT] on a flour-dusted marble kitchen counter next to a pastry chef's whisk and raw chocolate blocks, warm kitchen background with glowing oven light." },
+    { name: "Himbeer-Feld", styleId: "himbeer_feld", promptPattern: "Vibrant product shot of [SUBJECT] placed next to fresh ripe red raspberries and green mint leaves, splashes of red raspberry juice, bright studio light, high contrast." },
+    { name: "Edelschoko", styleId: "edelschoko", promptPattern: "Macro studio shot of [SUBJECT], with gold leaf accents. Melted rich chocolate dripping, dark cocoa powder dusting, warm amber lighting, ultra-realistic texture, 8k." },
+    { name: "Wüstenoase", styleId: "wuestenoase", promptPattern: "Minimalist shot of [SUBJECT] standing on a dry cracked sand block, warm glowing sunset sun behind, warm orange and beige aesthetic, soft shadows." },
+    { name: "Weißer HG", styleId: "weisser_hg", promptPattern: "[SUBJECT], isolated on a pure white background, soft studio shadows, professional commercial photography, 8k.", isWhiteBg: true }
+  ],
+  damenmode: [
+    { name: "Boutique", styleId: "boutique", promptPattern: "Luxury fashion store setting, [SUBJECT] elegantly displayed on a golden glass shelf, warm designer spotlights, blurry boutique interior with high-end designer clothes, elite lifestyle." },
+    { name: "Pariser Balkon", styleId: "pariser_balkon", promptPattern: "High-fashion lifestyle shot of [SUBJECT] resting on a classic Parisian wrought-iron balcony table, Parisian townhouse facade and Eiffel Tower in soft sunset background, morning coffee glass." },
+    { name: "Marmor-Treppe", styleId: "marmor_treppe", promptPattern: "Elegant editorial photography of [SUBJECT] placed on a grand white marble staircase of a royal palace, glowing golden light beams, dramatic shadows, premium fashion look." },
+    { name: "Roter Teppich", styleId: "roter_teppich", promptPattern: "Glamorous red carpet event photography, [SUBJECT] in the spotlight, glittering paparazzi camera flashes in dark background, luxury celebrity aesthetic." },
+    { name: "Beton-Podest", styleId: "beton_podest", promptPattern: "Modern studio commercial photography of [SUBJECT], standing on a minimalist architectural concrete pedestal. Warm sunset volumetric rays, palm leaf shadows, premium textures, sharp detail, 8k." },
+    { name: "Loft-Industrie", styleId: "loft_industrie", promptPattern: "Chic fashion editorial of [SUBJECT] placed in a modern industrial loft apartment, brick walls, massive metal windows, afternoon sunlight rays casting long linear shadows." },
+    { name: "Blumenwand", styleId: "blumenwand", promptPattern: "Romantic commercial photography of [SUBJECT] in front of a giant wall covered in fresh white roses and light pink peonies, soft natural outdoor lighting, pastel aesthetic." },
+    { name: "Strandpromenade", styleId: "strandpromenade", promptPattern: "Summer fashion shot of [SUBJECT] on a beach club wooden deck table, turquoise sea and white sunbeds in background, bright sun, luxury holiday vibe." },
+    { name: "Modernist Villa", styleId: "modernist_villa", promptPattern: "Clean architectural shot of [SUBJECT] next to a private infinity pool of a contemporary concrete villa, clear blue sky, luxury lifestyle aesthetic." },
+    { name: "Weißer HG", styleId: "weisser_hg", promptPattern: "[SUBJECT], isolated on a pure white background, soft studio shadows, professional commercial photography, 8k.", isWhiteBg: true }
+  ],
+  herrenmode: [
+    { name: "Chesterfield", styleId: "chesterfield", promptPattern: "High-end luxury commercial photography of [SUBJECT] resting on a vintage brown leather Chesterfield sofa, dark wood library background, warm glowing desk lamp, glass of whiskey next to it." },
+    { name: "Maßschneiderei", styleId: "massschneiderei", promptPattern: "Classic gentleman's atelier shot, [SUBJECT] on a dark oak work table next to custom tailor's scissors, chalk, measuring tape, and premium suit fabric samples, warm moody workshop light." },
+    { name: "Büro Penthouse", styleId: "buero_penthouse", promptPattern: "Sleek executive office setting, [SUBJECT] on a polished black glass table, floor-to-ceiling windows showing a glowing metropolis city skyline at dusk, sharp modern reflections." },
+    { name: "Sportwagen", styleId: "sportwagen", promptPattern: "Luxury automotive commercial shot, [SUBJECT] placed inside a sports car cockpit with premium carbon fiber and leather dashboard, dashboard dials glowing red, night city lights streaking through windshield." },
+    { name: "Industrial Loft", styleId: "industrial_loft", promptPattern: "Masculine editorial of [SUBJECT] placed in a modern industrial loft apartment, brick walls, massive metal windows, afternoon sunlight rays casting long linear shadows." },
+    { name: "Yachtdeck", styleId: "yachtdeck", promptPattern: "Maritime luxury shoot, [SUBJECT] resting on a polished teak wood deck of a mega yacht, blue sunny ocean and coastal cliffs in background, premium lifestyle." },
+    { name: "Beton-HG", styleId: "beton_hg", promptPattern: "Minimalist studio shot of [SUBJECT] standing on a raw textured dark grey concrete block, dramatic key studio lighting, high contrast, clean industrial aesthetic." },
+    { name: "Golfplatz", styleId: "golfplatz", promptPattern: "Prestigious lifestyle shot of [SUBJECT] on the green lawn of a luxury country club golf course, early morning dew, warm rising sun flare, misty background trees." },
+    { name: "Marmor Bar", styleId: "marmor_bar", promptPattern: "High-end commercial product photography of [SUBJECT], placed on a dark polished marble bar counter. Next to it is a crystal glass with ice. Swirling dramatic golden smoke rising behind. Moody luxury bar background with warm out-of-focus lights, depth of field, 8k resolution, professional studio lighting." },
+    { name: "Weißer HG", styleId: "weisser_hg", promptPattern: "[SUBJECT], isolated on a pure white background, soft studio shadows, professional commercial photography, 8k.", isWhiteBg: true }
+  ]
+}
 
 export default function EcommerceLanding() {
   // Auth & Account
@@ -165,7 +186,8 @@ export default function EcommerceLanding() {
   const getCategoryPrompts = (catId) => {
     const category = ECOMMERCE_CATEGORIES.find(c => c.id === catId)
     const subject = category ? category.subject : "a product"
-    return STYLE_TEMPLATES.map(tmpl => {
+    const templates = CATEGORY_STYLES[catId] || CATEGORY_STYLES.spirituosen
+    return templates.map(tmpl => {
       const p = tmpl.promptPattern.replace("[SUBJECT]", subject)
       return {
         name: tmpl.name,
