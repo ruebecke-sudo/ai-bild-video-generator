@@ -167,8 +167,7 @@ export default function GalleryPage() {
   // Filter logic
   const filteredItems = items.filter(item => {
     const matchesType = selectedType === 'all' || item.type === selectedType
-    const matchesCategory = selectedCategory === 'all' || item.detectedCategory === selectedCategory
-    return matchesType && matchesCategory
+    return matchesType
   })
 
   return (
@@ -267,72 +266,8 @@ export default function GalleryPage() {
                 <Video size={14} /> Videos
               </button>
             </div>
-
             <div style={{ color: 'var(--text-dim)', fontSize: '0.9rem', fontWeight: 600 }}>
               {filteredItems.length} {filteredItems.length === 1 ? 'Eintrag gefunden' : 'Einträge gefunden'}
-            </div>
-          </div>
-
-          {/* Categories Horizontal Scroller */}
-          <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1.2rem' }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: '10px' }}>
-              Nach Nische filtern
-            </span>
-            
-            <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '8px', scrollbarWidth: 'thin' }}>
-              <button
-                onClick={() => setSelectedCategory('all')}
-                className="glass-panel animate-hover"
-                style={{
-                  padding: '8px 16px',
-                  cursor: 'pointer',
-                  border: selectedCategory === 'all' ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                  background: selectedCategory === 'all' ? 'rgba(168, 85, 247, 0.15)' : 'rgba(30, 41, 66, 0.2)',
-                  whiteSpace: 'nowrap',
-                  borderRadius: '20px',
-                  color: '#fff',
-                  fontWeight: 600
-                }}
-              >
-                Allerlei 🌈
-              </button>
-
-              <button
-                onClick={() => setSelectedCategory('custom')}
-                className="glass-panel animate-hover"
-                style={{
-                  padding: '8px 16px',
-                  cursor: 'pointer',
-                  border: selectedCategory === 'custom' ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                  background: selectedCategory === 'custom' ? 'rgba(168, 85, 247, 0.15)' : 'rgba(30, 41, 66, 0.2)',
-                  whiteSpace: 'nowrap',
-                  borderRadius: '20px',
-                  color: '#fff',
-                  fontWeight: 600
-                }}
-              >
-                Eigene Kreationen ✨
-              </button>
-
-              {PROMPT_CATEGORIES.map(cat => (
-                <button
-                  key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className="glass-panel animate-hover"
-                  style={{
-                    padding: '8px 16px',
-                    cursor: 'pointer',
-                    border: selectedCategory === cat.id ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                    background: selectedCategory === cat.id ? 'rgba(168, 85, 247, 0.15)' : 'rgba(30, 41, 66, 0.2)',
-                    whiteSpace: 'nowrap',
-                    borderRadius: '20px',
-                    color: '#fff',
-                    fontWeight: 600
-                  }}
-                >
-                  {cat.icon} {cat.name}
-                </button>
-              ))}
             </div>
           </div>
         </div>
