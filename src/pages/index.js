@@ -37,7 +37,8 @@ import {
   Check,
   Globe,
   ShoppingBag,
-  ArrowRight
+  ArrowRight,
+  ArrowLeft
 } from 'lucide-react'
 
 const STYLES = [
