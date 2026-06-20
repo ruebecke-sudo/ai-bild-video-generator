@@ -668,32 +668,63 @@ export default function Pricing() {
                 { id: 'socialmedia', name: 'Social Media', icon: '📱' },
                 { id: 'nature', name: 'Natur & Landschaften', icon: '🏔️' },
                 { id: 'cyberpunk', name: 'Cyberpunk & Sci-Fi', icon: '👾' },
-                { id: 'artistic', name: 'Kunst & Abstrakt', icon: '🎨' }
-              ].map((item, index) => (
-                <div 
-                  key={index} 
-                  onClick={() => handleCheckout({ name: `Nische - ${item.name}`, priceId: 'price_1TjFpmCNQcSoGQI6fkHIYXgW', credits: 200, categoryId: item.id })}
-                  className="hover-scale"
-                  style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '12px', 
-                    background: 'rgba(168, 85, 247, 0.05)', 
-                    padding: '12px 18px', 
-                    borderRadius: '10px', 
-                    border: '1px solid rgba(168, 85, 247, 0.2)',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s'
-                  }}
-                  title={`Nischenpaket "${item.name}" jetzt freischalten`}
-                >
-                  <span style={{ fontSize: '1.5rem' }}>{item.icon}</span>
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <span style={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>{item.name}</span>
-                    <span style={{ color: 'var(--primary)', fontSize: '0.75rem', fontWeight: 700 }}>Einzeln freischalten</span>
+                { id: 'artistic', name: 'Kunst & Abstrakt', icon: '🎨' },
+                { id: 'custom_prompts', name: 'Eigene Prompts', icon: '✨', isCustom: true }
+              ].map((item, index) => {
+                if (item.isCustom) {
+                  return (
+                    <Link 
+                      key={index} 
+                      href="/prompts"
+                      className="hover-scale"
+                      style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '12px', 
+                        background: 'rgba(249, 115, 22, 0.08)', 
+                        padding: '12px 18px', 
+                        borderRadius: '10px', 
+                        border: '2px solid var(--secondary)',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                        textDecoration: 'none'
+                      }}
+                      title="Eigene exklusive Nischenprompts generieren"
+                    >
+                      <span style={{ fontSize: '1.5rem' }}>{item.icon}</span>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ color: '#fff', fontWeight: 800, fontSize: '0.9rem' }}>{item.name}</span>
+                        <span style={{ color: 'var(--secondary)', fontSize: '0.75rem', fontWeight: 800 }}>KI-Prompt Generator</span>
+                      </div>
+                    </Link>
+                  )
+                }
+                return (
+                  <div 
+                    key={index} 
+                    onClick={() => handleCheckout({ name: `Nische - ${item.name}`, priceId: 'price_1TjFpmCNQcSoGQI6fkHIYXgW', credits: 200, categoryId: item.id })}
+                    className="hover-scale"
+                    style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '12px', 
+                      background: 'rgba(168, 85, 247, 0.05)', 
+                      padding: '12px 18px', 
+                      borderRadius: '10px', 
+                      border: '1px solid rgba(168, 85, 247, 0.2)',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                    title={`Nischenpaket "${item.name}" jetzt freischalten`}
+                  >
+                    <span style={{ fontSize: '1.5rem' }}>{item.icon}</span>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span style={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>{item.name}</span>
+                      <span style={{ color: 'var(--primary)', fontSize: '0.75rem', fontWeight: 700 }}>Einzeln freischalten</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
 
