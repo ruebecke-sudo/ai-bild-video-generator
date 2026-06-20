@@ -37,8 +37,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Profil nicht gefunden.' })
     }
 
-    if (profile.credits < 10) {
-      return res.status(402).json({ error: 'Nicht genügend Credits. Das Generieren von Nischenprompts kostet 10 Credits.' })
+    if (profile.credits < 1) {
+      return res.status(402).json({ error: 'Nicht genügend Credits. Das Generieren von Nischenprompts kostet 1 Credit.' })
     }
 
     // System-Instruktion an das Llama-Textmodell für präzise Ergebnisse
@@ -102,16 +102,16 @@ Rules for the English prompt:
       }
     }
 
-    // 3. 10 Credits abziehen
+    // 3. 1 Credit abziehen
     await supabaseAdmin
       .from('profiles')
-      .update({ credits: profile.credits - 10 })
+      .update({ credits: profile.credits - 1 })
       .eq('id', userId)
 
     return res.status(200).json({ 
       prompt: result.prompt, 
       translation: result.translation, 
-      creditsLeft: profile.credits - 10 
+      creditsLeft: profile.credits - 1 
     })
   } catch (err) {
     console.error('Nischen-Prompt Generator Fehler:', err)

@@ -55,8 +55,8 @@ export default function PromptsPage() {
       alert('Bitte fülle Branche und Produkt aus.')
       return
     }
-    if (credits < 10) {
-      alert('Nicht genügend Credits. Das Generieren von maßgeschneiderten Prompts kostet 10 Credits.');
+    if (credits < 1) {
+      alert('Nicht genügend Credits. Das Generieren von maßgeschneiderten Prompts kostet 1 Credit.');
       return;
     }
 
@@ -408,7 +408,7 @@ export default function PromptsPage() {
                 ) : (
                   <>
                     <Wand2 size={16} />
-                    Maßgeschneiderten Prompt erstellen (10 Credits)
+                    Maßgeschneiderten Prompt erstellen (1 Credit)
                   </>
                 )}
               </button>
