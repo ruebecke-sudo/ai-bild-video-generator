@@ -29,13 +29,13 @@ async function generateAll() {
     console.log(`\nGeneriere Video für [${cat.name || cat.id}]...`);
     try {
       // Wir senden die Anfrage an die lokale API-Route (setzt voraus, dass das Backend läuft)
-      const response = await fetch('http://localhost:3000/api/generate', {
+      const response = await fetch('http://localhost:3001/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: 'video', // Wir nutzen das Video-Modul (Luma Dream Machine)
           prompt: cat.prompt,
-          userId: 'gast-system-override' // System-ID
+          userId: '5ecfe4cd-c69e-4db8-8b5a-aa7b8462b704' // Echte Gast-Benutzer-ID aus Supabase
         })
       });
       
@@ -50,7 +50,7 @@ async function generateAll() {
       let videoUrl = null;
       while (!videoUrl) {
         await new Promise(r => setTimeout(r, 6000)); // 6 Sekunden warten
-        const statusRes = await fetch(`http://localhost:3000/api/check-status?id=${data.predictionId}`);
+        const statusRes = await fetch(`http://localhost:3001/api/check-status?id=${data.predictionId}`);
         const statusData = await statusRes.json();
         
         if (statusData.status === 'succeeded') {
