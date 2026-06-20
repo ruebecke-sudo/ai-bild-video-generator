@@ -15,7 +15,7 @@ const CATEGORIES = [
   { id: 'schloesser', prompt: 'Cinematic drone shot flying slowly towards a majestic medieval castle standing on a mountain peak surrounded by green forests.' },
   { id: 'food', prompt: 'Extreme close-up slow motion of cheese melting on a fresh hot pizza being pulled apart, steam rising, professional food commercial.' },
   { id: 'fitness', prompt: 'Slow motion shot of an athlete running on a track at sunset, close-up on running shoes, dramatic lighting, sweat splashing.' },
-  { id: 'auto', prompt: 'Sleek luxury sports car driving fast down a winding coastal highway during sunset, camera tracking side-by-side, reflections.' },
+  { id: 'auto', prompt: 'Sleek luxury sports car driving forward fast down a winding coastal highway during sunset, camera tracking side-by-side, reflections.' },
   { id: 'socialmedia', prompt: 'A highly energetic young content creator smiling, gesturing to the camera inside a modern glowing RGB studio setup, cinematic.' },
   { id: 'nature', prompt: 'Slow motion majestic waterfall cascading down mossy green volcanic rocks in Iceland under a beautiful clean rainbow sky.' },
   { id: 'cyberpunk', prompt: 'Slow motion walk down a dark rainy cyberpunk street illuminated by glowing neon signs in violet, cyan, and gold.' },

@@ -618,7 +618,9 @@ export default function PromptsPage() {
                 autoPlay
                 loop
                 muted
-                playsinline
+                playsInline
+                controls
+                preload="auto"
                 style={{
                   width: '100%',
                   height: '100%',
