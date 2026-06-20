@@ -503,40 +503,15 @@ export default function PromptsPage() {
           ))}
         </div>
 
-        {/* Freischalten Button direkt unter der Auswahl */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px', marginBottom: '3rem' }}>
           {!unlockedCategories.includes(activeCategory.id) ? (
             <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <button 
-                onClick={() => handleUnlockNicheWithCredits(activeCategory.id)}
-                disabled={isUnlocking}
-                style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: '10px', 
-                  background: 'var(--gradient-neon)', 
-                  color: '#fff', 
-                  padding: '14px 28px', 
-                  borderRadius: '30px', 
-                  fontSize: '1rem', 
-                  fontWeight: 800,
-                  boxShadow: 'var(--shadow-neon)',
-                  transition: 'transform 0.2s',
-                  border: 'none',
-                  cursor: 'pointer'
-                }}
-                className="hover-scale"
-              >
-                <Coins size={16} />
-                <span>{isUnlocking ? 'Wird freigeschaltet...' : 'Mit 50 Credits freischalten 🔓'}</span>
-              </button>
-
               <Link href="/pricing#nischen-pricing" style={{ 
                 display: 'flex', 
                 alignItems: 'center', 
                 gap: '10px', 
                 background: 'var(--gradient-gold)', 
-                color: '#fff', 
+                color: '#000', 
                 padding: '14px 28px', 
                 borderRadius: '30px', 
                 textDecoration: 'none', 
