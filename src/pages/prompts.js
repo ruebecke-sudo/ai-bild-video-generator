@@ -613,8 +613,9 @@ export default function PromptsPage() {
           }}>
             {activePromptType === 'video' ? (
               <video 
-                src="/beispiel.mp4"
-                autoplay
+                key={activeCategory.id}
+                src={`/previews/${activeCategory.id}.mp4`}
+                autoPlay
                 loop
                 muted
                 playsinline
