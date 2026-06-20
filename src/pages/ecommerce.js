@@ -625,12 +625,12 @@ export default function EcommerceLanding() {
       </Head>
 
       <header className="header">
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
           <Link href="/" className="brand" style={{ marginBottom: 0 }}>
             <span>AI Bild & Videogenerator</span>
           </Link>
-          <Link href="/" className="btn-outline" style={{ padding: '6px 14px', fontSize: '0.8rem', background: 'var(--gradient-neon)', color: '#000', border: 'none', fontWeight: 800, borderRadius: '20px', display: 'flex', gap: '4px', alignItems: 'center', boxShadow: 'var(--shadow-neon)' }}>
-            <ArrowLeft size={12} /> Zum Generator
+          <Link href="/" className="btn-header-generator">
+            <ArrowLeft size={14} /> Zum Generator
           </Link>
         </div>
 

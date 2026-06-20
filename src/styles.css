@@ -334,6 +334,31 @@ select.glass-input option {
   object-fit: cover;
 }
 
+/* Spezifischer Button unter dem Logo */
+.btn-header-generator {
+  padding: 8px 18px;
+  font-size: 0.95rem;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-neon);
+  color: #fff !important; /* Weißer Text */
+  border: none;
+  font-weight: 800;
+  box-shadow: var(--shadow-neon);
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-header-generator:hover {
+  transform: scale(1.08); /* Etwas größer beim Hover */
+  box-shadow: 0 0 25px rgba(168, 85, 247, 0.6), 0 0 10px rgba(59, 130, 246, 0.4);
+  color: #fff !important;
+}
+
 @media (max-width: 768px) {
   .archive-grid {
     grid-template-columns: 1fr;
