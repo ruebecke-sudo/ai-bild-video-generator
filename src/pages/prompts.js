@@ -223,10 +223,30 @@ export default function PromptsPage() {
         <meta name="description" content="Entdecke exklusive, professionell optimierte KI-Prompts für deine Branche. Perfekt geeignet für Marketing, Immobilien, Fotografie und Social Media." />
         <meta name="robots" content="index, follow" />
       </Head>
-      <header className="header">
-        <Link href="/" className="brand">
-          <span>AI Bild & Videogenerator</span>
-        </Link>
+      <header className="header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 40px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
+          <Link href="/" className="brand" style={{ textDecoration: 'none' }}>
+            <span style={{ fontSize: '1.5rem', fontWeight: 800, background: 'linear-gradient(135deg, #fff 0%, var(--primary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              AI Bild & Videogenerator
+            </span>
+          </Link>
+          <Link href="/" className="btn-outline" style={{ 
+            padding: '6px 14px', 
+            fontSize: '0.85rem', 
+            display: 'flex', 
+            gap: '6px', 
+            alignItems: 'center',
+            background: 'var(--gradient-neon)',
+            color: '#000',
+            border: 'none',
+            fontWeight: 800,
+            boxShadow: 'var(--shadow-neon)',
+            borderRadius: '30px',
+            textDecoration: 'none'
+          }}>
+            <ArrowLeft size={14} /> Zum Generator
+          </Link>
+        </div>
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
           <Link href="/ecommerce" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
             <ShoppingBag size={16} /> E-Commerce
@@ -257,9 +277,6 @@ export default function PromptsPage() {
               </div>
             )
           )}
-          <Link href="/" className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.9rem', display: 'flex', gap: '6px', alignItems: 'center' }}>
-            <ArrowLeft size={16} /> Zum Generator
-          </Link>
         </div>
       </header>
 

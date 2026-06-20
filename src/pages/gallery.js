@@ -178,11 +178,16 @@ export default function GalleryPage() {
         <meta name="description" content="Entdecke atemberaubende, KI-generierte Bilder und Videos aus unserer Community. Lass dich inspirieren und lade Prompts direkt in den Generator." />
         <meta name="robots" content="index, follow" />
       </Head>
-      {/* Header */}
       <header className="header">
-        <Link href="/" className="brand">
-          <span>AI Bild & Videogenerator</span>
-        </Link>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
+          <Link href="/" className="brand" style={{ marginBottom: 0 }}>
+            <span>AI Bild & Videogenerator</span>
+          </Link>
+          <Link href="/" className="btn-outline" style={{ padding: '6px 14px', fontSize: '0.8rem', background: 'var(--gradient-neon)', color: '#000', border: 'none', fontWeight: 800, borderRadius: '20px', display: 'flex', gap: '4px', alignItems: 'center', boxShadow: 'var(--shadow-neon)' }}>
+            <ArrowLeft size={12} /> Zum Generator
+          </Link>
+        </div>
+
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
           <Link href="/ecommerce" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
             <ShoppingBag size={16} /> E-Commerce
@@ -213,9 +218,6 @@ export default function GalleryPage() {
                   <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{credits} Credits</span>
                 </div>
               )}
-              <Link href="/" className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.9rem', display: 'flex', gap: '6px', alignItems: 'center' }}>
-                <ArrowLeft size={16} /> Zum Generator
-              </Link>
             </>
           ) : (
             <Link href="/" className="btn-gold" style={{ padding: '8px 16px', fontSize: '0.9rem' }}>

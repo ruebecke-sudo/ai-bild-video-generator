@@ -625,15 +625,16 @@ export default function EcommerceLanding() {
       </Head>
 
       <header className="header">
-        <Link href="/" className="brand">
-          <span>AI Bild & Videogenerator</span>
-        </Link>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
+          <Link href="/" className="brand" style={{ marginBottom: 0 }}>
+            <span>AI Bild & Videogenerator</span>
+          </Link>
+          <Link href="/" className="btn-outline" style={{ padding: '6px 14px', fontSize: '0.8rem', background: 'var(--gradient-neon)', color: '#000', border: 'none', fontWeight: 800, borderRadius: '20px', display: 'flex', gap: '4px', alignItems: 'center', boxShadow: 'var(--shadow-neon)' }}>
+            <ArrowLeft size={12} /> Zum Generator
+          </Link>
+        </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
-            <ArrowLeft size={16} /> Zum Generator
-          </Link>
-
           <Link href="/ecommerce" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center', borderBottom: '2px solid var(--secondary)', paddingBottom: '2px' }}>
             <ShoppingBag size={16} /> E-Commerce
           </Link>

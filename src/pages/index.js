@@ -621,9 +621,14 @@ export default function Home() {
       </Head>
       {/* Header */}
       <header className="header">
-        <Link href="/" className="brand">
-          <span>AI Bild & Videogenerator</span>
-        </Link>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
+          <Link href="/" className="brand" style={{ marginBottom: 0 }}>
+            <span>AI Bild & Videogenerator</span>
+          </Link>
+          <a href="#generator-section" className="btn-outline" style={{ padding: '6px 14px', fontSize: '0.8rem', background: 'var(--gradient-neon)', color: '#000', border: 'none', fontWeight: 800, borderRadius: '20px', display: 'flex', gap: '4px', alignItems: 'center', boxShadow: 'var(--shadow-neon)' }}>
+            <ArrowLeft size={12} /> Zum Generator
+          </a>
+        </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <Link href="/ecommerce" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 600, display: 'flex', gap: '6px', alignItems: 'center' }}>
@@ -790,7 +795,7 @@ export default function Home() {
         ) : (
           /* Generator UI */
           <>
-            <div className="grid-layout">
+            <div id="generator-section" className="grid-layout">
               {/* Linke Spalte */}
               <div className="glass-panel" style={{ padding: '1.8rem', height: '100%', display: 'flex', flexDirection: 'column' }}>
                 <div className="tab-headers" style={{ marginBottom: '1.8rem' }}>
