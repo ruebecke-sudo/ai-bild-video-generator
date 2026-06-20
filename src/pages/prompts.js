@@ -328,7 +328,7 @@ export default function PromptsPage() {
                   />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                  <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-dim)' }}>Dein Produkt / Service</label>
+                  <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-dim)' }}>Exakte Produktbeschreibung</label>
                   <input 
                     type="text" 
                     required
