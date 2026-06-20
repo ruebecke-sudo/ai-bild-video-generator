@@ -644,49 +644,6 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* NEU: Übersicht aller 14 Prompt-Kategorien */}
-          <div className="glass-panel" style={{ marginTop: '4rem', padding: '3rem', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
-            <h3 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '1.5rem', textAlign: 'center', background: 'linear-gradient(135deg, #fff 0%, var(--primary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              Enthaltene Nischen-Kategorien im All-Access Paket
-            </h3>
-            <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '2.5rem', fontSize: '0.95rem' }}>
-              Jede Kategorie enthält genau 30 professionell ausformulierte Bild-Prompts und 30 Video-Prompts (insgesamt 60 Prompts pro Nische).
-            </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
-              {[
-                { name: 'Winzer & Weinberge', icon: '🍇' },
-                { name: 'Immobilienmakler', icon: '🏠' },
-                { name: 'Hochzeit', icon: '💍' },
-                { name: 'Strandmotive', icon: '🏖️' },
-                { name: 'Urlaubsmotive', icon: '✈️' },
-                { name: 'Lost Places', icon: '🏚️' },
-                { name: 'Schlösser & Burgen', icon: '🏰' },
-                { name: 'Food & Gastronomie', icon: '🍔' },
-                { name: 'Fitness & Sport', icon: '🏋️' },
-                { name: 'Automotive & Autos', icon: '🏎️' },
-                { name: 'Social Media', icon: '📱' },
-                { name: 'Natur & Landschaften', icon: '🏔️' },
-                { name: 'Cyberpunk & Sci-Fi', icon: '👾' },
-                { name: 'Kunst & Abstrakt', icon: '🎨' }
-              ].map((item, index) => (
-                <div 
-                  key={index} 
-                  style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '12px', 
-                    background: 'rgba(255, 255, 255, 0.02)', 
-                    padding: '12px 18px', 
-                    borderRadius: '10px', 
-                    border: '1px solid var(--border-color)' 
-                  }}
-                >
-                  <span style={{ fontSize: '1.5rem' }}>{item.icon}</span>
-                  <span style={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>{item.name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
 
           {/* NEU: Übersicht aller 14 Prompt-Kategorien */}
           <div className="glass-panel" style={{ marginTop: '4rem', padding: '3rem', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
