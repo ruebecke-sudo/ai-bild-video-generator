@@ -1330,7 +1330,7 @@ export default function Home() {
               <section className="features-grid">
                 <div>
                   <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '1.2rem' }}>
-                    Ein Tool für unendliche KI-Videoerstellungsfälle
+                    Ein Tool für unendliche KI-Bild- & Videoerstellungsfälle
                   </h2>
                   <p style={{ color: 'var(--text-muted)', lineHeight: '1.7', marginBottom: '1.5rem' }}>
                     Egal ob für persönliches Storytelling, virale TikTok-Clips, Instagram Reels oder Werbekampagnen für dein Business. Unser KI-System passt sich flexibel deinen Zielen an.
