@@ -90,11 +90,11 @@ select.glass-input option {
 /* Premium Buttons */
 .btn-gold {
   background: var(--gradient-gold);
-  color: #fff;
+  color: #000 !important; /* Textfarbe Schwarz */
   border: none;
   border-radius: 10px;
   padding: 12px 24px;
-  font-weight: 600;
+  font-weight: 800; /* Noch etwas dickerer Text für bessere Lesbarkeit */
   cursor: pointer;
   transition: all 0.3s ease;
   display: inline-flex;
@@ -105,8 +105,9 @@ select.glass-input option {
 }
 .btn-gold:hover:not(:disabled) {
   background: var(--gradient-gold-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(251, 118, 60, 0.5);
+  transform: translateY(-2px) scale(1.03); /* Leichtes Skalieren für besseren Hover-Effekt */
+  box-shadow: 0 8px 25px rgba(251, 118, 60, 0.7), 0 0 10px rgba(246, 190, 26, 0.4);
+  color: #000 !important;
 }
 .btn-gold:disabled {
   opacity: 0.5;
