@@ -612,9 +612,12 @@ export default function PromptsPage() {
             overflow: 'hidden'
           }}>
             {activePromptType === 'video' ? (
-              <img 
-                src="/beispiel.jpeg"
-                alt="Video-Vorschau Platzhalter"
+              <video 
+                src="/beispiel.mp4"
+                autoplay
+                loop
+                muted
+                playsinline
                 style={{
                   width: '100%',
                   height: '100%',
