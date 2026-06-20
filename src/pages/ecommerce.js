@@ -832,36 +832,60 @@ export default function EcommerceLanding() {
                     </h3>
                     
                     {/* Kategorie Dropdown vergrößert */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <span style={{ fontSize: '0.95rem', color: 'var(--text-muted)', fontWeight: 700 }}>Kategorie:</span>
-                      <select
-                        value={selectedCategory}
-                        onChange={(e) => {
-                          setSelectedCategory(e.target.value);
-                          // Direkt den ersten Prompt der neuen Kategorie laden
-                          const prompts = getCategoryPrompts(e.target.value);
-                          if (prompts.length > 0) setPrompt(prompts[0].prompt);
-                        }}
-                        className="input-field"
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px', flexWrap: 'wrap' }}>
+                      <Link 
+                        href="/prompts" 
+                        className="btn-outline" 
                         style={{ 
                           padding: '10px 20px', 
-                          background: 'var(--bg-input)', 
-                          border: '2px solid var(--border-color)', 
+                          background: 'rgba(168, 85, 247, 0.1)', 
+                          border: '2px solid var(--primary)', 
                           color: '#fff', 
                           borderRadius: '8px', 
-                          cursor: 'pointer', 
-                          fontSize: '1rem', 
-                          fontWeight: '700',
-                          width: 'auto',
-                          boxShadow: 'var(--shadow-premium)'
+                          fontWeight: '700', 
+                          textDecoration: 'none', 
+                          fontSize: '0.95rem',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          boxShadow: 'var(--shadow-neon)'
                         }}
                       >
-                        {ECOMMERCE_CATEGORIES.map(cat => (
-                          <option key={cat.id} value={cat.id} style={{ background: '#0f172a', color: '#fff' }}>
-                            {cat.icon} {cat.name}
-                          </option>
-                        ))}
-                      </select>
+                        <Sparkles size={16} style={{ color: 'var(--secondary)' }} />
+                        Eigene exklusive Prompts
+                      </Link>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <span style={{ fontSize: '0.95rem', color: 'var(--text-muted)', fontWeight: 700 }}>Kategorie:</span>
+                        <select
+                          value={selectedCategory}
+                          onChange={(e) => {
+                            setSelectedCategory(e.target.value);
+                            // Direkt den ersten Prompt der neuen Kategorie laden
+                            const prompts = getCategoryPrompts(e.target.value);
+                            if (prompts.length > 0) setPrompt(prompts[0].prompt);
+                          }}
+                          className="input-field"
+                          style={{ 
+                            padding: '10px 20px', 
+                            background: 'var(--bg-input)', 
+                            border: '2px solid var(--border-color)', 
+                            color: '#fff', 
+                            borderRadius: '8px', 
+                            cursor: 'pointer', 
+                            fontSize: '1rem', 
+                            fontWeight: '700',
+                            width: 'auto',
+                            boxShadow: 'var(--shadow-premium)'
+                          }}
+                        >
+                          {ECOMMERCE_CATEGORIES.map(cat => (
+                            <option key={cat.id} value={cat.id} style={{ background: '#0f172a', color: '#fff' }}>
+                              {cat.icon} {cat.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                   </div>
 
