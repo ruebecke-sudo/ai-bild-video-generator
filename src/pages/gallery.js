@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
-import { supabase } from '../lib/supabase'
+import { supabase, getUserCredits } from '../lib/supabase'
 import { PROMPT_CATEGORIES } from '../lib/promptsData'
 import { 
   Globe, 
@@ -67,20 +67,23 @@ export default function GalleryPage() {
           return
         }
 
-        supabase
-          .from('profiles')
-          .select('credits, unlocked_categories')
-          .eq('id', session.user.id)
-          .single()
-          .then(({ data }) => {
-            if (data) {
-              setCredits(data.credits)
-              if (Array.isArray(data.unlocked_categories)) {
+        // Verwende getUserCredits für robustes Credit-Laden
+        getUserCredits(session.user.id).then(userCredits => {
+          setCredits(userCredits)
+          
+          // unlocked_categories separat laden
+          supabase
+            .from('profiles')
+            .select('unlocked_categories')
+            .eq('id', session.user.id)
+            .single()
+            .then(({ data }) => {
+              if (data && Array.isArray(data.unlocked_categories)) {
                 setUnlockedCategories(data.unlocked_categories)
               }
-            }
-            setLoadingProfile(false)
-          }).catch(() => setLoadingProfile(false))
+              setLoadingProfile(false)
+            }).catch(() => setLoadingProfile(false))
+        })
       } else {
         setLoadingProfile(false)
       }
@@ -96,19 +99,20 @@ export default function GalleryPage() {
           setUnlockedCategories(['winzer', 'immo', 'hochzeit', 'strand', 'urlaub', 'lostplaces', 'schloesser', 'food', 'fitness', 'auto', 'socialmedia', 'nature', 'cyberpunk', 'artistic'])
           setCredits(9999)
         } else {
-          supabase
-            .from('profiles')
-            .select('credits, unlocked_categories')
-            .eq('id', session.user.id)
-            .single()
-            .then(({ data }) => {
-              if (data) {
-                setCredits(data.credits)
-                if (Array.isArray(data.unlocked_categories)) {
+          getUserCredits(session.user.id).then(userCredits => {
+            setCredits(userCredits)
+            
+            supabase
+              .from('profiles')
+              .select('unlocked_categories')
+              .eq('id', session.user.id)
+              .single()
+              .then(({ data }) => {
+                if (data && Array.isArray(data.unlocked_categories)) {
                   setUnlockedCategories(data.unlocked_categories)
                 }
-              }
-            })
+              })
+          })
         }
       }
     })
